@@ -94,9 +94,8 @@ double referencePressure;
 dht11 DHT11;
 
 /** Ethernet Shield  **/
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192,168,0,177);
-EthernetServer server(81);
+byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
+EthernetServer server(89);
 EthernetClient client;
 
 /** Data Pool **/

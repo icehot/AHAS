@@ -1,7 +1,7 @@
 void init_ETH()
 {
   //Ethernet connection and server initialization
-  Ethernet.begin(mac, ip);
+  Ethernet.begin(mac);
   server.begin();
   Serial.print("server is at ");
   Serial.println(Ethernet.localIP());
