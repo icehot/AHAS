@@ -13,7 +13,7 @@ void read_DHT11()
   //DHT11 check variable
   int chk;
   
-  chk = DHT11.read(DHT11PIN);
+  chk = dht11.read(DHT11PIN);
           
   switch (chk)
   {
@@ -31,9 +31,9 @@ void read_DHT11()
     break;
   }
 
-  DataPool.DHT11_Temperature = DHT11.temperature;
-  DataPool.DHT11_Humidity    = DHT11.humidity;
-  DataPool.DHT11_DewPoint    = dewPointFast(DHT11.temperature, DHT11.humidity);
+  DataPool.DHT11_Temperature = dht11.temperature;
+  DataPool.DHT11_Humidity    = dht11.humidity;
+  DataPool.DHT11_DewPoint    = dewPointFast(dht11.temperature, dht11.humidity);
 }
 
 // 6.9 x faster than dewPoint()

@@ -37,6 +37,7 @@
 
 /** BMP085 sensor **/
 #include <Wire.h>
+#include <BMP085.h>
 
 /** MS5611 sensor **/
 #include <MS5611.h>
@@ -55,43 +56,15 @@
 /*** Global Variable definition start ***/
 /***********************************************************************************************************/
 
-/** BMP085 sensor **/
-
-// From the datasheet the BMP module address LSB distinguishes
-// between read (1) and write (0) operations, corresponding to 
-// address 0xEF (read) and 0xEE (write).
-// shift the address 1 bit right (0xEF or 0xEE), the Wire library only needs the 7
-// most significant bits for the address 0xEF >> 1 = 0x77
-// 0xEE >> 1 = 0x77
-
-// oversampling setting
-// 0 = ultra low power
-// 1 = standard
-// 2 = high
-// 3 = ultra high resolution
-const unsigned char oversampling_setting = 3; //oversampling for measurement
-const unsigned char pressure_conversiontime[4] = { 
-  5, 8, 14, 26 };  // delays for oversampling settings 0, 1, 2 and 3   
-  
-// sensor registers from the BOSCH BMP085 datasheet
-int ac1;
-int ac2; 
-int ac3; 
-unsigned int ac4;
-unsigned int ac5;
-unsigned int ac6;
-int b1; 
-int b2;
-int mb;
-int mc;
-int md;
-
 /** MS5611 sensor **/
 MS5611 ms5611;
 double referencePressure;
 
 /** DHT11 sensor **/
-dht11 DHT11;
+DHT11 dht11;
+
+/** BMP085 sensor **/
+BMP085 bmp085;
 
 /** Ethernet Shield  **/
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
