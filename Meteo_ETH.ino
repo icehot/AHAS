@@ -1,7 +1,7 @@
 void init_ETH()
 {
   //Ethernet connection and server initialization
-  Ethernet.begin(mac, ip);
+  Ethernet.begin(mac);
   server.begin();
   Serial.print("server is at ");
   Serial.println(Ethernet.localIP());
@@ -16,10 +16,12 @@ void webserver()
     Serial.println("new client");
     // an http request ends with a blank line
     boolean currentLineIsBlank = true;
+    TimeStamps.webStart = millis();
     while (client.connected()) 
     {
       if (client.available()) 
       {
+        
         char c = client.read();
         Serial.write(c);
         // if you've gotten to the end of the line (received a newline
@@ -49,6 +51,7 @@ void webserver()
     // close the connection:
     client.stop();
     Serial.println("client disonnected");
+    TimeStamps.webEnd = millis();
   }
 }
 

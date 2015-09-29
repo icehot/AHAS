@@ -67,9 +67,8 @@ DHT11 dht11;
 BMP085 bmp085;
 
 /** Ethernet Shield  **/
-byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-IPAddress ip(192,168,0,177);
-EthernetServer server(81);
+byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
+EthernetServer server(89);
 EthernetClient client;
 
 /** Data Pool **/
@@ -88,8 +87,25 @@ struct{
   float MS5611_RelAltitude;
 }DataPool;
 
+struct{
+  unsigned long cycleStart;
+  unsigned long cycleEnd;
+  unsigned long dht11;
+  unsigned long bmp085;
+  unsigned long ms5611;
+  unsigned long webStart;
+  unsigned long webEnd;
+  unsigned long current;
+  unsigned long previous;
+}TimeStamps;
 
-
+struct{
+  int total;
+  int dht11;
+  int bmp085;
+  int ms5611;
+  int web;
+}RunTime;
 /***********************************************************************************************************/
 /*** Arduino initialization start ***/
 /***********************************************************************************************************/
@@ -102,6 +118,7 @@ void setup()
   init_DHT11();
   init_BMP085();
   init_MS5611();
+  TimeStamps.previous = 0;
 }
 
 /***********************************************************************************************************/
@@ -109,10 +126,32 @@ void setup()
 /***********************************************************************************************************/
 void loop() 
 {
-  read_DHT11();
-  read_BMP085(); 
-  read_MS5611();
+  TimeStamps.current = millis();
+
+  if (TimeStamps.current - TimeStamps.previous > 1000)
+  {
+    TimeStamps.previous = TimeStamps.current;
+
+    TimeStamps.cycleStart = millis();
+    read_DHT11();
+    TimeStamps.dht11 = millis();
+    read_BMP085(); 
+    TimeStamps.bmp085 = millis();
+    read_MS5611();
+    TimeStamps.ms5611 = millis();
+    calcRunTime();
+  }
+  
   webserver();  
+}
+
+void calcRunTime()
+{
+  RunTime.dht11  = TimeStamps.dht11  - TimeStamps.cycleStart;
+  RunTime.bmp085 = TimeStamps.bmp085 - TimeStamps.dht11;
+  RunTime.ms5611 = TimeStamps.ms5611 - TimeStamps.bmp085;
+  RunTime.total  = TimeStamps.ms5611 - TimeStamps.cycleStart;
+  RunTime.web    = TimeStamps.webEnd - TimeStamps.webStart; 
 }
 
 /***********************************************************************************************************/

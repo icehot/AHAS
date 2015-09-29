@@ -13,6 +13,14 @@ void send_HTML()
   client.println("<!DOCTYPE HTML>");
   client.println("<html>");
   // output the value of each analog input pin
+
+  client.print("Acq Runtime (ms): ");
+  client.print(RunTime.total);
+  client.print("<br />");
+
+  client.print("Web Runtime (ms): ");
+  client.print(RunTime.web);
+  client.print("<br />");
   
   client.print("DHT11 Sensor: <br />");
   client.print("Status: ");
@@ -22,7 +30,7 @@ void send_HTML()
   client.print("<br />");
 
   /* DHT11 sensor */
-  client.print("Temperature (°C): ");
+  client.print("Temperature (Celsius): ");
   client.print((float)DataPool.DHT11_Temperature, 2);
   client.print("<br />");
 
@@ -30,8 +38,12 @@ void send_HTML()
   client.print((float)DataPool.DHT11_Humidity, 2);
   client.print("<br />");
   
-  client.print("Dew PointFast (°C): ");
+  client.print("Dew PointFast (Celsius): ");
   client.print(DataPool.DHT11_DewPoint);
+  client.print("<br />");
+
+  client.print("Runtime (ms): ");
+  client.print(RunTime.dht11);
   client.print("<br />");
 
   /* BMP085 Sensor */
@@ -39,7 +51,7 @@ void send_HTML()
   client.print("BMP085 Sensor: ");
   client.print("<br />");
   
-  client.print("Temperature (°C): ");
+  client.print("Temperature (Celsius): ");
   client.print((float)DataPool.BMP085_Temperature/10, 2);
   client.print("<br />");
   
@@ -47,12 +59,16 @@ void send_HTML()
   client.print((float)DataPool.BMP085_Pressure, 2);
   client.print("<br />");
 
+  client.print("Runtime (ms): ");
+  client.print(RunTime.bmp085);
+  client.print("<br />");
+
   /* MS5611 sensor */
   client.print("<br />");
   client.print("MS5611 Sensor: ");
   client.print("<br />");
   
-  client.print("Temperature (°C): ");
+  client.print("Temperature (Celsius): ");
   client.print((float)DataPool.MS5611_Temperature, 2);
   client.print("<br />");
   
@@ -66,6 +82,10 @@ void send_HTML()
   
   client.print("relativeAltitude (m): ");
   client.print((float)DataPool.MS5611_RelAltitude, 2);
+  client.print("<br />");
+
+  client.print("Runtime (ms): ");
+  client.print(RunTime.ms5611);
   client.print("<br />");
   
   client.println("</html>");
