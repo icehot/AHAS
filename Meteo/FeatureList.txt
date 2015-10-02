@@ -13,6 +13,11 @@ Features to be done:
 3. Webserver using HTML files from SD card, variable embedding into HTML code
 4. Webserver I/O handling (forms)
 5. LCD display integration
+6. Relay module
+7. Pir Sensor
+8. Sound Detector
+9. RGB led module
+
 
 
 
