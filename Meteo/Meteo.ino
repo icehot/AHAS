@@ -42,6 +42,9 @@
 /** MS5611 sensor **/
 #include <MS5611.h>
 
+/** DS1302 Real-time Clock **/
+#include <DS1302.h>
+
 /***********************************************************************************************************/
 /*** Macro definition section start ***/
 /***********************************************************************************************************/
@@ -51,6 +54,11 @@
 
 /** BMP085 sensor **/
 #define I2C_ADDRESS 0x77
+
+/** DS1302 Real-time Clock **/
+#define DS1302_SCLK_PIN   6    // Arduino pin for the Serial Clock
+#define DS1302_IO_PIN     7    // Arduino pin for the Data I/O
+#define DS1302_CE_PIN     8    // Arduino pin for the Chip Enable
 
 /***********************************************************************************************************/
 /*** Global Variable definition start ***/
@@ -65,6 +73,9 @@ DHT11 dht11;
 
 /** BMP085 sensor **/
 BMP085 bmp085;
+
+/** DS1302 Real-time Clock **/
+DS1302 ds1302;
 
 /** Ethernet Shield  **/
 byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
@@ -86,6 +97,16 @@ struct{
   float MS5611_AbsAltitude;
   float MS5611_RelAltitude;
 }DataPool;
+
+struct{
+  uint8_t year;
+  uint8_t month;
+  uint8_t dayofmonth;
+  uint8_t dayofweek;
+  uint8_t hours;
+  uint8_t minutes;
+  uint8_t seconds;
+}Rtc;
 
 struct{
   unsigned long cycleStart;
@@ -118,6 +139,7 @@ void setup()
   init_DHT11();
   init_BMP085();
   init_MS5611();
+  init_DS1302();
   TimeStamps.previous = 0;
 }
 
@@ -139,6 +161,7 @@ void loop()
     TimeStamps.bmp085 = millis();
     read_MS5611();
     TimeStamps.ms5611 = millis();
+    read_DS1302();
     calcRunTime();
   }
   

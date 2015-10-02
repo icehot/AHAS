@@ -4,15 +4,16 @@ Completed Features:
 3. BMP085 integration
 4. MS5611 integration
 5. Task measurement implementation
+6. Solution for Arduino library version management, tracking for the whole project in GIT.
+7. RTC Clock integration
 
 Features to be done: 
-1. RTC Clock integration
-2. Clock synchronization with time servers
-3. SD card logging
-4. Webserver using HTML files from SD card, variable embedding into HTML code
-5. Webserver I/O handling (forms)
-6. LCD display integration
-7. Solution for Arduino library version management, tracking for the whole project in GIT.
+1. Clock synchronization with time servers
+2. SD card logging
+3. Webserver using HTML files from SD card, variable embedding into HTML code
+4. Webserver I/O handling (forms)
+5. LCD display integration
+
 
 
  
