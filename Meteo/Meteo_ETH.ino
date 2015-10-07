@@ -1,3 +1,9 @@
+/** Ethernet Shield  **/
+byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
+
+EthernetServer server(89);
+EthernetClient client;
+
 void init_ETH()
 {
   //Ethernet connection and server initialization

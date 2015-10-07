@@ -29,6 +29,8 @@
 /** Ethernet Shield **/
 #include <SPI.h>
 #include <Ethernet.h>
+#include <EthernetUdp.h>
+#include <Time.h> 
 #include <SD.h>
 
 
@@ -77,10 +79,7 @@ BMP085 bmp085;
 /** DS1302 Real-time Clock **/
 DS1302 ds1302;
 
-/** Ethernet Shield  **/
-byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
-EthernetServer server(89);
-EthernetClient client;
+
 
 /** Data Pool **/
 /* Used for data exchange between webserver and sensors */
@@ -139,6 +138,7 @@ void setup()
   init_DHT11();
   init_BMP085();
   init_MS5611();
+  init_NTP();
   init_DS1302();
   TimeStamps.previous = 0;
 }
@@ -161,9 +161,9 @@ void loop()
     TimeStamps.bmp085 = millis();
     read_MS5611();
     TimeStamps.ms5611 = millis();
-    read_DS1302();
+    read_DS1302(); 
     calcRunTime();
-  }
+  }  
   
   webserver();  
 }
@@ -180,5 +180,4 @@ void calcRunTime()
 /***********************************************************************************************************/
 /*** Function definition ***/
 /***********************************************************************************************************/
-
 

@@ -1,7 +1,19 @@
 void init_DS1302()
 {
+  time_t t;
     ds1302.init(DS1302_SCLK_PIN, DS1302_IO_PIN, DS1302_CE_PIN);
-    ds1302.setTimeAndDate(99,12,31,1,23,58,58);
+
+    if (timeStatus() != timeNotSet) 
+    {/*NTP synchronised */
+      Serial.println("NTP is synchronised");
+      t = now();
+      ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
+    }
+    else
+    {/*NTP not synchronised */
+      Serial.println("NTP is not synchronised");
+      ds1302.setTimeAndDate(99,12,31,1,23,58,58);
+    }
 }
 
 void read_DS1302()

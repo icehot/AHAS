@@ -6,17 +6,17 @@ Completed Features:
 5. Task measurement implementation
 6. Solution for Arduino library version management, tracking for the whole project in GIT.
 7. RTC Clock integration
+8. Clock synchronization with time servers
 
 Features to be done: 
-1. Clock synchronization with time servers
-2. SD card logging
-3. Webserver using HTML files from SD card, variable embedding into HTML code
-4. Webserver I/O handling (forms)
-5. LCD display integration
-6. Relay module
-7. Pir Sensor
-8. Sound Detector
-9. RGB led module
+1. SD card logging
+2. Webserver using HTML files from SD card, variable embedding into HTML code
+3. Webserver I/O handling (forms)
+4. LCD display integration
+5. Relay module
+6. Pir Sensor
+7. Sound Detector
+8. RGB led module
 
 
 
