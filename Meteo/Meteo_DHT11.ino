@@ -1,4 +1,9 @@
 /** DHT11 sensor **/
+#define DHT11PIN 2
+
+/** DHT11 sensor **/
+DHT11 dht11;
+
 void init_DHT11()
 {
   //DHT11 initialization 

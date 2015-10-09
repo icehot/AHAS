@@ -24,7 +24,7 @@
  */
 
 /***********************************************************************************************************/
-/*** Include start ***/
+/*** Include ***/
 /***********************************************************************************************************/
 /** Ethernet Shield **/
 #include <SPI.h>
@@ -48,38 +48,12 @@
 #include <DS1302.h>
 
 /***********************************************************************************************************/
-/*** Macro definition section start ***/
+/*** Macro definition section ***/
 /***********************************************************************************************************/
 
-/** DHT11 sensor **/
-#define DHT11PIN 2
-
-/** BMP085 sensor **/
-#define I2C_ADDRESS 0x77
-
-/** DS1302 Real-time Clock **/
-#define DS1302_SCLK_PIN   6    // Arduino pin for the Serial Clock
-#define DS1302_IO_PIN     7    // Arduino pin for the Data I/O
-#define DS1302_CE_PIN     8    // Arduino pin for the Chip Enable
-
 /***********************************************************************************************************/
-/*** Global Variable definition start ***/
+/*** Global Variable definition  ***/
 /***********************************************************************************************************/
-
-/** MS5611 sensor **/
-MS5611 ms5611;
-double referencePressure;
-
-/** DHT11 sensor **/
-DHT11 dht11;
-
-/** BMP085 sensor **/
-BMP085 bmp085;
-
-/** DS1302 Real-time Clock **/
-DS1302 ds1302;
-
-
 
 /** Data Pool **/
 /* Used for data exchange between webserver and sensors */
@@ -96,16 +70,6 @@ struct{
   float MS5611_AbsAltitude;
   float MS5611_RelAltitude;
 }DataPool;
-
-struct{
-  uint8_t year;
-  uint8_t month;
-  uint8_t dayofmonth;
-  uint8_t dayofweek;
-  uint8_t hours;
-  uint8_t minutes;
-  uint8_t seconds;
-}Rtc;
 
 struct{
   unsigned long cycleStart;
@@ -127,7 +91,7 @@ struct{
   int web;
 }RunTime;
 /***********************************************************************************************************/
-/*** Arduino initialization start ***/
+/*** Arduino initialization ***/
 /***********************************************************************************************************/
 
 void setup() 
@@ -144,7 +108,7 @@ void setup()
 }
 
 /***********************************************************************************************************/
-/*** Arduino Mainloop start ***/
+/*** Arduino Mainloop ***/
 /***********************************************************************************************************/
 void loop() 
 {
@@ -167,16 +131,6 @@ void loop()
   
   webserver();  
 }
-
-void calcRunTime()
-{
-  RunTime.dht11  = TimeStamps.dht11  - TimeStamps.cycleStart;
-  RunTime.bmp085 = TimeStamps.bmp085 - TimeStamps.dht11;
-  RunTime.ms5611 = TimeStamps.ms5611 - TimeStamps.bmp085;
-  RunTime.total  = TimeStamps.ms5611 - TimeStamps.cycleStart;
-  RunTime.web    = TimeStamps.webEnd - TimeStamps.webStart; 
-}
-
 /***********************************************************************************************************/
 /*** Function definition ***/
 /***********************************************************************************************************/

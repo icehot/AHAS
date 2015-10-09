@@ -1,3 +1,21 @@
+/** DS1302 Real-time Clock **/
+#define DS1302_SCLK_PIN   6    // Arduino pin for the Serial Clock
+#define DS1302_IO_PIN     7    // Arduino pin for the Data I/O
+#define DS1302_CE_PIN     8    // Arduino pin for the Chip Enablev
+
+/** DS1302 Real-time Clock **/
+DS1302 ds1302;
+
+struct{
+  uint8_t year;
+  uint8_t month;
+  uint8_t dayofmonth;
+  uint8_t dayofweek;
+  uint8_t hours;
+  uint8_t minutes;
+  uint8_t seconds;
+}Rtc;
+
 void init_DS1302()
 {
   time_t t;
