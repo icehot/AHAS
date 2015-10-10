@@ -7,6 +7,7 @@ BMP085 bmp085;
 void init_BMP085()
 {
   bmp085.init(I2C_ADDRESS);
+  Serial.println("BMP085 - Initialized");
 }
 
 void read_BMP085()

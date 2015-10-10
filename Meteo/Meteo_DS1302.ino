@@ -6,19 +6,9 @@
 /** DS1302 Real-time Clock **/
 DS1302 ds1302;
 
-struct{
-  uint8_t year;
-  uint8_t month;
-  uint8_t dayofmonth;
-  uint8_t dayofweek;
-  uint8_t hours;
-  uint8_t minutes;
-  uint8_t seconds;
-}Rtc;
-
 void init_DS1302()
 {
-  time_t t;
+    time_t t;
     ds1302.init(DS1302_SCLK_PIN, DS1302_IO_PIN, DS1302_CE_PIN);
 
     if (timeStatus() != timeNotSet) 
@@ -36,8 +26,24 @@ void init_DS1302()
 
 void read_DS1302()
 {
-    ds1302.getTimeAndDate(&Rtc.year, &Rtc.month, &Rtc.dayofmonth, &Rtc.dayofweek, &Rtc.hours, &Rtc.minutes, &Rtc.seconds);
-    Serial.println();
-    Serial.print(2000+Rtc.year);Serial.print(".");Serial.print(Rtc.month);Serial.print(".");Serial.print(Rtc.dayofmonth); Serial.print(" ");
-    Serial.print(Rtc.hours);Serial.print(":");Serial.print(Rtc.minutes);Serial.print(":");Serial.print(Rtc.seconds);Serial.println();
+    switch (timeStatus())
+    {
+      case timeNotSet:
+      DataPool.DS1302_SyncStatus = "Time not set!";
+      break;
+
+      case timeNeedsSync:
+      DataPool.DS1302_SyncStatus = "Time needs sync!";
+      break;
+
+      case timeSet:
+      DataPool.DS1302_SyncStatus = "Time set!";
+      break;
+      
+      default:
+      DataPool.DS1302_SyncStatus = "Error!";
+      break;
+    }
+    
+    ds1302.getTimeAndDate(&DataPool.DS1302_Year, &DataPool.DS1302_Month, &DataPool.DS1302_Day, &DataPool.DS1302_DayOfWeek, &DataPool.DS1302_Hour, &DataPool.DS1302_Minute, &DataPool.DS1302_Second);
 }

@@ -69,6 +69,14 @@ struct{
   long MS5611_Pressure;
   float MS5611_AbsAltitude;
   float MS5611_RelAltitude;
+  byte DS1302_Year;
+  byte DS1302_Month;
+  byte DS1302_Day;
+  byte DS1302_Hour;
+  byte DS1302_Minute;
+  byte DS1302_Second;
+  byte DS1302_DayOfWeek;
+  char* DS1302_SyncStatus;
 }DataPool;
 
 struct{
@@ -77,6 +85,7 @@ struct{
   unsigned long dht11;
   unsigned long bmp085;
   unsigned long ms5611;
+  unsigned long ds1302;
   unsigned long webStart;
   unsigned long webEnd;
   unsigned long current;
@@ -88,6 +97,7 @@ struct{
   int dht11;
   int bmp085;
   int ms5611;
+  int ds1302;
   int web;
 }RunTime;
 /***********************************************************************************************************/
@@ -100,7 +110,7 @@ void setup()
   init_SD();
   init_ETH();
   init_DHT11();
-  init_BMP085();
+  init_BMP085(); 
   init_MS5611();
   init_NTP();
   init_DS1302();
@@ -126,6 +136,7 @@ void loop()
     read_MS5611();
     TimeStamps.ms5611 = millis();
     read_DS1302(); 
+    TimeStamps.ds1302 = millis();
     calcRunTime();
   }  
   

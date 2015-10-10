@@ -7,10 +7,9 @@ DHT11 dht11;
 void init_DHT11()
 {
   //DHT11 initialization 
-  Serial.println("DHT11 Initialization ");
+  Serial.println("DHT11 Initialized");
   Serial.print("LIBRARY VERSION: ");
   Serial.println(DHT11LIB_VERSION);
-  Serial.println();
 }
 
 void read_DHT11()
