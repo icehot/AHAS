@@ -18,7 +18,7 @@ void send_HTML()
   client.print("Sync Status: "); client.print(DataPool.DS1302_SyncStatus);
   client.print("<br />");
   client.print("Date: ");
-  client.print(DataPool.DS1302_Year+2000);client.print("/");
+  client.print(DataPool.DS1302_Year);client.print("/");
   client.print(DataPool.DS1302_Month);client.print("/");
   client.print(DataPool.DS1302_Day);
   client.print("<br />");
@@ -67,8 +67,8 @@ void send_HTML()
   client.print("Temperature (Celsius): ");
   client.print((float)DataPool.MS5611_Temperature, 2);
   client.print("<br />");
-  client.print("Pressure: ");
-  client.print((float)DataPool.MS5611_Pressure, 2);
+  client.print("Pressure (mBar): ");
+  client.print((float)DataPool.MS5611_Pressure/100, 2);
   client.print("<br />");
   client.print("AbsoluteAltitude (m): ");
   client.print((float)DataPool.MS5611_AbsAltitude, 2);

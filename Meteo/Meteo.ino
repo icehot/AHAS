@@ -69,7 +69,7 @@ struct{
   long MS5611_Pressure;
   float MS5611_AbsAltitude;
   float MS5611_RelAltitude;
-  byte DS1302_Year;
+  word DS1302_Year;
   byte DS1302_Month;
   byte DS1302_Day;
   byte DS1302_Hour;
@@ -89,7 +89,9 @@ struct{
   unsigned long webStart;
   unsigned long webEnd;
   unsigned long current;
-  unsigned long previous;
+  unsigned long task1s;
+  unsigned long task2s;
+  unsigned long task1m;
 }TimeStamps;
 
 struct{
@@ -100,10 +102,11 @@ struct{
   int ds1302;
   int web;
 }RunTime;
+
+
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
-
 void setup() 
 {
   init_UART();  
@@ -114,7 +117,8 @@ void setup()
   init_MS5611();
   init_NTP();
   init_DS1302();
-  TimeStamps.previous = 0;
+  init_LCD();
+  init_OS();
 }
 
 /***********************************************************************************************************/
@@ -122,27 +126,9 @@ void setup()
 /***********************************************************************************************************/
 void loop() 
 {
-  TimeStamps.current = millis();
-
-  if (TimeStamps.current - TimeStamps.previous > 1000)
-  {
-    TimeStamps.previous = TimeStamps.current;
-
-    TimeStamps.cycleStart = millis();
-    read_DHT11();
-    TimeStamps.dht11 = millis();
-    read_BMP085(); 
-    TimeStamps.bmp085 = millis();
-    read_MS5611();
-    TimeStamps.ms5611 = millis();
-    read_DS1302(); 
-    TimeStamps.ds1302 = millis();
-    calcRunTime();
-  }  
-  
-  webserver();  
+  OS_loopStart();
+  OS_task1s();
+  OS_task2s();
+  OS_task1m();
+  OS_taskIdle(); 
 }
-/***********************************************************************************************************/
-/*** Function definition ***/
-/***********************************************************************************************************/
-

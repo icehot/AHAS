@@ -15,17 +15,14 @@ void init_DS1302()
     {/*NTP synchronised */
       Serial.println("NTP is synchronised");
       t = now();
-      ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
+      ds1302.setTimeAndDate(year(t),month(t),day(t),1,hour(t),minute(t),second(t));
     }
     else
     {/*NTP not synchronised */
       Serial.println("NTP is not synchronised");
       ds1302.setTimeAndDate(99,12,31,1,23,58,58);
     }
-}
 
-void read_DS1302()
-{
     switch (timeStatus())
     {
       case timeNotSet:
@@ -44,6 +41,9 @@ void read_DS1302()
       DataPool.DS1302_SyncStatus = "Error!";
       break;
     }
-    
-    ds1302.getTimeAndDate(&DataPool.DS1302_Year, &DataPool.DS1302_Month, &DataPool.DS1302_Day, &DataPool.DS1302_DayOfWeek, &DataPool.DS1302_Hour, &DataPool.DS1302_Minute, &DataPool.DS1302_Second);
+}
+
+void read_DS1302()
+{ 
+  ds1302.getTimeAndDate((byte*)&DataPool.DS1302_Year, &DataPool.DS1302_Month, &DataPool.DS1302_Day, &DataPool.DS1302_DayOfWeek, &DataPool.DS1302_Hour, &DataPool.DS1302_Minute, &DataPool.DS1302_Second);
 }
