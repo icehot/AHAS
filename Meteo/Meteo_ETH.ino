@@ -13,7 +13,7 @@ void init_ETH()
   Serial.println(Ethernet.localIP());
 }
 
-void webserver()
+void webserverClassic()// avoiding redeclaration
 {
   // listen for incoming clients
   client = server.available();

@@ -7,7 +7,8 @@ void init_OS()
 
 void OS_taskIdle()
 {
-  webserver(); 
+  //webserver();
+  WebduinoServerLoop();
 }
 
 void OS_loopStart()

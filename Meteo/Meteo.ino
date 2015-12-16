@@ -33,6 +33,8 @@
 #include <Time.h> 
 #include <SD.h>
 
+/** Webduino **/
+#include <WebServer.h>
 
 /** DHT11 sensor **/
 #include <dht11.h>
@@ -111,7 +113,8 @@ void setup()
 {
   init_UART();  
   init_SD();
-  init_ETH();
+  //init_ETH();
+  init_Webduino();
   init_DHT11();
   init_BMP085(); 
   init_MS5611();
