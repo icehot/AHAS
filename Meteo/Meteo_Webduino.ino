@@ -3,6 +3,12 @@
 #define PREFIX ""
 WebServer webserver(PREFIX, 89);
 
+// no-cost stream operator as described at 
+// http://sundial.org/arduino/?page_id=119
+template<class T>
+inline Print &operator <<(Print &obj, T arg)
+{ obj.print(arg); return obj; }
+
 /* commands are functions that get called by the webserver framework
  * they can read any posted data from client, and they output to the
  * server to send data back to the web browser. */
@@ -19,10 +25,24 @@ void helloCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     /* this defines some HTML text in read-only memory aka PROGMEM.
      * This is needed to avoid having the string copied to our limited
      * amount of RAM. */
-    P(helloMsg) = "<h1>Hello, World!</h1>";
 
-    /* this is a special form of print that outputs from PROGMEM */
-    server.printP(helloMsg);
+     // open the file. note that only one file can be open at a time,
+    // so you have to close this one before opening another.
+    File dataFile = SD.open("index.htm");
+  
+    // if the file is available, write to it:
+    if (dataFile) 
+    {
+      while (dataFile.available()) 
+      {
+        server << ((char)(dataFile.read()));
+      }
+      dataFile.close();
+    }
+    else 
+    {/* if the file isn't open, pop up an error */
+      Serial.println("Error opening index.htm");
+    }
   }
 }
 

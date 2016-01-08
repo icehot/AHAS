@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Arduino Meteo Station</title>
+</head>
+<body>
+
+<h1>Measurement Data</h1>
+<p>Meteo Data 1</p>
+<p>Meteo Data 2</p>
+<p>Meteo Data 3</p>
+
+</body>
+</html>
