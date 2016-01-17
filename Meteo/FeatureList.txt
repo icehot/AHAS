@@ -10,16 +10,19 @@ Completed Features:
 9. SD card logging
 10. SimpleOS/Scheduler implementation;
 11. LCD display integration
+12. Webserver using HTML files from SD card
+13. Updating values through JavaScript and JSON
+13. Webserver I/O handling (forms)
+14. Relay module
 
 Features to be done: 
-1. Webserver using HTML files from SD card, variable embedding into HTML code
-2. Webserver I/O handling (forms)
-3. Online data acq service ex: Xively
-4. Relay module
-5. Pir Sensor
-6. Sound Detector
-7. RGB led module
-8. LCD backlight control 
+1. Build Up Simple Webpage for Acquisiton
+2. Online data acq service ex: Xively
+3. Pir Sensor
+4. Sound Detector
+5. RGB led module
+6. LCD backlight control
+7. Create Final Application Webpage 
 
 
 

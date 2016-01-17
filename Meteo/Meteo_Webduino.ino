@@ -46,6 +46,61 @@ void helloCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   }
 }
 
+void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+  if (type == WebServer::POST)
+  {
+    server.httpFail();
+    return;
+  }
+
+  //server.httpSuccess(false, "application/json");
+  server.httpSuccess("application/json");
+  
+  if (type == WebServer::HEAD)
+    return;
+
+  int i;    
+  server << "{ ";
+  for (i = 2; i <= 5; ++i)
+  {
+    // ignore the pins we use to talk to the Ethernet chip
+    int val = digitalRead(i);
+    server << "\"d" << i << "\": " << val << ", ";
+  }
+
+  for (i = 0; i <= 5; ++i)
+  {
+    int val = analogRead(i);
+    server << "\"a" << i << "\": " << val;
+    if (i != 5)
+      server << ", ";
+  }
+  
+  server << " }";
+}
+
+void inputCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+  if (type == WebServer::POST)
+  {
+    bool repeat;
+    char name[16], value[16];
+    do
+    {
+      repeat = server.readPOSTparam(name, 16, value, 16);
+      if (name[0] == 'd')
+      {
+        int pin = strtoul(name + 1, NULL, 10);
+        int val = strtoul(value, NULL, 10);
+        digitalWrite(pin, val);
+      }
+    } while (repeat);
+
+    server.httpSeeOther(PREFIX "/");
+  }
+}
+
 void init_Webduino()
 {
   //Ethernet connection and server initialization
@@ -57,6 +112,9 @@ void init_Webduino()
   /* run the same command if you try to load /index.html, a common
    * default page name */
   webserver.addCommand("index.html", &helloCmd);
+  webserver.addCommand("input", &inputCmd);
+  webserver.addCommand("json", &jsonCmd);
+  
 
   /* start the webserver */
   webserver.begin();

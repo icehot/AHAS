@@ -1,5 +1,5 @@
 /** DHT11 sensor **/
-#define DHT11PIN 2
+#define DHT11PIN 9
 
 /** DHT11 sensor **/
 DHT11 dht11;
