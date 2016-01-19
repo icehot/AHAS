@@ -60,14 +60,26 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   if (type == WebServer::HEAD)
     return;
 
-  int i;    
+  int i;   
+  int val; 
   server << "{ ";
-  for (i = 2; i <= 5; ++i)
+  val = digitalRead(2);
+  server << "\"d" << 2 << "\": " << val << ", ";
+  val = digitalRead(3);
+  server << "\"d" << 3 << "\": " << val << ", ";
+  val = digitalRead(5);
+  server << "\"d" << 5 << "\": " << val << ", ";
+  val = digitalRead(13);
+  server << "\"d" << 13 << "\": " << val << ", ";
+  
+  /*
+  for (i = 51; i <= 53; ++i)
   {
     // ignore the pins we use to talk to the Ethernet chip
     int val = digitalRead(i);
     server << "\"d" << i << "\": " << val << ", ";
   }
+  */
 
   for (i = 0; i <= 5; ++i)
   {

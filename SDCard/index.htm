@@ -58,6 +58,11 @@ function DisplayPortValues(portData )
     document.getElementById("a2").innerHTML = portData.a2;
     document.getElementById("a3").innerHTML = portData.a3;
     document.getElementById("a4").innerHTML = portData.a4;
+
+    document.getElementById("d2").innerHTML = portData.d2;
+    document.getElementById("d3").innerHTML = portData.d3;
+    document.getElementById("d5").innerHTML = portData.d5;
+    document.getElementById("d13").innerHTML = portData.d13;
 }
 
 </script>
@@ -86,10 +91,10 @@ Digital 2: <span id="d2"> Not Read </span>
 <input type="radio" name="d2" value="0"> ON <input type="radio" name="d2" value="1" checked> OFF <br/>
 Digital 3: <span id="d3"> Not Read </span>
 <input type="radio" name="d3" value="0"> ON <input type="radio" name="d3" value="1" checked> OFF <br/>
-Digital 4: <span id="d4"> Not Read </span>
-<input type="radio" name="d4" value="0"> ON <input type="radio" name="d4" value="1" checked> OFF <br/>
 Digital 5: <span id="d5"> Not Read </span>
-<input type="radio" name="d5" value="0"> ON <input type="radio" name="d5" value="1" checked> OFF <br/></p>
+<input type="radio" name="d5" value="0"> ON <input type="radio" name="d5" value="1" checked> OFF <br/>
+Digital 13: <span id="d13"> Not Read </span>
+<input type="radio" name="d13" value="0"> ON <input type="radio" name="d13" value="1" checked> OFF <br/></p>
 <input type='submit' value='Set'/>
 </form>
 
