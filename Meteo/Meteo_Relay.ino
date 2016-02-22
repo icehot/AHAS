@@ -2,14 +2,14 @@
 
 void init_Relay()
 {
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(5, OUTPUT);
-  pinMode(13, OUTPUT);
+  pinMode(PIN_RELAY1, OUTPUT);
+  pinMode(PIN_RELAY2, OUTPUT);
+  pinMode(PIN_RELAY3, OUTPUT);
+  pinMode(PIN_RELAY4, OUTPUT);
 
-  digitalWrite(2,HIGH);
-  digitalWrite(3,HIGH);
-  digitalWrite(5,HIGH);
-  digitalWrite(13,HIGH);
+  digitalWrite(PIN_RELAY1,HIGH);
+  digitalWrite(PIN_RELAY2,HIGH);
+  digitalWrite(PIN_RELAY3,HIGH);
+  digitalWrite(PIN_RELAY4,HIGH);
 }
 

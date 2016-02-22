@@ -1,36 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
+<title>Arduino Meteo Station</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+
 <style>
-#header {
-    background-color:DarkCyan;
-    color:white;
-    text-align:center;
-    padding:5px;
-}
-#nav {
-    line-height:30px;
-    background-color:MediumAquaMarine;
-    height:300px;
-    width:100px;
-    float:left;
-    padding:5px;	      
-}
-#section {
-    width:350px;
-    float:left;
-    padding:10px;	 	 
-}
-#footer {
-    background-color:Chocolate;
-    color:white;
-    clear:both;
-    text-align:center;
-   padding:5px;	 	 
+
+.w3-theme {color:#000 !important;background-color:#f0e68c !important}
+.w3-theme-light {color:#000 !important;background-color:#ffffd7 !important}
+.w3-theme-dark {color:#000 !important;background-color:#a0963c !important}
+.w3-text-theme {color:#b4aa50 !important}
+.w3-theme-l5 {color:#000 !important;background-color:#ffffd7 !important}
+.w3-theme-l4 {color:#000 !important;background-color:#ffffc8 !important}
+.w3-theme-l3 {color:#000 !important;background-color:#ffffb9 !important}
+.w3-theme-l2 {color:#000 !important;background-color:#ffffaa !important}
+.w3-theme-l1 {color:#000 !important;background-color:#fff59b !important}
+.w3-theme-d1 {color:#000 !important;background-color:#dcd278 !important}
+.w3-theme-d2 {color:#000 !important;background-color:#c8be64 !important}
+.w3-theme-d3 {color:#000 !important;background-color:#b4aa50 !important}
+.w3-theme-d4 {color:#000 !important;background-color:#a0963c !important}
+.w3-theme-action {color:#fff !important;background-color:#a0963c !important}
+
+/* Set the sidenav to full-width when the screen is less than 600 pixels wide */
+@media (max-width: 500px) {
+  .w3-sidenav {
+      width: 100% !important;
+  }
 }
 </style>
 
 <script>
+function w3_open() {
+  document.getElementById("main").style.marginLeft = "17%"
+  document.getElementsByClassName("w3-sidenav")[0].style.width ="17%";
+  document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
+  //document.getElementsByClassName("w3-opennav")[0].style.display = 'none';
+}
+function w3_close() {
+  document.getElementById("main").style.marginLeft = "0%";
+  document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
+  document.getElementsByClassName("w3-opennav")[0].style.display = "inline-block";
+}
 
 var xmlhttp = new XMLHttpRequest();
 
@@ -59,57 +70,193 @@ function DisplayPortValues(portData )
     document.getElementById("a3").innerHTML = portData.a3;
     document.getElementById("a4").innerHTML = portData.a4;
 
-    document.getElementById("d2").innerHTML = portData.d2;
-    document.getElementById("d3").innerHTML = portData.d3;
-    document.getElementById("d5").innerHTML = portData.d5;
-    document.getElementById("d13").innerHTML = portData.d13;
+    document.getElementById("relay1").innerHTML = portData.r1;
+    document.getElementById("relay2").innerHTML = portData.r2;
+    document.getElementById("relay3").innerHTML = portData.r3;
+    document.getElementById("relay4").innerHTML = portData.r4;
+	
+	document.getElementById("dht11_temp").innerHTML = portData.dht11_temp;
+	document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum;
+	document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew;
+	
+	document.getElementById("bmp085_temp").innerHTML = portData.bmp085_temp;
+	document.getElementById("bmp085_pres").innerHTML = portData.bmp085_pres;
+	
+	document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp;
+	document.getElementById("ms5611_pres").innerHTML = portData.ms5611_pres;
+	document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt;
+	document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt;
+	
+	document.getElementById("ds1302_year").innerHTML  = portData.ds1302_year;
+	document.getElementById("ds1302_month").innerHTML = portData.ds1302_month;
+	document.getElementById("ds1302_day").innerHTML   = portData.ds1302_day;
+	document.getElementById("ds1302_hour").innerHTML  = portData.ds1302_hour;
+	document.getElementById("ds1302_min").innerHTML   = portData.ds1302_min;
+	document.getElementById("ds1302_sec").innerHTML   = portData.ds1302_sec;
 }
+
+function rgbChange()
+{
+	var red_value = document.getElementById("rgb_r").value;
+	var green_value = document.getElementById("rgb_g").value;
+	var blue_value= document.getElementById("rgb_b").value;
+    document.getElementById("red_val").innerHTML =  red_value;
+	document.getElementById("green_val").innerHTML =  green_value;
+	document.getElementById("blue_val").innerHTML =  blue_value;
+	
+	$.post('/rgb', { red: red_value, green: green_value, blue: blue_value } );
+}
+
+function r1On() {$.post('/input', {r1: 0} );}
+function r2On() {$.post('/input', {r2: 0} );}
+function r3On() {$.post('/input', {r3: 0} );}
+function r4On() {$.post('/input', {r4: 0} );}
+function r1Off() {$.post('/input', {r1: 1} );}
+function r2Off() {$.post('/input', {r2: 1} );}
+function r3Off() {$.post('/input', {r3: 1} );}
+function r4Off() {$.post('/input', {r4: 1} );}
 
 </script>
 
-</head>
-<body>
 
-<div id="header">
-<h1>Arduino Meteo Station</h1>
+<body class="w3-theme-light">
+
+<header class="w3-container w3-theme-dark w3-padding">
+      <span class="w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1" onclick="w3_open()""><b>Menu</b></span>
+	  <div class="w3-center w3-xlarge w3-padding">
+      <span><b>Arduino Meteo Station</b></span>
+	  </div>
+</header>
+
+<nav class="w3-sidenav w3-round-xlarge w3-theme-d1" style="width:17%; display:none; marginLeft:0%">
+  <a href="javascript:void(0)" 
+  onclick="w3_close()"
+  class="w3-closenav w3-right w3-padding-right"><b>X</b></a>
+  <p> </p>		
+  <a href="#">Home</a>		
+  <a href="#">Values</a>		
+  <a href="#">Settings</a>		
+</nav>
+
+<section id="main" style="margin-left:0%"> <!-- Start main -->
+<br>
+
+<div class="w3-row-padding">
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+      <h1>DS1302 Time</h1>
+	  <p>
+	  Sync Status: <span id="ds1302_sync">N/A</span><br/>
+	  Time:        <span id="ds1302_hour">N/A</span>:<span id="ds1302_min">N/A</span>:<span id="ds1302_sec">N/A</span><br/>
+	  Date:        <span id="ds1302_year">N/A</span>\<span id="ds1302_month">N/A</span>\<span id="ds1302_day">N/A</span><br/>
+	  </p>
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+      <h1>DHT11</h1>
+      <p>
+	  Temperature: <span id="dht11_temp">N/A</span><br/>
+	  Humidity:    <span id="dht11_hum">N/A</span><br/>
+	  Dew Point:   <span id="dht11_dew">N/A</span>
+	  </p>  
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+      <h1>BMP085</h1>
+      <p>
+	  Temperature: <span id="bmp085_temp">N/A</span><br/>
+	  Pressure:    <span id="bmp085_pres">N/A</span>
+	  </p> 	
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+      <h1>MS5611</h1>
+      <p>
+	  Temperature:       <span id="ms5611_temp">N/A</span><br/>
+	  Pressure:    		 <span id="ms5611_pres">N/A</span><br/>
+	  Absolute Altitude: <span id="ms5611_aalt">N/A</span><br/>
+	  Relative Altitude: <span id="ms5611_ralt">N/A</span>
+	  </p>
+    </div>
+  </div>
+</div>
+<br>
+
+<div class="w3-row-padding">
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+		<h1>Analog Pins</h1>
+		<p>
+		Analog 0: <span id="a0">N/A</span> <br/>
+		Analog 1: <span id="a1">N/A</span> <br/>
+		Analog 2: <span id="a2">N/A</span> <br/>
+		Analog 3: <span id="a3">N/A</span> <br/>
+		Analog 4: <span id="a4">N/A</span> <br/>
+		</p>
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+		<form action='input' method='post'>
+			<h1>Relays</h1>
+			<p>
+			Relay 1: <span id="relay1">N/A</span>
+			<input type="radio" name="r1" value="0" onchange="r1On()"> ON <input type="radio" name="r1" value="1" onchange="r1Off()" checked> OFF <br/>
+			Relay 2: <span id="relay2">N/A</span>
+			<input type="radio" name="r2" value="0" onchange="r2On()"> ON <input type="radio" name="r2" value="1" onchange="r2Off()" checked> OFF <br/>
+			Relay 3: <span id="relay3">N/A</span>
+			<input type="radio" name="r3" value="0" onchange="r3On()"> ON <input type="radio" name="r3" value="1" onchange="r3Off()" checked> OFF <br/>
+			Relay 4: <span id="relay4">N/A </span>
+			<input type="radio" name="r4" value="0" onchange="r4On()"> ON <input type="radio" name="r4" value="1" onchange="r4Off()" checked> OFF <br/>
+			</p>
+		</form>
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+      <h1>Load</h1>
+	  <p>
+	  Acquisition:       <span id="load_acq">N/A</span><br/>
+	  Total:    		 <span id="load_tot">N/A</span><br/>
+	  Web:               <span id="load_web">N/A</span>
+	  </p>
+    </div>
+  </div>
+  
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+	<form action='input' method='post'>
+      <h1>RGB</h1>
+	  
+	  <p>
+		 <div class="w3-container w3-red w3-round-xlarge w3-tiny">
+		 <span id="red_val">128</span><input class="w3-input" type="range" id="rgb_r" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 </div>
+		 <div class="w3-container w3-green w3-round-xlarge w3-tiny">
+		 <span id="green_val">128</span><input class="w3-input" type="range" id="rgb_g" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 </div>
+		 <div class="w3-container w3-blue w3-round-xlarge w3-tiny">
+		 <span id="blue_val">128</span><input class="w3-input" type="range" id="rgb_b" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 </div>
+	  </p>
+	  </form>
+    </div>
+  </div>
 </div>
 
-<div id="nav">
-Home<br>
-Values<br>
-Settings
-</div>
+</section> <!-- End main -->
 
-<div id="section">
-<h2>Meteo Measurements</h2>
-<p>Measurements based on the following sensors</p>
-<p> Sensor values:</p>
-<form action='input' method='post'>
-<h1>Digital Pins</h1>
-<p>
-Digital 2: <span id="d2"> Not Read </span>
-<input type="radio" name="d2" value="0"> ON <input type="radio" name="d2" value="1" checked> OFF <br/>
-Digital 3: <span id="d3"> Not Read </span>
-<input type="radio" name="d3" value="0"> ON <input type="radio" name="d3" value="1" checked> OFF <br/>
-Digital 5: <span id="d5"> Not Read </span>
-<input type="radio" name="d5" value="0"> ON <input type="radio" name="d5" value="1" checked> OFF <br/>
-Digital 13: <span id="d13"> Not Read </span>
-<input type="radio" name="d13" value="0"> ON <input type="radio" name="d13" value="1" checked> OFF <br/></p>
-<input type='submit' value='Set'/>
-</form>
-
-<h1>Analog Pins</h1>
-<p>
-Analog 0: <span id="a0"> Not Read </span> <br/>
-Analog 1: <span id="a1"> Not Read </span> <br/>
-Analog 2: <span id="a2"> Not Read </span> <br/>
-Analog 3: <span id="a3"> Not Read </span> <br/>
-Analog 4: <span id="a4"> Not Read </span> <br/>
-</p>
-</div>
-<div id="footer">
-Copyright © icehot
-</div>
+<footer class="w3-container w3-center w3-bottom w3-padding-0 w3-small w3-theme-dark">
+  <p> Copyright &#169; icehot </p>
+</footer>
 
 </body>
-</html>
+</html> 

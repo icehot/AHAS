@@ -4,9 +4,9 @@ void init_SD()
   Serial.print("Initializing SD card...");
 
   //Default CS port must be set to output
-  pinMode(53, OUTPUT);
+  pinMode(PIN_SPI_CS, OUTPUT);
   
-  if (!SD.begin(4)) 
+  if (!SD.begin(PIN_SD_CS)) 
     Serial.println("initialization failed!");
   else
     Serial.println("initialization done.");

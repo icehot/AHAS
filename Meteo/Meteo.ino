@@ -7,8 +7,8 @@
      - A simple web server that shows the value of the attached sensors
      using an Arduino Wiznet Ethernet shield.
    2. DHT11 Temperature and humidity sensor   
-   
    3. BMP085 temperature and barometric pressure sensor
+   
  
   Circuit:
  * Ethernet shield attached to pins 10, 11, 12, 13
@@ -52,6 +52,36 @@
 /***********************************************************************************************************/
 /*** Macro definition section ***/
 /***********************************************************************************************************/
+/** PIN configuration **/
+
+#define PIN_LCD_RS 22
+#define PIN_LCD_EN 23
+#define PIN_LCD_D4 24
+#define PIN_LCD_D5 25
+#define PIN_LCD_D6 26
+#define PIN_LCD_D7 27
+
+#define PIN_RELAY1 28
+#define PIN_RELAY2 29
+#define PIN_RELAY3 30
+#define PIN_RELAY4 31
+
+#define PIN_DHT11 32
+
+#define PIN_ANALOG_BUTTON a15
+#define PIN_SOUND_DETECTOR 42
+#define PIN_PIR_SENSOR 43
+
+#define PIN_RGBLED_R 45
+#define PIN_RGBLED_G 44
+#define PIN_RGBLED_B 46
+
+#define PIN_DS1302_SCLK   47    // Arduino pin for the Serial Clock
+#define PIN_DS1302_IO     48    // Arduino pin for the Data I/O
+#define PIN_DS1302_CE     49    // Arduino pin for the Chip Enablev
+
+#define PIN_SPI_CS 53 //default chip select
+#define PIN_SD_CS 4 //SD card chip select
 
 /***********************************************************************************************************/
 /*** Global Variable definition  ***/
@@ -105,6 +135,10 @@ struct{
   int web;
 }RunTime;
 
+int red = 0;            //integer for red darkness
+int blue = 0;           //integer for blue darkness
+int green = 0;          //integer for green darkness
+
 
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
@@ -123,6 +157,7 @@ void setup()
   init_LCD();
   init_OS();
   init_Relay();
+  init_RGBLED();
 }
 
 /***********************************************************************************************************/

@@ -17,11 +17,12 @@ Completed Features:
 
 Features to be done: 
 1. Build Up Simple Webpage for Acquisiton
-2. Online data acq service ex: Xively
+2. JQuery RGB led module
+3. LCD backlight control
 3. Pir Sensor
 4. Sound Detector
-5. RGB led module
-6. LCD backlight control
+6. Arduino Scheduler integration
+2. Online data acq service ex: Xively
 7. Create Final Application Webpage 
 
 

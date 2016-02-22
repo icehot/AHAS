@@ -1,7 +1,4 @@
 /** DS1302 Real-time Clock **/
-#define DS1302_SCLK_PIN   6    // Arduino pin for the Serial Clock
-#define DS1302_IO_PIN     7    // Arduino pin for the Data I/O
-#define DS1302_CE_PIN     8    // Arduino pin for the Chip Enablev
 
 /** DS1302 Real-time Clock **/
 DS1302 ds1302;
@@ -9,7 +6,7 @@ DS1302 ds1302;
 void init_DS1302()
 {
     time_t t;
-    ds1302.init(DS1302_SCLK_PIN, DS1302_IO_PIN, DS1302_CE_PIN);
+    ds1302.init(PIN_DS1302_SCLK, PIN_DS1302_IO, PIN_DS1302_CE);
 
     if (timeStatus() != timeNotSet) 
     {/*NTP synchronised */

@@ -33,6 +33,10 @@ void OS_task1s()
     read_time(); 
     TimeStamps.ds1302 = millis();
     calcRunTime();
+
+    analogWrite(PIN_RGBLED_R, red);
+    analogWrite(PIN_RGBLED_G, green);
+    analogWrite(PIN_RGBLED_B, blue);
   }
 }
 

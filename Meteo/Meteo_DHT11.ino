@@ -1,7 +1,4 @@
 /** DHT11 sensor **/
-#define DHT11PIN 9
-
-/** DHT11 sensor **/
 DHT11 dht11;
 
 void init_DHT11()
@@ -17,7 +14,7 @@ void read_DHT11()
   //DHT11 check variable
   int chk;
   
-  chk = dht11.read(DHT11PIN);
+  chk = dht11.read(PIN_DHT11);
           
   switch (chk)
   {
