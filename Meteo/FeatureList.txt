@@ -13,17 +13,46 @@ Completed Features:
 12. Webserver using HTML files from SD card
 13. Updating values through JavaScript and JSON
 13. Webserver I/O handling (forms)
-14. Relay module
+14. JQuery Relay module
+15. JQuery RGB led module
+16. Build Up Simple Webpage for Acquisiton
+17. Web Authentication
 
 Features to be done: 
-1. Build Up Simple Webpage for Acquisiton
-2. JQuery RGB led module
-3. LCD backlight control
-3. Pir Sensor
-4. Sound Detector
-6. Arduino Scheduler integration
-2. Online data acq service ex: Xively
-7. Create Final Application Webpage 
+1. Configuration Page Web Net Setup
+2. Password Update
+3. HW Initialization statuses
+4. Log management
+5. Serial interface cleanup
+6. LCD backlight control
+7. LCD Menu Navigation through Keyboard
+8. Pir Sensor
+9. Sound Detector
+10. Create Final Application Webpage 
+11. Arduino Scheduler integration/Task measurement
+12. Online data acq service ex: Xively, Display values
+13. Value Filtering
+
+Source Code related:
+10. Filename rename, concatenation order
+11. Configuration file/tab
+12. Project Configuration with #ifdef
+
+Future possibilities:
+Arduino features discover
+Alarm functionality
+GSM Shield
+Radio receiver/transmitter
+ESP8829 Wifi for sensors
+File Upload through web
+File Download through web
+SDCARD bootloader
+Light sensor
+Gas Sensor
+Smoke sensor
+Backup Battery
+Software to download the log file, interpret, etc..
+
 
 
 

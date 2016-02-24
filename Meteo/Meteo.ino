@@ -83,9 +83,22 @@
 #define PIN_SPI_CS 53 //default chip select
 #define PIN_SD_CS 4 //SD card chip select
 
+/*Configuration*/
+#define PREFIX ""
+#define PORT 89
+
 /***********************************************************************************************************/
 /*** Global Variable definition  ***/
 /***********************************************************************************************************/
+/*Configuration*/
+byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
+
+const int timeZone = 2;     // Eastern European Time
+// NTP Servers:
+IPAddress timeServer(132, 163, 4, 101); // time-a.timefreq.bldrdoc.gov
+// IPAddress timeServer(132, 163, 4, 102); // time-b.timefreq.bldrdoc.gov
+// IPAddress timeServer(132, 163, 4, 103); // time-c.timefreq.bldrdoc.gov
+unsigned int localPort = 8888;  // local port to listen for UDP packets
 
 /** Data Pool **/
 /* Used for data exchange between webserver and sensors */
@@ -109,6 +122,9 @@ struct{
   byte DS1302_Second;
   byte DS1302_DayOfWeek;
   char* DS1302_SyncStatus;
+  byte RGB_Red;
+  byte RGB_Green;
+  byte RGB_Blue;
 }DataPool;
 
 struct{
@@ -135,11 +151,6 @@ struct{
   int web;
 }RunTime;
 
-int red = 0;            //integer for red darkness
-int blue = 0;           //integer for blue darkness
-int green = 0;          //integer for green darkness
-
-
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
@@ -147,7 +158,6 @@ void setup()
 {
   init_UART();  
   init_SD();
-  //init_ETH();
   init_Webduino();
   init_DHT11();
   init_BMP085(); 

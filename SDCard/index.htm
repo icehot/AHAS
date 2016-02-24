@@ -3,6 +3,7 @@
 <title>Arduino Meteo Station</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
 
 <style>
@@ -135,15 +136,15 @@ function r4Off() {$.post('/input', {r4: 1} );}
   <p> </p>		
   <a href="#">Home</a>		
   <a href="#">Values</a>		
-  <a href="#">Settings</a>		
+  <a href="/settings.htm">Settings</a>		
 </nav>
 
-<section id="main" style="margin-left:0%"> <!-- Start main -->
+<section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
 <br>
 
 <div class="w3-row-padding">
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
       <h1>DS1302 Time</h1>
 	  <p>
 	  Sync Status: <span id="ds1302_sync">N/A</span><br/>
@@ -154,7 +155,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
   </div>
 
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
       <h1>DHT11</h1>
       <p>
 	  Temperature: <span id="dht11_temp">N/A</span><br/>
@@ -165,7 +166,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
   </div>
 
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
       <h1>BMP085</h1>
       <p>
 	  Temperature: <span id="bmp085_temp">N/A</span><br/>
@@ -175,7 +176,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
   </div>
 
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
       <h1>MS5611</h1>
       <p>
 	  Temperature:       <span id="ms5611_temp">N/A</span><br/>
@@ -186,11 +187,10 @@ function r4Off() {$.post('/input', {r4: 1} );}
     </div>
   </div>
 </div>
-<br>
 
 <div class="w3-row-padding">
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
 		<h1>Analog Pins</h1>
 		<p>
 		Analog 0: <span id="a0">N/A</span> <br/>
@@ -203,7 +203,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
   </div>
 
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
 		<form action='input' method='post'>
 			<h1>Relays</h1>
 			<p>
@@ -221,7 +221,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
   </div>
 
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
       <h1>Load</h1>
 	  <p>
 	  Acquisition:       <span id="load_acq">N/A</span><br/>
@@ -232,7 +232,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
   </div>
   
   <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
 	<form action='input' method='post'>
       <h1>RGB</h1>
 	  
@@ -249,12 +249,11 @@ function r4Off() {$.post('/input', {r4: 1} );}
 	  </p>
 	  </form>
     </div>
-  </div>
+  </div>  
 </div>
-
 </section> <!-- End main -->
 
-<footer class="w3-container w3-center w3-bottom w3-padding-0 w3-small w3-theme-dark">
+<footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">
   <p> Copyright &#169; icehot </p>
 </footer>
 

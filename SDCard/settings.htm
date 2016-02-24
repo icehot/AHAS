@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<title>Arduino Meteo Station</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
+
+<style>
+
+.w3-theme {color:#000 !important;background-color:#f0e68c !important}
+.w3-theme-light {color:#000 !important;background-color:#ffffd7 !important}
+.w3-theme-dark {color:#000 !important;background-color:#a0963c !important}
+.w3-text-theme {color:#b4aa50 !important}
+.w3-theme-l5 {color:#000 !important;background-color:#ffffd7 !important}
+.w3-theme-l4 {color:#000 !important;background-color:#ffffc8 !important}
+.w3-theme-l3 {color:#000 !important;background-color:#ffffb9 !important}
+.w3-theme-l2 {color:#000 !important;background-color:#ffffaa !important}
+.w3-theme-l1 {color:#000 !important;background-color:#fff59b !important}
+.w3-theme-d1 {color:#000 !important;background-color:#dcd278 !important}
+.w3-theme-d2 {color:#000 !important;background-color:#c8be64 !important}
+.w3-theme-d3 {color:#000 !important;background-color:#b4aa50 !important}
+.w3-theme-d4 {color:#000 !important;background-color:#a0963c !important}
+.w3-theme-action {color:#fff !important;background-color:#a0963c !important}
+
+/* Set the sidenav to full-width when the screen is less than 600 pixels wide */
+@media (max-width: 500px) {
+  .w3-sidenav {
+      width: 100% !important;
+  }
+}
+</style>
+
+<script>
+function w3_open() {
+  document.getElementById("main").style.marginLeft = "17%"
+  document.getElementsByClassName("w3-sidenav")[0].style.width ="17%";
+  document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
+  //document.getElementsByClassName("w3-opennav")[0].style.display = 'none';
+}
+function w3_close() {
+  document.getElementById("main").style.marginLeft = "0%";
+  document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
+  document.getElementsByClassName("w3-opennav")[0].style.display = "inline-block";
+}
+
+</script>
+
+
+<body class="w3-theme-light">
+
+<header class="w3-container w3-theme-dark w3-padding">
+      <span class="w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1" onclick="w3_open()""><b>Menu</b></span>
+	  <div class="w3-center w3-xlarge w3-padding">
+      <span><b>Arduino Meteo Station</b></span>
+	  </div>
+</header>
+
+<nav class="w3-sidenav w3-round-xlarge w3-theme-d1" style="width:17%; display:none; marginLeft:0%">
+  <a href="javascript:void(0)" 
+  onclick="w3_close()"
+  class="w3-closenav w3-right w3-padding-right"><b>X</b></a>
+  <p> </p>		
+  <a href="#">Home</a>		
+  <a href="#">Values</a>		
+  <a href="/settings.htm">Settings</a>		
+</nav>
+
+<section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
+<div>
+<form action="http://192.168.0.104:89/setupNet.html" method="get">
+	<table>
+	<tbody>
+		<tr>
+			<td>MAC address: </td>
+			<td>
+				<input type="text" name="0" value="BE" maxlength="2" size="2">
+				<input type="text" name="1" value="D0" maxlength="2" size="2">
+				<input type="text" name="2" value="BE" maxlength="2" size="2">
+				<input type="text" name="3" value="D0" maxlength="2" size="2">
+				<input type="text" name="4" value="BE" maxlength="2" size="2">
+				<input type="text" name="5" value="D0" maxlength="2" size="2">
+			</td>
+		</tr>
+		<tr>
+			<td>IP address: </td>
+			<td>
+				<input type="text" name="6" value="192" maxlength="3" size="3">
+				<input type="text" name="7" value="168" maxlength="3" size="3">
+				<input type="text" name="8" value="0" maxlength="3" size="3">
+				<input type="text" name="9" value="102" maxlength="3" size="3">
+			</td>
+		</tr>
+		<tr>
+		<td>Subnet: </td>
+			<td>
+				<input type="text" name="10" value="255" maxlength="3" size="3">
+				<input type="text" name="11" value="255" maxlength="3" size="3">
+				<input type="text" name="12" value="255" maxlength="3" size="3">
+				<input type="text" name="13" value="0" maxlength="3" size="3">
+			</td>
+		</tr>
+		<tr>
+			<td>GW address: </td>
+			<td>
+				<input type="text" name="14" value="192" maxlength="3" size="3">
+				<input type="text" name="15" value="168" maxlength="3" size="3">
+				<input type="text" name="16" value="0" maxlength="3" size="3">
+				<input type="text" name="17" value="2" maxlength="3" size="3">
+			</td>
+		</tr>
+		<tr>
+			<td>DNS server: </td>
+				<td><input type="text" name="18" value="192" maxlength="3" size="3">
+				<input type="text" name="19" value="168" maxlength="3" size="3">
+				<input type="text" name="20" value="0" maxlength="3" size="3">
+				<input type="text" name="21" value="2" maxlength="3" size="3">
+			</td>
+		</tr>
+		<tr>
+			<td>Webserver port (1-65535): </td>
+			<td>
+				<input type="text" name="22" value="89">
+			</td>
+		</tr>
+		<tr>
+			<td>Use DHCP: </td>
+			<td>
+				<input type="radio" name="23" value="0">Off<input type="radio" name="23" value="1" checked="">On
+			</td>
+		</tr>
+		<tr>
+			<td>Renew interval for DHCP in minutes (1 - 255): </td>
+			<td>
+				<input type="text" name="24" value="60" maxlength="3" size="3">
+			</td>
+		</tr>
+		<tr>
+			<td>DHCP renew return code (sec)</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>DHCP last renew timestamp (sec)</td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td>Uptime: </td>
+			<td>0:0:0:14</td>
+		</tr>
+		<tr>
+			<td>RAM (byte): 6853 free of 8396</td>
+		</tr>
+	</tbody>
+	</table>
+		<input type="submit" value="Set config">
+</form>
+</div>
+</section> <!-- End main -->
+
+<footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">
+  <p> Copyright &#169; icehot </p>
+</footer>
+
+</body>
+</html> 

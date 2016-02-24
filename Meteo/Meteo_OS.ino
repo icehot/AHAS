@@ -7,7 +7,6 @@ void init_OS()
 
 void OS_taskIdle()
 {
-  //webserver();
   WebduinoServerLoop();
 }
 
@@ -34,9 +33,9 @@ void OS_task1s()
     TimeStamps.ds1302 = millis();
     calcRunTime();
 
-    analogWrite(PIN_RGBLED_R, red);
-    analogWrite(PIN_RGBLED_G, green);
-    analogWrite(PIN_RGBLED_B, blue);
+    analogWrite(PIN_RGBLED_R, DataPool.RGB_Red);
+    analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);
+    analogWrite(PIN_RGBLED_B, DataPool.RGB_Blue);
   }
 }
 

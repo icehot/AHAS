@@ -12,26 +12,6 @@ void init_SD()
     Serial.println("initialization done.");
 }
 
-
-char* DHT11_Status;
-  int DHT11_Temperature;
-  int DHT11_Humidity;
-  int DHT11_DewPoint;
-  int BMP085_Temperature;
-  long BMP085_Pressure;
-  double MS5611_Temperature;
-  long MS5611_Pressure;
-  float MS5611_AbsAltitude;
-  float MS5611_RelAltitude;
-  byte DS1302_Year;
-  byte DS1302_Month;
-  byte DS1302_Day;
-  byte DS1302_Hour;
-  byte DS1302_Minute;
-  byte DS1302_Second; 
-  byte DS1302_DayOfWeek;
-  char* DS1302_SyncStatus;
-
 void saveDataToLog()
 {
   // make a string for assembling the data to log:

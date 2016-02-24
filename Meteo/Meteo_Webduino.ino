@@ -1,15 +1,11 @@
 /* This creates an instance of the webserver.  By specifying a prefix
  * of "", all pages will be at the root of the server. */
-#define PREFIX ""
 
 #define JSON_BEGIN() server << "{ ";
 #define JSON_ADD(name,value)  server << "\"" << (name) << "\": " << (value) << ", ";
 #define JSON_END() server << " \"end\": " << 0 << " }";
 
-
-byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
-
-WebServer webserver(PREFIX, 89);
+WebServer webserver(PREFIX, PORT);
 
 // no-cost stream operator as described at 
 // http://sundial.org/arduino/?page_id=119
@@ -20,7 +16,7 @@ inline Print &operator <<(Print &obj, T arg)
 /* commands are functions that get called by the webserver framework
  * they can read any posted data from client, and they output to the
  * server to send data back to the web browser. */
-void helloCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
+void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 {
   /* this line sends the standard "we're all OK" headers back to the
      browser */
@@ -51,6 +47,59 @@ void helloCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     {/* if the file isn't open, pop up an error */
       Serial.println("Error opening index.htm");
     }
+  }
+}
+
+void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
+{
+  /* The credentials have to be concatenated with a colon like
+   * username:password
+   * and encoded using Base64 - this should be done outside of your Arduino
+   * to be easy on your resources
+   *
+   * in other words: "dXNlcjp1c2Vy" is the Base64 representation of "user:user"
+   *
+   * if you need to change the username/password dynamically please search
+   * the web for a Base64 library */
+   
+  /* if the user has requested this page using the following credentials
+   * username = admin
+   * password = admin
+   * display a page saying "Hello Admin"
+   *
+   * in other words: "YWRtaW46YWRtaW4=" is the Base64 representation of "admin:admin" */
+  if (server.checkCredentials("YWRtaW46YWRtaW4="))
+  {
+      server.httpSuccess();
+      if (type != WebServer::HEAD)
+      {
+         /* this defines some HTML text in read-only memory aka PROGMEM.
+         * This is needed to avoid having the string copied to our limited
+         * amount of RAM. */
+    
+         // open the file. note that only one file can be open at a time,
+        // so you have to close this one before opening another.
+        File dataFile = SD.open("settings.htm");
+      
+        // if the file is available, write to it:
+        if (dataFile) 
+        {
+          while (dataFile.available()) 
+          {
+            server << ((char)(dataFile.read()));
+          }
+          dataFile.close();
+        }
+        else 
+        {/* if the file isn't open, pop up an error */
+          Serial.println("Error opening settings.htm");
+        }
+      }
+  }
+  else
+  {
+    /* send a 401 error back causing the web browser to prompt the user for credentials */
+    server.httpUnauthorized();
   }
 }
 
@@ -170,15 +219,15 @@ void rgbCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   /* use the STRing TO Unsigned Long function to turn the string
    * version of the color strength value into our integer red/green/blue
    * variable */
-        red = strtoul(value, NULL, 10);
+        DataPool.RGB_Red = strtoul(value, NULL, 10);
       }
       if (strcmp(name, "green") == 0)
       {
-        green = strtoul(value, NULL, 10);
+        DataPool.RGB_Green = strtoul(value, NULL, 10);
       }
       if (strcmp(name, "blue") == 0)
       {
-        blue = strtoul(value, NULL, 10);
+        DataPool.RGB_Blue = strtoul(value, NULL, 10);
       }
     } while (repeat);
     
@@ -191,39 +240,6 @@ void rgbCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 
   /* for a GET or HEAD, send the standard "it's all OK headers" */
   server.httpSuccess();
-
-  /* we don't output the body for a HEAD request */
-  if (type == WebServer::GET)
-  {
-    /* store the HTML in program memory using the P macro */
-    P(message) = 
-"<!DOCTYPE html><html><head>"
-  "<title>Webduino AJAX RGB Example</title>"
-  "<link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/base/jquery-ui.css' rel=stylesheet />"
-  "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>"
-  "<script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js'></script>"
-  "<style> body { background: black; } #red, #green, #blue { margin: 10px; } #red { background: #f00; } #green { background: #0f0; } #blue { background: #00f; } </style>"
-  "<script>"
-
-// change color on mouse up, not while sliding (causes much less traffic to the Arduino):
-    "function changeRGB(event, ui) { var id = $(this).attr('id'); if (id == 'red') $.post('/rgb', { red: ui.value } ); if (id == 'green') $.post('/rgb', { green: ui.value } ); if (id == 'blue') $.post('/rgb', { blue: ui.value } ); } "
-    "$(document).ready(function(){ $('#red, #green, #blue').slider({min: 0, max:255, change:changeRGB}); });"
-
-// change color on slide and mouse up (causes more traffic to the Arduino):
-//    "function changeRGB(event, ui) { jQuery.ajaxSetup({timeout: 110}); /*not to DDoS the Arduino, you might have to change this to some threshold value that fits your setup*/ var id = $(this).attr('id'); if (id == 'red') $.post('/rgb', { red: ui.value } ); if (id == 'green') $.post('/rgb', { green: ui.value } ); if (id == 'blue') $.post('/rgb', { blue: ui.value } ); } "
-//    "$(document).ready(function(){ $('#red, #green, #blue').slider({min: 0, max:255, change:changeRGB, slide:changeRGB}); });"
-
-  "</script>"
-"</head>"
-"<body style='font-size:62.5%;'>"
-  "<div id=red></div>"
-  "<div id=green></div>"
-  "<div id=blue></div>"
-"</body>"
-"</html>";
-
-    server.printP(message);
-  }
 }
 
 void init_Webduino()
@@ -232,16 +248,16 @@ void init_Webduino()
    Ethernet.begin(mac); 
    /* setup our default command that will be run when the user accesses
    * the root page on the server */
-  webserver.setDefaultCommand(&helloCmd);
+  webserver.setDefaultCommand(&indexCmd);
 
   /* run the same command if you try to load /index.html, a common
    * default page name */
-  webserver.addCommand("index.html", &helloCmd);
+  webserver.addCommand("index.html", &indexCmd);
+  webserver.addCommand("settings.htm", &settingsCmd);
   webserver.addCommand("input", &inputCmd);
   webserver.addCommand("json", &jsonCmd);
   webserver.addCommand("rgb",&rgbCmd);
   
-
   /* start the webserver */
   webserver.begin();
 }
