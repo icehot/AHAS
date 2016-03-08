@@ -30,8 +30,13 @@
 #include <SPI.h>
 #include <Ethernet.h>
 #include <EthernetUdp.h>
-#include <Time.h> 
 #include <SD.h>
+
+#include <Time.h> 
+
+#include "avr/pgmspace.h" 
+#include <EEPROM.h>
+#include "EEPROMAnything.h"
 
 /** Webduino **/
 #include <WebServer.h>
@@ -83,9 +88,22 @@
 #define PIN_SPI_CS 53 //default chip select
 #define PIN_SD_CS 4 //SD card chip select
 
+#define PIN_RESET 40  //Connect a button to this PIN. If the button is hold, an the device is turned on the default ethernet settings are restored.
+
 /*Configuration*/
 #define PREFIX ""
 #define PORT 89
+
+
+#define DEBUG
+
+#define WEBDUINO_FAVICON_DATA ""
+#define USE_SYSTEM_LIBRARY //comment out if you want to save some space (about 1 Byte). You wouldn't see uptime and free RAM if it's commented out.
+
+#ifdef USE_SYSTEM_LIBRARY
+#include "system.h"
+System sys;
+#endif
 
 /***********************************************************************************************************/
 /*** Global Variable definition  ***/
@@ -151,13 +169,30 @@ struct{
   int web;
 }RunTime;
 
+/* structure which is stored in the eeprom. 
+* Look at "EEPROMAnything.h" for the functions storing and reading the struct
+*/
+struct config_t
+{
+    byte config_set;
+    byte use_dhcp;
+    byte dhcp_refresh_minutes;
+    byte mac[6];
+    byte ip[4];
+    byte gateway[4];
+    byte subnet[4];
+    byte dns_server[4];
+    unsigned int webserverPort;
+} eeprom_config;
+
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
 void setup() 
 {
-  init_UART();  
+  init_UART();
   init_SD();
+  init_NetSetup();
   init_Webduino();
   init_DHT11();
   init_BMP085(); 

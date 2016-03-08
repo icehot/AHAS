@@ -5,7 +5,8 @@
 #define JSON_ADD(name,value)  server << "\"" << (name) << "\": " << (value) << ", ";
 #define JSON_END() server << " \"end\": " << 0 << " }";
 
-WebServer webserver(PREFIX, PORT);
+/* This creates an pointer to instance of the webserver. */
+WebServer * webserver;
 
 // no-cost stream operator as described at 
 // http://sundial.org/arduino/?page_id=119
@@ -50,8 +51,17 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   }
 }
 
-void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
+#define NAMELEN 5
+#define VALUELEN 7
+
+void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
+  URLPARAM_RESULT rc;
+  char name[NAMELEN];
+  char value[VALUELEN];
+  boolean params_present = false;
+  byte param_number = 0;
+  
   /* The credentials have to be concatenated with a colon like
    * username:password
    * and encoded using Base64 - this should be done outside of your Arduino
@@ -71,8 +81,82 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *, bool
   if (server.checkCredentials("YWRtaW46YWRtaW4="))
   {
       server.httpSuccess();
-      if (type != WebServer::HEAD)
+
+      /* if we're handling a GET or POST, we can output our data here.
+      For a HEAD request, we just stop after outputting headers. */
+      if (type == WebServer::HEAD)
+          return;
+      
+      if (type == WebServer::GET)
       {
+
+         // check for parameters
+        if (strlen(url_tail)) 
+        {
+          while (strlen(url_tail)) 
+          {
+            rc = server.nextURLparam(&url_tail, name, NAMELEN, value, VALUELEN);
+            if (rc != URLPARAM_EOS) 
+            {
+              params_present=true;
+              // debug output for parameters
+              #ifdef DEBUG
+              Serial.print(name);
+              server.print(name);
+              Serial.print(" - "); 
+              server.print(" - ");
+              Serial.println(value);
+              server.print(value);
+              server.print("<br>");
+              #endif
+              
+              
+              param_number = atoi(name);
+       
+              // read MAC address
+              if (param_number >=0 && param_number <=5) {
+                eeprom_config.mac[param_number]=strtol(value,NULL,16);
+              }
+          
+              // read IP address
+              if (param_number >=6 && param_number <=9) {
+                eeprom_config.ip[param_number-6]=atoi(value);
+              }
+          
+              // read SUBNET
+              if (param_number >=10 && param_number <=13) {
+                eeprom_config.subnet[param_number-10]=atoi(value);
+              }
+          
+              // read GATEWAY
+              if (param_number >=14 && param_number <=17) {
+                eeprom_config.gateway[param_number-14]=atoi(value);
+              }
+          
+              // read DNS-SERVER
+              if (param_number >=18 && param_number <=21) {
+                eeprom_config.dns_server[param_number-18]=atoi(value);
+              }
+              
+              // read WEBServer port
+              if (param_number == 22) {
+                eeprom_config.webserverPort=atoi(value);
+              }
+              
+              // read DHCP ON/OFF
+              if (param_number == 23) {
+                eeprom_config.use_dhcp=atoi(value);
+              }
+          
+              // read DHCP renew interval
+              if (param_number == 24) {
+                eeprom_config.dhcp_refresh_minutes=atoi(value);
+              } 
+            }
+          }
+          EEPROM_writeAnything(0, eeprom_config);
+        }
+        
          /* this defines some HTML text in read-only memory aka PROGMEM.
          * This is needed to avoid having the string copied to our limited
          * amount of RAM. */
@@ -81,7 +165,7 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *, bool
         // so you have to close this one before opening another.
         File dataFile = SD.open("settings.htm");
       
-        // if the file is available, write to it:
+        // if the file is available, read from it:
         if (dataFile) 
         {
           while (dataFile.available()) 
@@ -95,6 +179,11 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *, bool
           Serial.println("Error opening settings.htm");
         }
       }
+
+      if (type == WebServer::POST)
+      {
+        
+      }  
   }
   else
   {
@@ -242,32 +331,54 @@ void rgbCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   server.httpSuccess();
 }
 
+/**
+* errorHTML() function
+* This function is called whenever a non extisting page is called.
+* It sends a HTTP 400 Bad Request header and the same as text.
+*/
+void errorHTML(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+  /* this line sends the standard "HTTP 400 Bad Request" headers back to the
+     browser */
+  server.httpFail();
+
+  /* if we're handling a GET or POST, we can output our data here.
+     For a HEAD request, we just stop after outputting headers. */
+  if (type == WebServer::HEAD)
+    return;
+    
+  server.printP("HTTP 400 - BAD REQUEST");
+  
+  server.printP("</body></html>");
+}
+
 void init_Webduino()
 {
-  //Ethernet connection and server initialization
-   Ethernet.begin(mac); 
+   webserver = new WebServer(PREFIX, eeprom_config.webserverPort);
+   
    /* setup our default command that will be run when the user accesses
    * the root page on the server */
-  webserver.setDefaultCommand(&indexCmd);
+  webserver->setDefaultCommand(&indexCmd);
+  webserver->setFailureCommand(&errorHTML);
 
   /* run the same command if you try to load /index.html, a common
    * default page name */
-  webserver.addCommand("index.html", &indexCmd);
-  webserver.addCommand("settings.htm", &settingsCmd);
-  webserver.addCommand("input", &inputCmd);
-  webserver.addCommand("json", &jsonCmd);
-  webserver.addCommand("rgb",&rgbCmd);
+  webserver->addCommand("index.html", &indexCmd);
+  webserver->addCommand("settings.htm", &settingsCmd);
+  webserver->addCommand("input", &inputCmd);
+  webserver->addCommand("json", &jsonCmd);
+  webserver->addCommand("rgb",&rgbCmd);
   
   /* start the webserver */
-  webserver.begin();
+  webserver->begin();
 }
 
 void WebduinoServerLoop()
 {
-  char buff[64];
-  int len = 64;
+  char buff[200];
+  int len = 200;
 
   /* process incoming connections one at a time forever */
-  webserver.processConnection(buff, &len);
+  webserver->processConnection(buff, &len);
 }
 

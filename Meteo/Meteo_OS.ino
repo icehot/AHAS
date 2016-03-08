@@ -7,6 +7,9 @@ void init_OS()
 
 void OS_taskIdle()
 {
+  // renew DHCP lease
+  renewDHCP(eeprom_config.dhcp_refresh_minutes);
+  
   WebduinoServerLoop();
 }
 
