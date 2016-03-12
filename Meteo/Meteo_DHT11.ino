@@ -1,6 +1,8 @@
 /** DHT11 sensor **/
 DHT11 dht11;
 
+double dewPointFast(double celsius, double humidity);
+
 void init_DHT11()
 {
   //DHT11 initialization 

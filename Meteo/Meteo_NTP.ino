@@ -1,6 +1,8 @@
 
 EthernetUDP Udp;
 
+time_t getNtpTime();
+void sendNTPpacket(IPAddress &address);
 
 void init_NTP()
 {

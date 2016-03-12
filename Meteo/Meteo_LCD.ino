@@ -15,6 +15,8 @@ byte degree[8] = {
   0b00000
 };
 
+void printDigits(int digits);
+
 void init_LCD()
 {
   lcd.begin(16, 2);

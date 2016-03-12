@@ -2,6 +2,8 @@
 MS5611 ms5611;
 double referencePressure;
 
+void checkSettings();
+
 void read_MS5611()
 {
   /** MS5611 sensor **/

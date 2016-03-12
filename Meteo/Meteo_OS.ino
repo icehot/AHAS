@@ -1,3 +1,8 @@
+
+void WebduinoServerLoop();
+void calcRunTime();
+void saveDataToLog();
+
 void init_OS()
 {
   TimeStamps.task1s = 0;

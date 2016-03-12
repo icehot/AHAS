@@ -36,7 +36,6 @@
 
 #include "avr/pgmspace.h" 
 #include <EEPROM.h>
-#include "EEPROMAnything.h"
 
 /** Webduino **/
 #include <WebServer.h>
@@ -101,7 +100,7 @@
 #define USE_SYSTEM_LIBRARY //comment out if you want to save some space (about 1 Byte). You wouldn't see uptime and free RAM if it's commented out.
 
 #ifdef USE_SYSTEM_LIBRARY
-#include "system.h"
+#include <System.h>
 System sys;
 #endif
 
@@ -184,6 +183,25 @@ struct config_t
     byte dns_server[4];
     unsigned int webserverPort;
 } eeprom_config;
+
+void init_UART();
+void init_SD();
+void init_NetSetup();
+void init_Webduino();
+void init_DHT11();
+void init_BMP085(); 
+void init_MS5611();
+void init_NTP();
+void init_DS1302();
+void init_LCD();
+void init_OS();
+void init_Relay();
+void init_RGBLED();
+void OS_loopStart();
+void OS_task1s();
+void OS_task2s();
+void OS_task1m();
+void OS_taskIdle(); 
 
 /***********************************************************************************************************/
 /*** Arduino initialization ***/

@@ -1,5 +1,7 @@
 /*Net Setup*/
 
+
+
 unsigned long last_dhcp_renew;
 byte dhcp_state;
 
@@ -23,6 +25,13 @@ byte dhcp_state;
 * - Invoke Ethernet.begin with all parameters if no dhcp is active (Ethernet.begin(mac, ip, dns_server, gateway, subnet);). 
 * - If DHCP is used invoke only with mac (Ethernet.begin(mac);) and display the ip on the serial console.
 */
+
+void read_EEPROM_Settings();
+void print_EEPROM_Settings();
+void set_EEPROM_Default();
+template <class T> int EEPROM_writeAnything(int ee, const T& value);
+template <class T> int EEPROM_readAnything(int ee, T& value);
+
 void init_NetSetup()
 {
   read_EEPROM_Settings();
