@@ -3,6 +3,7 @@
 
 #define JSON_BEGIN() server << "{ ";
 #define JSON_ADD(name,value)  server << "\"" << (name) << "\": " << (value) << ", ";
+#define JSON_ADD2(name,value)  server << "\"" << (name) << "\": " << "\"" << (value) << "\"" << ", ";
 #define JSON_END() server << " \"end\": " << 0 << " }";
 
 /* This creates an pointer to instance of the webserver. */
@@ -51,8 +52,8 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   }
 }
 
-#define NAMELEN 5
-#define VALUELEN 7
+#define NAMELEN 16
+#define VALUELEN 16
 
 void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
@@ -61,6 +62,7 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
   char value[VALUELEN];
   boolean params_present = false;
   byte param_number = 0;
+  int repeat;
   
   /* The credentials have to be concatenated with a colon like
    * username:password
@@ -90,72 +92,7 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
       if (type == WebServer::GET)
       {
 
-         // check for parameters
-        if (strlen(url_tail)) 
-        {
-          while (strlen(url_tail)) 
-          {
-            rc = server.nextURLparam(&url_tail, name, NAMELEN, value, VALUELEN);
-            if (rc != URLPARAM_EOS) 
-            {
-              params_present=true;
-              // debug output for parameters
-              #ifdef DEBUG
-              Serial.print(name);
-              server.print(name);
-              Serial.print(" - "); 
-              server.print(" - ");
-              Serial.println(value);
-              server.print(value);
-              server.print("<br>");
-              #endif
-              
-              
-              param_number = atoi(name);
-       
-              // read MAC address
-              if (param_number >=0 && param_number <=5) {
-                eeprom_config.mac[param_number]=strtol(value,NULL,16);
-              }
-          
-              // read IP address
-              if (param_number >=6 && param_number <=9) {
-                eeprom_config.ip[param_number-6]=atoi(value);
-              }
-          
-              // read SUBNET
-              if (param_number >=10 && param_number <=13) {
-                eeprom_config.subnet[param_number-10]=atoi(value);
-              }
-          
-              // read GATEWAY
-              if (param_number >=14 && param_number <=17) {
-                eeprom_config.gateway[param_number-14]=atoi(value);
-              }
-          
-              // read DNS-SERVER
-              if (param_number >=18 && param_number <=21) {
-                eeprom_config.dns_server[param_number-18]=atoi(value);
-              }
-              
-              // read WEBServer port
-              if (param_number == 22) {
-                eeprom_config.webserverPort=atoi(value);
-              }
-              
-              // read DHCP ON/OFF
-              if (param_number == 23) {
-                eeprom_config.use_dhcp=atoi(value);
-              }
-          
-              // read DHCP renew interval
-              if (param_number == 24) {
-                eeprom_config.dhcp_refresh_minutes=atoi(value);
-              } 
-            }
-          }
-          EEPROM_writeAnything(0, eeprom_config);
-        }
+//          EEPROM_writeAnything(0, eeprom_config);
         
          /* this defines some HTML text in read-only memory aka PROGMEM.
          * This is needed to avoid having the string copied to our limited
@@ -179,17 +116,135 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
           Serial.println("Error opening settings.htm");
         }
       }
-
-      if (type == WebServer::POST)
-      {
-        
-      }  
   }
   else
   {
     /* send a 401 error back causing the web browser to prompt the user for credentials */
     server.httpUnauthorized();
   }
+}
+
+void saveValuesCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+  if (type == WebServer::POST)
+  {
+    bool repeat;
+    char name[16], value[16];
+    int index;
+    do
+    {
+      repeat = server.readPOSTparam(name, 16, value, 16);
+
+      index = strtoul(name + 1, NULL, 10);
+      switch(name[0])
+      {
+        case 'm': /* mac address */
+          eeprom_config.mac[index]=strtol(value,NULL,16);
+        break;
+        
+        case 'i': /* ip address */
+          eeprom_config.ip[index]=atoi(value);
+        break;
+
+        case 's': /* subnet mask */
+          eeprom_config.subnet[index]=atoi(value);
+        break;
+
+        case 'g': /* gateway address */
+          eeprom_config.gateway[index]=atoi(value);
+        break;
+
+        case 'd': /* dns server */
+          eeprom_config.dns_server[index]=atoi(value);
+          Serial.print(name);
+          Serial.print(": ");
+          Serial.println(value);
+        break;
+
+        case 'p': /* port */
+          eeprom_config.webserverPort=atoi(value);
+        break;
+
+        case 'h': /* dhcp */
+          eeprom_config.use_dhcp=atoi(value);
+        break;
+
+        case 'r': /* dhcp renew */
+          eeprom_config.dhcp_refresh_minutes=atoi(value);
+        break;
+
+        default:
+
+        break;
+        
+      }
+      
+    } while (repeat);
+
+    server.httpSeeOther(PREFIX "/settings.htm");
+
+    return;
+  }
+
+   /* for a GET or HEAD, send the standard "it's all OK headers" */
+  server.httpSuccess();
+}
+
+void settingsJsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+  if (type == WebServer::POST)
+  {
+    server.httpFail();
+    return;
+  }
+  
+  //server.httpSuccess(false, "application/json");
+  server.httpSuccess("application/json");
+  
+  if (type == WebServer::HEAD)
+    return;
+  
+  JSON_BEGIN();
+  
+  /* Relays */
+  JSON_ADD("mac0",eeprom_config.mac[0]);
+  JSON_ADD("mac1",eeprom_config.mac[1]);
+  JSON_ADD("mac2",eeprom_config.mac[2]);
+  JSON_ADD("mac3",eeprom_config.mac[3]);
+  JSON_ADD("mac4",eeprom_config.mac[4]);
+  JSON_ADD("mac5",eeprom_config.mac[5]);
+
+  JSON_ADD("ip0",eeprom_config.ip[0]);
+  JSON_ADD("ip1",eeprom_config.ip[1]);
+  JSON_ADD("ip2",eeprom_config.ip[2]);
+  JSON_ADD("ip3",eeprom_config.ip[3]);
+
+  JSON_ADD("sub0",eeprom_config.subnet[0]);
+  JSON_ADD("sub1",eeprom_config.subnet[1]);
+  JSON_ADD("sub2",eeprom_config.subnet[2]);
+  JSON_ADD("sub3",eeprom_config.subnet[3]);
+
+  JSON_ADD("gw0",eeprom_config.gateway[0]);
+  JSON_ADD("gw1",eeprom_config.gateway[1]);
+  JSON_ADD("gw2",eeprom_config.gateway[2]);
+  JSON_ADD("gw3",eeprom_config.gateway[3]);
+
+  JSON_ADD("dns0",eeprom_config.dns_server[0]);
+  JSON_ADD("dns1",eeprom_config.dns_server[1]);
+  JSON_ADD("dns2",eeprom_config.dns_server[2]);
+  JSON_ADD("dns3",eeprom_config.dns_server[3]);
+
+  JSON_ADD("port",eeprom_config.webserverPort);
+  JSON_ADD("dhcp",eeprom_config.use_dhcp);
+  JSON_ADD("renew",eeprom_config.dhcp_refresh_minutes);
+
+  JSON_ADD("dhcp_state",dhcp_state);
+  JSON_ADD("dhcp_renew",last_dhcp_renew/1000);
+  JSON_ADD2("uptime",sys.uptime());
+  JSON_ADD("ramsize",sys.ramSize());
+  JSON_ADD("ramfree",sys.ramFree());
+  
+  JSON_END();
 }
 
 void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
@@ -251,6 +306,11 @@ void inputCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail,
     do
     {
       repeat = server.readPOSTparam(name, 16, value, 16);
+
+      if (strcmp(name,"mac1")==0)
+      {
+        
+      }
       
       if (name[0] == 'r')
       {
@@ -365,6 +425,9 @@ void init_Webduino()
    * default page name */
   webserver->addCommand("index.html", &indexCmd);
   webserver->addCommand("settings.htm", &settingsCmd);
+  webserver->addCommand("saveValues", &saveValuesCmd);
+  webserver->addCommand("settingsJSON", &settingsJsonCmd);
+  
   webserver->addCommand("input", &inputCmd);
   webserver->addCommand("json", &jsonCmd);
   webserver->addCommand("rgb",&rgbCmd);
@@ -375,8 +438,8 @@ void init_Webduino()
 
 void WebduinoServerLoop()
 {
-  char buff[200];
-  int len = 200;
+  char buff[300];
+  int len = 300;
 
   /* process incoming connections one at a time forever */
   webserver->processConnection(buff, &len);

@@ -44,10 +44,66 @@ function w3_close() {
   document.getElementsByClassName("w3-opennav")[0].style.display = "inline-block";
 }
 
+var xmlhttp = new XMLHttpRequest();
+
+function updateValues()
+{
+    xmlhttp.open("GET", "settingsJSON", true);
+    xmlhttp.send();
+}
+
+xmlhttp.onreadystatechange = function() 
+{
+    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
+    {
+        var portData = JSON.parse(xmlhttp.responseText);
+        DisplaySavedValues(portData);
+    }
+}
+
+function DisplaySavedValues(portData) 
+{
+    document.getElementById("mac0").value = (portData.mac0).toString(16);
+	document.getElementById("mac1").value = (portData.mac1).toString(16);
+	document.getElementById("mac2").value = (portData.mac2).toString(16);
+	document.getElementById("mac3").value = (portData.mac3).toString(16);
+	document.getElementById("mac4").value = (portData.mac4).toString(16);
+	document.getElementById("mac5").value = (portData.mac5).toString(16);
+	
+	document.getElementById("ip0").value = portData.ip0;
+	document.getElementById("ip1").value = portData.ip1;
+	document.getElementById("ip2").value = portData.ip2;
+	document.getElementById("ip3").value = portData.ip3;
+	
+	document.getElementById("sub0").value = portData.sub0;
+	document.getElementById("sub1").value = portData.sub1;
+	document.getElementById("sub2").value = portData.sub2;
+	document.getElementById("sub3").value = portData.sub3;
+	
+	document.getElementById("gw0").value = portData.gw0;
+	document.getElementById("gw1").value = portData.gw1;
+	document.getElementById("gw2").value = portData.gw2;
+	document.getElementById("gw3").value = portData.gw3;
+	
+	document.getElementById("dns0").value = portData.dns0;
+	document.getElementById("dns1").value = portData.dns1;
+	document.getElementById("dns2").value = portData.dns2;
+	document.getElementById("dns3").value = portData.dns3;
+	
+	document.getElementById("port").value = portData.port;
+	//document.getElementById("dhcp").value = portData.dhcp;
+	document.getElementById("renew").value = portData.renew;
+	
+	document.getElementById("dhcp_state").innerHTML = portData.dhcp_state;
+	document.getElementById("dhcp_renew").innerHTML = portData.dhcp_renew;
+	document.getElementById("uptime").innerHTML = portData.uptime;
+	document.getElementById("ramsize").innerHTML= portData.ramsize;
+	document.getElementById("ramfree").innerHTML = portData.ramfree;
+}
 </script>
 
 
-<body class="w3-theme-light">
+<body class="w3-theme-light" onload="updateValues()">
 
 <header class="w3-container w3-theme-dark w3-padding">
       <span class="w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1" onclick="w3_open()""><b>Menu</b></span>
@@ -68,94 +124,65 @@ function w3_close() {
 
 <section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
 <div>
-<form action="settings.htm" method="get">
-	<table>
-	<tbody>
-		<tr>
-			<td>MAC address: </td>
-			<td>
-				<input type="text" name="0" value="" maxlength="2" size="2">
-				<input type="text" name="1" value="" maxlength="2" size="2">
-				<input type="text" name="2" value="" maxlength="2" size="2">
-				<input type="text" name="3" value="" maxlength="2" size="2">
-				<input type="text" name="4" value="" maxlength="2" size="2">
-				<input type="text" name="5" value="" maxlength="2" size="2">
-			</td>
-		</tr>
-		<tr>
-			<td>IP address: </td>
-			<td>
-				<input type="text" name="6" value="" maxlength="3" size="3">
-				<input type="text" name="7" value="" maxlength="3" size="3">
-				<input type="text" name="8" value="" maxlength="3" size="3">
-				<input type="text" name="9" value="" maxlength="3" size="3">
-			</td>
-		</tr>
-		<tr>
-		<td>Subnet: </td>
-			<td>
-				<input type="text" name="10" value="" maxlength="3" size="3">
-				<input type="text" name="11" value="" maxlength="3" size="3">
-				<input type="text" name="12" value="" maxlength="3" size="3">
-				<input type="text" name="13" value="" maxlength="3" size="3">
-			</td>
-		</tr>
-		<tr>
-			<td>GW address: </td>
-			<td>
-				<input type="text" name="14" value="" maxlength="3" size="3">
-				<input type="text" name="15" value="" maxlength="3" size="3">
-				<input type="text" name="16" value="" maxlength="3" size="3">
-				<input type="text" name="17" value="" maxlength="3" size="3">
-			</td>
-		</tr>
-		<tr>
-			<td>DNS server: </td>
-				<td>
-				<input type="text" name="18" value="" maxlength="3" size="3">
-				<input type="text" name="19" value="" maxlength="3" size="3">
-				<input type="text" name="20" value="" maxlength="3" size="3">
-				<input type="text" name="21" value="" maxlength="3" size="3">
-			</td>
-		</tr>
-		<tr>
-			<td>Webserver port (1-65535): </td>
-			<td>
-				<input type="text" name="22" value="">
-			</td>
-		</tr>
-		<tr>
-			<td>Use DHCP: </td>
-			<td>
-				<input type="radio" name="23" value="0">Off<input type="radio" name="23" value="1" checked="">On
-			</td>
-		</tr>
-		<tr>
-			<td>Renew interval for DHCP in minutes (1 - 255): </td>
-			<td>
-				<input type="text" name="24" value="60" maxlength="3" size="3">
-			</td>
-		</tr>
-		<tr>
-			<td>DHCP renew return code (sec)</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>DHCP last renew timestamp (sec)</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>Uptime: </td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>RAM (byte): 6853 free of 8396</td>
-		</tr>
-	</tbody>
-	</table>
-		<input type="submit" value="Set config">
+<form class="w3-container" action="/saveValues" method="post">
+	<label class="w3-label ">MAC address:</label><br />
+	<input type="text" id="mac0" name="m0" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
+	<input type="text" id="mac1" name="m1" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
+	<input type="text" id="mac2" name="m2" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
+	<input type="text" id="mac3" name="m3" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
+	<input type="text" id="mac4" name="m4" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2"	required>
+	<input type="text" id="mac5" name="m5" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
+	<br />
+	<label class="w3-label ">IP address:</label><br />
+	<input type="number" id="ip0" name="i0" value="" min="0" max="255" maxlength="3" size="3" required>
+	<input type="number" id="ip1" name="i1" value="" min="0" max="255" maxlength="3" size="3" required>
+	<input type="number" id="ip2" name="i2" value="" min="0" max="255" maxlength="3" size="3" required>
+	<input type="number" id="ip3" name="i3" value="" min="0" max="255" maxlength="3" size="3" required>
+	<br />
+	<label class="w3-label ">Subnet:</label><br />
+	<input type="number" id="sub0" name="s0" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="sub1" name="s1" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="sub2" name="s2" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="sub3" name="s3" value="" min="0" max="255" maxlength="3" size="3" >
+	<br />
+	<label class="w3-label ">GW address:</label><br />
+	<input type="number" id="gw0" name="g0" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="gw1" name="g1" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="gw2" name="g2" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="gw3" name="g3" value="" min="0" max="255" maxlength="3" size="3" >
+	<br />
+	<label class="w3-label ">DNS server:</label><br />
+	<input type="number" id="dns0" name="d0" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="dns1" name="d1" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="dns2" name="d2" value="" min="0" max="255" maxlength="3" size="3" >
+	<input type="number" id="dns3" name="d3" value="" min="0" max="255" maxlength="3" size="3" >
+	<br />
+	<label class="w3-label ">Webserver port (1-65535):</label><br />
+	<input type="number" id="port" name="p0" value="" min="1" max="65535" maxlength="5" size="5" required>
+	<br />
+	<label class="w3-label ">Use DHCP: </label><br />
+	<input type="radio" id="hcp" name="h0" value="0">Off<input type="radio" id="hcp" name="h0" value="1" checked="">On
+	<br />
+	<label class="w3-label ">Renew interval for DHCP in minutes (1 - 255): </label><br />
+	<input type="number" id="renew"  name="r0" value="60" min="0" max="255" maxlength="3" size="3">
+	<br />
+	<input type="submit" value="Submit">
 </form>
-</div>
+</div>	
+
+<div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+		<h1>System status</h1>
+		<p>
+		DHCP renew return code (sec): <span id="dhcp_state">N/A</span> <br/>
+		DHCP last renew timestamp (sec): <span id="dhcp_renew">N/A</span> <br/>
+		Uptime: <span id="uptime">N/A</span> <br/>
+		RAM (byte): <span id="ramsize">N/A</span> free of <span id="ramfree">N/A</span> <br/>
+		</p>
+    </div>
+  </div>
+  <br />
+
 </section> <!-- End main -->
 
 <footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">
