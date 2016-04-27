@@ -17,21 +17,23 @@ Completed Features:
 15. JQuery RGB led module
 16. Build Up Simple Webpage for Acquisiton
 17. Web Authentication
+18. Configuration Page Web Net Setup
 
 Features to be done: 
-1. Configuration Page Web Net Setup
-2. Password Update
+1. Password Update, reset button
+2. HMTL links between pages. Arduino Home Automation
+2. Serial interface cleanup
 3. HW Initialization statuses
 4. Log management
-5. Serial interface cleanup
-6. LCD backlight control
-7. LCD Menu Navigation through Keyboard
-8. Pir Sensor
-9. Sound Detector
-10. Create Final Application Webpage 
-11. Arduino Scheduler integration/Task measurement
-12. Online data acq service ex: Xively, Display values
-13. Value Filtering
+5. Arduino Scheduler integration
+6. Task measurement
+7. LCD backlight control
+8. LCD Menu Navigation through Keyboard
+9. Pir Sensor
+10. Sound Detector
+11. Value Filtering
+12. Create Final Application Webpage
+13. Online data acq service ex: Xively, Display values
 
 Source Code related:
 10. Filename rename, concatenation order
@@ -51,7 +53,7 @@ Light sensor
 Gas Sensor
 Smoke sensor
 Backup Battery
-Software to download the log file, interpret, etc..
+Software to download the displa/log file, interpret, etc..
 
 
 

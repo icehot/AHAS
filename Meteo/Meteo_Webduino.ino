@@ -52,18 +52,45 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   }
 }
 
-#define NAMELEN 16
-#define VALUELEN 16
+void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+   if (server.checkCredentials("YWRtaW46YWRtaW4="))
+  {
+      if (type == WebServer::POST)
+      {
+        bool repeat;
+        char name[16], value[16];
+        int index;
+        do
+        {
+          repeat = server.readPOSTparam(name, 16, value, 16);
+
+          if (strcmp(name,"pswd")==0)
+          {
+            Serial.print("New Password:");
+            Serial.println(value);
+          }
+    
+        } while (repeat);
+    
+        //EEPROM_writeAnything(0, eeprom_config);
+        
+        server.httpSeeOther(PREFIX "/settings.htm");
+    
+        return;
+      }
+      
+      server.httpSuccess();
+
+      /* if we're handling a GET or POST, we can output our data here.
+      For a HEAD request, we just stop after outputting headers. */
+      if (type == WebServer::HEAD)
+          return;
+  }
+}
 
 void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
-  URLPARAM_RESULT rc;
-  char name[NAMELEN];
-  char value[VALUELEN];
-  boolean params_present = false;
-  byte param_number = 0;
-  int repeat;
-  
   /* The credentials have to be concatenated with a colon like
    * username:password
    * and encoded using Base64 - this should be done outside of your Arduino
@@ -82,6 +109,63 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
    * in other words: "YWRtaW46YWRtaW4=" is the Base64 representation of "admin:admin" */
   if (server.checkCredentials("YWRtaW46YWRtaW4="))
   {
+      if (type == WebServer::POST)
+      {
+        bool repeat;
+        char name[16], value[16];
+        int index;
+        do
+        {
+          repeat = server.readPOSTparam(name, 16, value, 16);
+    
+          index = strtoul(name + 1, NULL, 10);
+          switch(name[0])
+          {
+            case 'm': /* mac address */
+              eeprom_config.mac[index]=strtol(value,NULL,16);
+            break;
+            
+            case 'i': /* ip address */
+              eeprom_config.ip[index]=atoi(value);
+            break;
+    
+            case 's': /* subnet mask */
+              eeprom_config.subnet[index]=atoi(value);
+            break;
+    
+            case 'g': /* gateway address */
+              eeprom_config.gateway[index]=atoi(value);
+            break;
+    
+            case 'd': /* dns server */
+              eeprom_config.dns_server[index]=atoi(value);
+            break;
+    
+            case 'p': /* port */
+              eeprom_config.webserverPort=atoi(value);
+            break;
+    
+            case 'h': /* dhcp */
+              eeprom_config.use_dhcp=atoi(value);
+            break;
+    
+            case 'r': /* dhcp renew */
+              eeprom_config.dhcp_refresh_minutes=atoi(value);
+            break;
+    
+            default:
+            break;
+          }
+          
+        } while (repeat);
+    
+        EEPROM_writeAnything(0, eeprom_config);
+        
+        server.httpSeeOther(PREFIX "/settings.htm");
+    
+        return;
+      }
+      
       server.httpSuccess();
 
       /* if we're handling a GET or POST, we can output our data here.
@@ -91,13 +175,6 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
       
       if (type == WebServer::GET)
       {
-
-//          EEPROM_writeAnything(0, eeprom_config);
-        
-         /* this defines some HTML text in read-only memory aka PROGMEM.
-         * This is needed to avoid having the string copied to our limited
-         * amount of RAM. */
-    
          // open the file. note that only one file can be open at a time,
         // so you have to close this one before opening another.
         File dataFile = SD.open("settings.htm");
@@ -122,72 +199,6 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
     /* send a 401 error back causing the web browser to prompt the user for credentials */
     server.httpUnauthorized();
   }
-}
-
-void saveValuesCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
-{
-  if (type == WebServer::POST)
-  {
-    bool repeat;
-    char name[16], value[16];
-    int index;
-    do
-    {
-      repeat = server.readPOSTparam(name, 16, value, 16);
-
-      index = strtoul(name + 1, NULL, 10);
-      switch(name[0])
-      {
-        case 'm': /* mac address */
-          eeprom_config.mac[index]=strtol(value,NULL,16);
-        break;
-        
-        case 'i': /* ip address */
-          eeprom_config.ip[index]=atoi(value);
-        break;
-
-        case 's': /* subnet mask */
-          eeprom_config.subnet[index]=atoi(value);
-        break;
-
-        case 'g': /* gateway address */
-          eeprom_config.gateway[index]=atoi(value);
-        break;
-
-        case 'd': /* dns server */
-          eeprom_config.dns_server[index]=atoi(value);
-          Serial.print(name);
-          Serial.print(": ");
-          Serial.println(value);
-        break;
-
-        case 'p': /* port */
-          eeprom_config.webserverPort=atoi(value);
-        break;
-
-        case 'h': /* dhcp */
-          eeprom_config.use_dhcp=atoi(value);
-        break;
-
-        case 'r': /* dhcp renew */
-          eeprom_config.dhcp_refresh_minutes=atoi(value);
-        break;
-
-        default:
-
-        break;
-        
-      }
-      
-    } while (repeat);
-
-    server.httpSeeOther(PREFIX "/settings.htm");
-
-    return;
-  }
-
-   /* for a GET or HEAD, send the standard "it's all OK headers" */
-  server.httpSuccess();
 }
 
 void settingsJsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
@@ -344,6 +355,9 @@ void inputCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail,
 
     server.httpSeeOther(PREFIX "/");
   }
+
+  /* for a GET or HEAD, send the standard "it's all OK headers" */
+  server.httpSuccess();
 }
 
 void rgbCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
@@ -425,8 +439,8 @@ void init_Webduino()
    * default page name */
   webserver->addCommand("index.html", &indexCmd);
   webserver->addCommand("settings.htm", &settingsCmd);
-  webserver->addCommand("saveValues", &saveValuesCmd);
   webserver->addCommand("settingsJSON", &settingsJsonCmd);
+  webserver->addCommand("pswdChange", &pswdChangeCmd);
   
   webserver->addCommand("input", &inputCmd);
   webserver->addCommand("json", &jsonCmd);
