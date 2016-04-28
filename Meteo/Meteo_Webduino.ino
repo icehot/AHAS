@@ -54,27 +54,30 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 
 void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
-   if (server.checkCredentials("YWRtaW46YWRtaW4="))
+ char credentialsEE[30];
+ EEPROM_readAnything(EEPROM_PSWD_ADDRESS, credentialsEE);
+  
+  if (server.checkCredentials(credentialsEE))
   {
       if (type == WebServer::POST)
       {
         bool repeat;
-        char name[20], value[20];
+        char name[16], value[30], temp[30];
         int index;
         do
         {
-          repeat = server.readPOSTparam(name, 20, value, 20);
+          repeat = server.readPOSTparam(name, 16, value, 30);
 
           if (strcmp(name,"pswd")==0)
           {
-            Serial.print("New Password:");
-            Serial.println(value);
             EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, value);
+
+            Serial.print("New Password saved to EEPROM:");
+            EEPROM_readAnything(EEPROM_PSWD_ADDRESS, temp);
+            Serial.println(temp);
           }
     
         } while (repeat);
-    
- 
         
         server.httpSeeOther(PREFIX "/settings.htm");
     
@@ -108,7 +111,11 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
    * display a page saying "Hello Admin"
    *
    * in other words: "YWRtaW46YWRtaW4=" is the Base64 representation of "admin:admin" */
-  if (server.checkCredentials("YWRtaW46YWRtaW4="))
+
+    char credentialsEE[30];
+    EEPROM_readAnything(EEPROM_PSWD_ADDRESS, credentialsEE);
+  
+  if (server.checkCredentials(credentialsEE))
   {
       if (type == WebServer::POST)
       {

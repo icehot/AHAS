@@ -191,8 +191,6 @@ struct config_t
 #define EEPROM_PSWD_ADDRESS EEPROM_CONFIG_ADDRESS + EEPROM_CONFIG_SIZE
 #define EEPROM_PSWD_SIZE 20
 
-
- 
 void init_UART();
 void init_SD();
 void init_NetSetup();
@@ -212,11 +210,16 @@ void OS_task2s();
 void OS_task1m();
 void OS_taskIdle(); 
 
+template <class T> int EEPROM_writeAnything(int ee, const T& value);
+template <class T> int EEPROM_readAnything(int ee, T& value);
+
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
 void setup() 
 {
+  char credentialsEE[20];
+  char admin[20]={'Y','W','R','t','a','W','4','6','Y','W','R','t','a','W','4','=','\0'};
   init_UART();
   init_SD();
   init_NetSetup();
@@ -230,6 +233,12 @@ void setup()
   init_OS();
   init_Relay();
   init_RGBLED();
+
+  //EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, admin);//admin:admin
+  EEPROM_readAnything(EEPROM_PSWD_ADDRESS, credentialsEE);
+  Serial.println("Password EEPROM:");
+  Serial.println(credentialsEE);
+  
 }
 
 /***********************************************************************************************************/
