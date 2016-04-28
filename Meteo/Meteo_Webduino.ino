@@ -59,21 +59,22 @@ void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_
       if (type == WebServer::POST)
       {
         bool repeat;
-        char name[16], value[16];
+        char name[20], value[20];
         int index;
         do
         {
-          repeat = server.readPOSTparam(name, 16, value, 16);
+          repeat = server.readPOSTparam(name, 20, value, 20);
 
           if (strcmp(name,"pswd")==0)
           {
             Serial.print("New Password:");
             Serial.println(value);
+            EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, value);
           }
     
         } while (repeat);
     
-        //EEPROM_writeAnything(0, eeprom_config);
+ 
         
         server.httpSeeOther(PREFIX "/settings.htm");
     

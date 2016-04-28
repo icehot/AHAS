@@ -184,6 +184,15 @@ struct config_t
     unsigned int webserverPort;
 } eeprom_config;
 
+#define EEPROM_BASE 0x00
+#define EEPROM_CONFIG_ADDRESS EEPROM_BASE
+#define EEPROM_CONFIG_SIZE sizeof(eeprom_config)
+
+#define EEPROM_PSWD_ADDRESS EEPROM_CONFIG_ADDRESS + EEPROM_CONFIG_SIZE
+#define EEPROM_PSWD_SIZE 20
+
+
+ 
 void init_UART();
 void init_SD();
 void init_NetSetup();
