@@ -1,5 +1,5 @@
 /*
- Arduino Meteo Station
+ AHAS - Arduino Home Automation System
  
  Components:
    
