@@ -1,4 +1,3 @@
-
 EthernetUDP Udp;
 
 time_t getNtpTime();

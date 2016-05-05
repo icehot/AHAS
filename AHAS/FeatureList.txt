@@ -12,16 +12,16 @@ Completed Features:
 11. LCD display integration
 12. Webserver using HTML files from SD card
 13. Updating values through JavaScript and JSON
-13. Webserver I/O handling (forms)
-14. JQuery Relay module
-15. JQuery RGB led module
-16. Build Up Simple Webpage for Acquisiton
-17. Web Authentication
-18. Configuration Page Web Net Setup
+14. Webserver I/O handling (forms)
+15. JQuery Relay module
+16. JQuery RGB led module
+17. Build Up Simple Webpage for Acquisiton
+18. Web Authentication
+19. Configuration Page Web Net Setup
+20. Password Update, reset button
 
 Features to be done: 
-1. Password Update, reset button
-2. HMTL links between pages. Arduino Home Automation
+1. HMTL links between pages. Arduino Home Automation
 2. Serial interface cleanup
 3. HW Initialization statuses
 4. Log management
@@ -54,6 +54,7 @@ Gas Sensor
 Smoke sensor
 Backup Battery
 Software to download the displa/log file, interpret, etc..
+Multi User handling
 
 
 

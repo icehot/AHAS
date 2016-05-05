@@ -71,6 +71,8 @@
 #define PIN_RELAY4 31
 
 #define PIN_DHT11 32
+#define PIN_RESET 33  //Connect a button to this PIN. If the button is hold, an the device is turned on the default ethernet settings are restored.
+#define PIN_LED   34 
 
 #define PIN_ANALOG_BUTTON a15
 #define PIN_SOUND_DETECTOR 42
@@ -87,12 +89,10 @@
 #define PIN_SPI_CS 53 //default chip select
 #define PIN_SD_CS 4 //SD card chip select
 
-#define PIN_RESET 40  //Connect a button to this PIN. If the button is hold, an the device is turned on the default ethernet settings are restored.
 
 /*Configuration*/
 #define PREFIX ""
 #define PORT 89
-
 
 #define DEBUG
 
@@ -168,6 +168,9 @@ struct{
   int web;
 }RunTime;
 
+/***********************************************************************************************************/
+/*** EEPROM Mapping ***/
+/***********************************************************************************************************/
 /* structure which is stored in the eeprom. 
 * Look at "EEPROMAnything.h" for the functions storing and reading the struct
 */
@@ -191,6 +194,10 @@ struct config_t
 #define EEPROM_PSWD_ADDRESS EEPROM_CONFIG_ADDRESS + EEPROM_CONFIG_SIZE
 #define EEPROM_PSWD_SIZE 20
 
+/***********************************************************************************************************/
+/*** Function Declarations ***/
+/***********************************************************************************************************/
+
 void init_UART();
 void init_SD();
 void init_NetSetup();
@@ -203,23 +210,19 @@ void init_DS1302();
 void init_LCD();
 void init_OS();
 void init_Relay();
-void init_RGBLED();
+void init_IO();
 void OS_loopStart();
 void OS_task1s();
 void OS_task2s();
 void OS_task1m();
 void OS_taskIdle(); 
 
-template <class T> int EEPROM_writeAnything(int ee, const T& value);
-template <class T> int EEPROM_readAnything(int ee, T& value);
-
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
 void setup() 
 {
-  char credentialsEE[20];
-  char admin[20]={'Y','W','R','t','a','W','4','6','Y','W','R','t','a','W','4','=','\0'};
+  init_IO();
   init_UART();
   init_SD();
   init_NetSetup();
@@ -232,13 +235,6 @@ void setup()
   init_LCD();
   init_OS();
   init_Relay();
-  init_RGBLED();
-
-  //EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, admin);//admin:admin
-  EEPROM_readAnything(EEPROM_PSWD_ADDRESS, credentialsEE);
-  Serial.println("Password EEPROM:");
-  Serial.println(credentialsEE);
-  
 }
 
 /***********************************************************************************************************/

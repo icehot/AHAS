@@ -1,17 +1,16 @@
 /*Net Setup*/
 
-
-
 unsigned long last_dhcp_renew;
 byte dhcp_state;
 
-
-//server.print(eeprom_config.dhcp_refresh_minutes);
-//server.print(dhcp_state);
-//server.print(last_dhcp_renew/1000);
-//server.print(sys.uptime());
-//server.print(sys.ramFree());
-//server.print(sys.ramSize());
+/***********************************************************************************************************/
+/*** Function Declarations ***/
+/***********************************************************************************************************/
+void read_EEPROM_Settings();
+void print_EEPROM_Settings();
+void set_EEPROM_Default();
+template <class T> int EEPROM_writeAnything(int ee, const T& value);
+template <class T> int EEPROM_readAnything(int ee, T& value);
 
 
 /**
@@ -26,12 +25,6 @@ byte dhcp_state;
 * - If DHCP is used invoke only with mac (Ethernet.begin(mac);) and display the ip on the serial console.
 */
 
-void read_EEPROM_Settings();
-void print_EEPROM_Settings();
-void set_EEPROM_Default();
-template <class T> int EEPROM_writeAnything(int ee, const T& value);
-template <class T> int EEPROM_readAnything(int ee, T& value);
-
 void init_NetSetup()
 {
   read_EEPROM_Settings();
@@ -39,19 +32,22 @@ void init_NetSetup()
   #ifdef DEBUG
    print_EEPROM_Settings();
   #endif
-
- // byte mac[] = { eeprom_config.mac[0], eeprom_config.mac[1], eeprom_config.mac[2], eeprom_config.mac[3], eeprom_config.mac[4], eeprom_config.mac[5] };  
-  
-  if (eeprom_config.use_dhcp != 1) {
+    
+  if (eeprom_config.use_dhcp != 1) 
+  {
     IPAddress ip(eeprom_config.ip[0], eeprom_config.ip[1], eeprom_config.ip[2], eeprom_config.ip[3]);                                               
     IPAddress gateway (eeprom_config.gateway[0],eeprom_config.gateway[1],eeprom_config.gateway[2],eeprom_config.gateway[3]);                      
     IPAddress subnet  (eeprom_config.subnet[0], eeprom_config.subnet[1], eeprom_config.subnet[2], eeprom_config.subnet[3]);  
     IPAddress dns_server  (eeprom_config.dns_server[0], eeprom_config.dns_server[1], eeprom_config.dns_server[2], eeprom_config.dns_server[3]);
     Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
-  } else {
-    if (Ethernet.begin(eeprom_config.mac) == 0) {
+  } 
+  else 
+  {
+    if (Ethernet.begin(eeprom_config.mac) == 0) 
+    {
       Serial.print("Failed to configure Ethernet using DHCP");
     }
+    Serial.print("Obtained IP Address through DHCP: ");
     Serial.println(Ethernet.localIP());
   }
 }
@@ -67,18 +63,24 @@ void init_NetSetup()
 */
 void read_EEPROM_Settings() 
 {
-  pinMode(PIN_RESET, INPUT);
   digitalWrite(PIN_RESET, HIGH);
   
   // read the current config
   EEPROM_readAnything(0, eeprom_config);
   
   // check if config is present or if reset button is pressed
-  if (eeprom_config.config_set != 1 ) //|| @Todo digitalRead(RESET_PIN) == LOW)
+  if ((eeprom_config.config_set != 1 ) || digitalRead(PIN_RESET) == LOW)
   {
+    char credentialsEE[20];
+    char admin[20]={'Y','W','R','t','a','W','4','6','Y','W','R','t','a','W','4','=','\0'};
+  
+    EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, admin);//admin:admin
+    
     // set default values
     set_EEPROM_Default();
-    
+
+    digitalWrite(PIN_LED,HIGH);
+       
     // write the config to eeprom
     EEPROM_writeAnything(0, eeprom_config);
   } 
@@ -90,7 +92,8 @@ void read_EEPROM_Settings()
 * The default settings. 
 * This settings are used when no config is present or the reset button is pressed.
 */
-void set_EEPROM_Default() {
+void set_EEPROM_Default() 
+{
     eeprom_config.config_set=1;  // dont change! It's used to check if the config is already set
   
     eeprom_config.use_dhcp=1; // use DHCP per default
