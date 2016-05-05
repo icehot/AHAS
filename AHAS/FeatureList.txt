@@ -19,6 +19,7 @@ Completed Features:
 18. Web Authentication
 19. Configuration Page Web Net Setup
 20. Password Update, reset button
+21. Filename rename, concatenation order
 
 Features to be done: 
 1. HMTL links between pages. Arduino Home Automation
@@ -36,7 +37,7 @@ Features to be done:
 13. Online data acq service ex: Xively, Display values
 
 Source Code related:
-10. Filename rename, concatenation order
+
 11. Configuration file/tab
 12. Project Configuration with #ifdef
 
