@@ -36,8 +36,8 @@ void OS_task1s()
     TimeStamps.bmp085 = millis();
     read_MS5611();
     TimeStamps.ms5611 = millis();
-    //read_DS1302();
-    read_time(); 
+    read_DS1302();
+    //read_time(); 
     TimeStamps.ds1302 = millis();
     calcRunTime();
 
