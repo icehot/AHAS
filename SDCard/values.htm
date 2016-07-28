@@ -125,7 +125,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
 <header class="w3-container w3-theme-dark w3-padding">
       <span class="w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1" onclick="w3_open()""><b>Menu</b></span>
 	  <div class="w3-center w3-xlarge w3-padding">
-      <span><b>AHAS - Arduino Home Automation System</</b></span>
+      <span><b>AHAS - Arduino Home Automation System</b></span>
 	  </div>
 </header>
 
@@ -136,14 +136,121 @@ function r4Off() {$.post('/input', {r4: 1} );}
   <p> </p>		
   <a href="/index.htm">Home</a>		
   <a href="/values.htm">Values</a>		
-  <a href="/settings.htm">Settings</a>		
+  <a href="/settings.htm">Settings</a>			
 </nav>
 
 <section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
 <br>
 
-<a class="w3-btn w3-round-xlarge w3-theme-d1" href="/values.htm">Enter</a>
+<div class="w3-row-padding">
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+      <h1>DS1302 Time</h1>
+	  <p>
+	  Sync Status: <span id="ds1302_sync">N/A</span><br/>
+	  Time:        <span id="ds1302_hour">N/A</span>:<span id="ds1302_min">N/A</span>:<span id="ds1302_sec">N/A</span><br/>
+	  Date:        <span id="ds1302_year">N/A</span>\<span id="ds1302_month">N/A</span>\<span id="ds1302_day">N/A</span><br/>
+	  </p>
+    </div>
+  </div>
 
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+      <h1>DHT11</h1>
+      <p>
+	  Temperature: <span id="dht11_temp">N/A</span><br/>
+	  Humidity:    <span id="dht11_hum">N/A</span><br/>
+	  Dew Point:   <span id="dht11_dew">N/A</span>
+	  </p>  
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+      <h1>BMP085</h1>
+      <p>
+	  Temperature: <span id="bmp085_temp">N/A</span><br/>
+	  Pressure:    <span id="bmp085_pres">N/A</span>
+	  </p> 	
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+      <h1>MS5611</h1>
+      <p>
+	  Temperature:       <span id="ms5611_temp">N/A</span><br/>
+	  Pressure:    		 <span id="ms5611_pres">N/A</span><br/>
+	  Absolute Altitude: <span id="ms5611_aalt">N/A</span><br/>
+	  Relative Altitude: <span id="ms5611_ralt">N/A</span>
+	  </p>
+    </div>
+  </div>
+</div>
+
+<div class="w3-row-padding">
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+		<h1>Analog Pins</h1>
+		<p>
+		Analog 0: <span id="a0">N/A</span> <br/>
+		Analog 1: <span id="a1">N/A</span> <br/>
+		Analog 2: <span id="a2">N/A</span> <br/>
+		Analog 3: <span id="a3">N/A</span> <br/>
+		Analog 4: <span id="a4">N/A</span> <br/>
+		</p>
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+		<form action='input' method='post'>
+			<h1>Relays</h1>
+			<p>
+			Relay 1: <span id="relay1">N/A</span>
+			<input type="radio" name="r1" value="0" onchange="r1On()"> ON <input type="radio" name="r1" value="1" onchange="r1Off()" checked> OFF <br/>
+			Relay 2: <span id="relay2">N/A</span>
+			<input type="radio" name="r2" value="0" onchange="r2On()"> ON <input type="radio" name="r2" value="1" onchange="r2Off()" checked> OFF <br/>
+			Relay 3: <span id="relay3">N/A</span>
+			<input type="radio" name="r3" value="0" onchange="r3On()"> ON <input type="radio" name="r3" value="1" onchange="r3Off()" checked> OFF <br/>
+			Relay 4: <span id="relay4">N/A </span>
+			<input type="radio" name="r4" value="0" onchange="r4On()"> ON <input type="radio" name="r4" value="1" onchange="r4Off()" checked> OFF <br/>
+			</p>
+		</form>
+    </div>
+  </div>
+
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+      <h1>Load</h1>
+	  <p>
+	  Acquisition:       <span id="load_acq">N/A</span><br/>
+	  Total:    		 <span id="load_tot">N/A</span><br/>
+	  Web:               <span id="load_web">N/A</span>
+	  </p>
+    </div>
+  </div>
+  
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+	<form action='input' method='post'>
+      <h1>RGB</h1>
+	  
+	  <p>
+		 <div class="w3-container w3-red w3-round-xlarge w3-tiny w3-margin-2">
+		 <span id="red_val">128</span><input class="w3-input" type="range" id="rgb_r" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 </div>
+		 <div class="w3-container w3-green w3-round-xlarge w3-tiny w3-margin-2">
+		 <span id="green_val">128</span><input class="w3-input" type="range" id="rgb_g" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 </div>
+		 <div class="w3-container w3-blue w3-round-xlarge w3-tiny w3-margin-2">
+		 <span id="blue_val">128</span><input class="w3-input" type="range" id="rgb_b" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 </div>
+	  </p>
+	  </form>
+    </div>
+  </div>  
+</div>
 </section> <!-- End main -->
 
 <footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">

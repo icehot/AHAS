@@ -52,6 +52,40 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   }
 }
 
+void valuesCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
+{
+  /* this line sends the standard "we're all OK" headers back to the
+     browser */
+  server.httpSuccess();
+
+  /* if we're handling a GET or POST, we can output our data here.
+     For a HEAD request, we just stop after outputting headers. */
+  if (type != WebServer::HEAD)
+  {
+    /* this defines some HTML text in read-only memory aka PROGMEM.
+     * This is needed to avoid having the string copied to our limited
+     * amount of RAM. */
+
+     // open the file. note that only one file can be open at a time,
+    // so you have to close this one before opening another.
+    File dataFile = SD.open("values.htm");
+  
+    // if the file is available, read from it:
+    if (dataFile) 
+    {
+      while (dataFile.available()) 
+      {
+        server << ((char)(dataFile.read()));
+      }
+      dataFile.close();
+    }
+    else 
+    {/* if the file isn't open, pop up an error */
+      Serial.println("Error opening values.htm");
+    }
+  }
+}
+
 void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
  char credentialsEE[30];
@@ -445,7 +479,8 @@ void init_Webduino()
 
   /* run the same command if you try to load /index.html, a common
    * default page name */
-  webserver->addCommand("index.html", &indexCmd);
+  webserver->addCommand("index.htm", &indexCmd);
+  webserver->addCommand("values.htm", &valuesCmd);
   webserver->addCommand("settings.htm", &settingsCmd);
   webserver->addCommand("settingsJSON", &settingsJsonCmd);
   webserver->addCommand("pswdChange", &pswdChangeCmd);
