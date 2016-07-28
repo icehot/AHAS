@@ -65,28 +65,28 @@ xmlhttp.onreadystatechange = function()
 
 function DisplayPortValues(portData ) 
 {
-    document.getElementById("a0").innerHTML = portData.a0;
-    document.getElementById("a1").innerHTML = portData.a1;
-    document.getElementById("a2").innerHTML = portData.a2;
-    document.getElementById("a3").innerHTML = portData.a3;
-    document.getElementById("a4").innerHTML = portData.a4;
+    document.getElementById("a0").innerHTML = (portData.a0*5/1023).toFixed(2) + " V";
+    document.getElementById("a1").innerHTML = (portData.a1*5/1023).toFixed(2) + " V";
+    document.getElementById("a2").innerHTML = (portData.a2*5/1023).toFixed(2) + " V";
+    document.getElementById("a3").innerHTML = (portData.a3*5/1023).toFixed(2) + " V";
+    document.getElementById("a4").innerHTML = (portData.a4*5/1023).toFixed(2) + " V";
 
-    document.getElementById("relay1").innerHTML = portData.r1;
-    document.getElementById("relay2").innerHTML = portData.r2;
-    document.getElementById("relay3").innerHTML = portData.r3;
-    document.getElementById("relay4").innerHTML = portData.r4;
+    document.getElementById("relay1").innerHTML = relayStatus(portData.r1);
+    document.getElementById("relay2").innerHTML = relayStatus(portData.r2);
+    document.getElementById("relay3").innerHTML = relayStatus(portData.r3);
+    document.getElementById("relay4").innerHTML = relayStatus(portData.r4);
 	
-	document.getElementById("dht11_temp").innerHTML = portData.dht11_temp;
-	document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum;
-	document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew;
+	document.getElementById("dht11_temp").innerHTML = portData.dht11_temp + " &#8451";
+	document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum + " %";
+	document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew + " &#8451";
 	
-	document.getElementById("bmp085_temp").innerHTML = portData.bmp085_temp;
-	document.getElementById("bmp085_pres").innerHTML = portData.bmp085_pres;
+	document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp/10.0) + " &#8451";
+	document.getElementById("bmp085_pres").innerHTML = (portData.bmp085_pres/100) + " hPa";
 	
-	document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp;
-	document.getElementById("ms5611_pres").innerHTML = portData.ms5611_pres;
-	document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt;
-	document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt;
+	document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp + " &#8451";
+	document.getElementById("ms5611_pres").innerHTML = (portData.ms5611_pres/100) + " mB";
+	document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt + " m";
+	document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt + " m";
 	
 	document.getElementById("ds1302_year").innerHTML  = portData.ds1302_year;
 	document.getElementById("ds1302_month").innerHTML = portData.ds1302_month;
@@ -94,6 +94,15 @@ function DisplayPortValues(portData )
 	document.getElementById("ds1302_hour").innerHTML  = portData.ds1302_hour;
 	document.getElementById("ds1302_min").innerHTML   = portData.ds1302_min;
 	document.getElementById("ds1302_sec").innerHTML   = portData.ds1302_sec;
+	document.getElementById("ds1302_sync").innerHTML   = portData.ds1302_sync;
+}
+
+function relayStatus(relay)
+{
+	if (relay == 0)
+     return "ON"
+	else
+	 return "OFF";
 }
 
 function rgbChange()

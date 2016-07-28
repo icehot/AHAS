@@ -20,9 +20,9 @@ Completed Features:
 19. Configuration Page Web Net Setup
 20. Password Update, reset button
 21. Filename rename, concatenation order
+22. HMTL links between pages. Arduino Home Automation
 
 Features to be done: 
-1. HMTL links between pages. Arduino Home Automation
 2. Serial interface cleanup
 3. HW Initialization statuses
 4. Log management

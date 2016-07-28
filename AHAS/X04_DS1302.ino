@@ -12,7 +12,7 @@ void init_DS1302()
     {/*NTP synchronised */
       Serial.println("NTP is synchronised");
       t = now();
-      ds1302.setTimeAndDate(year(t),month(t),day(t),1,hour(t),minute(t),second(t));
+      ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
     }
     else
     {/*NTP not synchronised */

@@ -340,12 +340,13 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_ADD("ms5611_pres",DataPool.MS5611_Pressure);
   JSON_ADD("ms5611_aalt",DataPool.MS5611_AbsAltitude);
   JSON_ADD("ms5611_ralt",DataPool.MS5611_RelAltitude);
-  JSON_ADD("ds1302_year",DataPool.DS1302_Year);
+  JSON_ADD("ds1302_year",DataPool.DS1302_Year + 2000);
   JSON_ADD("ds1302_month",DataPool.DS1302_Month);
   JSON_ADD("ds1302_day",DataPool.DS1302_Day);
   JSON_ADD("ds1302_hour",DataPool.DS1302_Hour);
   JSON_ADD("ds1302_min",DataPool.DS1302_Minute);
   JSON_ADD("ds1302_sec",DataPool.DS1302_Second);
+  JSON_ADD2("ds1302_sync",DataPool.DS1302_SyncStatus);
     
   JSON_END();
 }
