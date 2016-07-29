@@ -90,6 +90,7 @@ struct{
 }DataPool;
 
 struct{
+  unsigned long start;
   unsigned long cycleStart;
   unsigned long cycleEnd;
   unsigned long dht11;
@@ -102,6 +103,7 @@ struct{
   unsigned long task1s;
   unsigned long task2s;
   unsigned long task1m;
+  unsigned long end;
 }TimeStamps;
 
 struct{

@@ -24,7 +24,7 @@ Completed Features:
 
 Features to be done: 
 2. Serial interface cleanup
-3. HW Initialization statuses
+3. HW Initialization statuses DHT11,
 4. Log management
 5. Arduino Scheduler integration
 6. Task measurement
@@ -35,11 +35,14 @@ Features to be done:
 11. Value Filtering
 12. Create Final Application Webpage
 13. Online data acq service ex: Xively, Display values
+14. Daylight saving, time servers handling
+
 
 Source Code related:
 
-11. Configuration file/tab
-12. Project Configuration with #ifdef
+Configuration file/tab
+Project Configuration with #ifdef
+Describe HW connections in comment
 
 Future possibilities:
 Arduino features discover
@@ -54,8 +57,10 @@ Light sensor
 Gas Sensor
 Smoke sensor
 Backup Battery
+Light sensor
 Software to download the displa/log file, interpret, etc..
 Multi User handling
+E-mail notification
 
 
 

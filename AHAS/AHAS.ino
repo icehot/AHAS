@@ -75,6 +75,8 @@ void OS_task1s();
 void OS_task2s();
 void OS_task1m();
 void OS_taskIdle(); 
+void OS_calcRunTime();
+void OS_loopEnd(); 
 
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
@@ -105,5 +107,7 @@ void loop()
   OS_task1s();
   OS_task2s();
   OS_task1m();
-  OS_taskIdle(); 
+  OS_taskIdle();
+  OS_calcRunTime();
+  OS_loopEnd(); 
 }
