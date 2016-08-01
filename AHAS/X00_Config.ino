@@ -49,11 +49,11 @@
 System sys;
 #endif
 
+
 /***********************************************************************************************************/
 /*** Global Variable definition  ***/
 /***********************************************************************************************************/
 /*Configuration*/
-byte mac[] = { 0xBE, 0xD0, 0xBE, 0xD0, 0xBE, 0xD0 };
 
 const int timeZone = 2;     // Eastern European Time
 // NTP Servers:
@@ -121,6 +121,14 @@ struct{
 /* structure which is stored in the eeprom. 
 * Look at "EEPROMAnything.h" for the functions storing and reading the struct
 */
+
+#define EEPROM_BASE 0x00
+#define EEPROM_CONFIG_ADDRESS EEPROM_BASE
+#define EEPROM_CONFIG_SIZE sizeof(eeprom_config)
+
+#define EEPROM_PSWD_ADDRESS EEPROM_CONFIG_ADDRESS + EEPROM_CONFIG_SIZE
+#define EEPROM_PSWD_SIZE 20
+
 struct config_t
 {
     byte config_set;
@@ -134,10 +142,5 @@ struct config_t
     unsigned int webserverPort;
 } eeprom_config;
 
-#define EEPROM_BASE 0x00
-#define EEPROM_CONFIG_ADDRESS EEPROM_BASE
-#define EEPROM_CONFIG_SIZE sizeof(eeprom_config)
 
-#define EEPROM_PSWD_ADDRESS EEPROM_CONFIG_ADDRESS + EEPROM_CONFIG_SIZE
-#define EEPROM_PSWD_SIZE 20
 

@@ -492,6 +492,8 @@ void init_Webduino()
   
   /* start the webserver */
   webserver->begin();
+
+  Serial.println("#INIT: WebDuino Server => DONE");
 }
 
 void WebduinoServerLoop()

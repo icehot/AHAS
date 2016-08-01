@@ -28,19 +28,23 @@ void read_MS5611()
 
 void init_MS5611()
 {
-  Serial.println("Initialize MS5611 Sensor");
+  Serial.print("#INIT: MS5611 => ");
    
-  while(!ms5611.begin())
+  if(!ms5611.begin())
   {
-    Serial.println("Could not find a valid MS5611 sensor, check wiring!");
-    delay(500);
+    //"Could not find a valid MS5611 sensor, check wiring!");
+    Serial.println("FAILED");
+  }
+  else
+  {
+    Serial.println("DONE");
   }
   
   // Get reference pressure for relative altitude
   referencePressure = ms5611.readPressure();
 
   // Check settings
-  checkSettings();
+  //checkSettings();
 }
 
 void checkSettings()

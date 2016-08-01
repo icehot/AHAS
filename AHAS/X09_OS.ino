@@ -8,6 +8,8 @@ void init_OS()
   TimeStamps.task1s = 0;
   TimeStamps.task2s = 0;
   TimeStamps.task1m = 0;
+
+  Serial.println("#INIT: OS => DONE ");
 }
 
 void OS_taskIdle()

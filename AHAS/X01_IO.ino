@@ -13,12 +13,16 @@ void init_IO()
   analogWrite(PIN_RGBLED_G, 128);
   analogWrite(PIN_RGBLED_B, 128);
   digitalWrite(PIN_LED,LOW);
+
+  Serial.println("#INIT: IO => DONE");
 }
 
 void init_UART()
 {
   //Serial monitor initialization
   Serial.begin(9600);
+
+  Serial.println("#INIT: UART => DONE");
 }
 
 /** relay module **/
@@ -34,5 +38,12 @@ void init_Relay()
   digitalWrite(PIN_RELAY2,HIGH);
   digitalWrite(PIN_RELAY3,HIGH);
   digitalWrite(PIN_RELAY4,HIGH);
+
+  Serial.println("#INIT: RElAY => DONE");
+}
+
+void softReset()
+{
+    asm volatile ("jmp 0");
 }
 

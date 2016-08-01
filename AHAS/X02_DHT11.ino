@@ -5,10 +5,33 @@ double dewPointFast(double celsius, double humidity);
 
 void init_DHT11()
 {
-  //DHT11 initialization 
-  Serial.println("DHT11 Initialized");
-  Serial.print("LIBRARY VERSION: ");
-  Serial.println(DHT11LIB_VERSION);
+  int chk;
+  
+  chk = dht11.read(PIN_DHT11);  
+
+  Serial.print("#INIT: DHT11 Version: ");
+  Serial.print(DHT11LIB_VERSION);
+  Serial.print(" => ");
+  
+  switch (chk)
+  {
+    case DHTLIB_OK: 
+      DataPool.DHT11_Status = "OK"; 
+      Serial.println("DONE");
+    break;
+    case DHTLIB_ERROR_CHECKSUM: 
+      DataPool.DHT11_Status = "Checksum error"; 
+      Serial.println("FAILED (Checksum error)");
+    break;
+    case DHTLIB_ERROR_TIMEOUT: 
+      DataPool.DHT11_Status = "Time out error";
+      Serial.println("FAILED (Time out error)"); 
+    break;
+    default: 
+      DataPool.DHT11_Status = "Unknown error";
+      Serial.println("FAILED (Unknown error)"); 
+    break;
+  }
 }
 
 void read_DHT11()

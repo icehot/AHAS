@@ -27,29 +27,44 @@ template <class T> int EEPROM_readAnything(int ee, T& value);
 
 void init_NetSetup()
 {
+  bool dhcp_success = false;
+  
   read_EEPROM_Settings();
   
   #ifdef DEBUG
    print_EEPROM_Settings();
   #endif
+
+  if (eeprom_config.use_dhcp == 1)
+  { 
+    Serial.print("#INIT: Network via DHCP => ");
     
-  if (eeprom_config.use_dhcp != 1) 
+    if (Ethernet.begin(eeprom_config.mac) == 1)
+    {
+      dhcp_success = true;
+      Serial.println("DONE");
+      Serial.print(" Obtained IP Address through DHCP: ");
+      Serial.println(Ethernet.localIP());
+    } 
+    else
+    {
+      dhcp_success = false;
+      Serial.println("FAILED");
+    }
+  }
+  
+  if ((eeprom_config.use_dhcp == 0) || (dhcp_success == false))  
   {
     IPAddress ip(eeprom_config.ip[0], eeprom_config.ip[1], eeprom_config.ip[2], eeprom_config.ip[3]);                                               
     IPAddress gateway (eeprom_config.gateway[0],eeprom_config.gateway[1],eeprom_config.gateway[2],eeprom_config.gateway[3]);                      
     IPAddress subnet  (eeprom_config.subnet[0], eeprom_config.subnet[1], eeprom_config.subnet[2], eeprom_config.subnet[3]);  
     IPAddress dns_server  (eeprom_config.dns_server[0], eeprom_config.dns_server[1], eeprom_config.dns_server[2], eeprom_config.dns_server[3]);
     Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
-  } 
-  else 
-  {
-    if (Ethernet.begin(eeprom_config.mac) == 0) 
-    {
-      Serial.print("Failed to configure Ethernet using DHCP");
-    }
-    Serial.print("Obtained IP Address through DHCP: ");
+    Serial.println("#INIT: Network with default settings => DONE");
+    Serial.print(" DefaultIP Address : ");
     Serial.println(Ethernet.localIP());
-  }
+  } 
+  
 }
 
 /**

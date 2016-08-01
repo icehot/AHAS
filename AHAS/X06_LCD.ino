@@ -21,6 +21,8 @@ void init_LCD()
 {
   lcd.begin(16, 2);
   lcd.createChar(0, degree);
+  
+  Serial.println("#INIT: LCD => DONE");
 }
 
 void updateLCD() 

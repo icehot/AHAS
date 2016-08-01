@@ -21,21 +21,23 @@ Completed Features:
 20. Password Update, reset button
 21. Filename rename, concatenation order
 22. HMTL links between pages. Arduino Home Automation
+23. Serial interface cleanup
+24. HW Initialization statuses DHT11,
 
 Features to be done: 
-2. Serial interface cleanup
-3. HW Initialization statuses DHT11,
-4. Log management
-5. Arduino Scheduler integration
-6. Task measurement
-7. LCD backlight control
-8. LCD Menu Navigation through Keyboard
-9. Pir Sensor
-10. Sound Detector
-11. Value Filtering
-12. Create Final Application Webpage
-13. Online data acq service ex: Xively, Display values
-14. Daylight saving, time servers handling
+- Pir Sensor
+- Sound Detector
+- Value Filtering
+- Log management
+- Daylight saving, time servers handling, on demand/auto sync
+- Arduino Scheduler integration
+- Task measurement
+- LCD backlight control
+- LCD Menu Navigation through Keyboard
+- Create Final Application Webpage
+- Online data acq service ex: Xively, Display values
+
+- Investigate Web page loading performance (char vs buffered)
 
 
 Source Code related:

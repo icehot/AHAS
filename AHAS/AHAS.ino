@@ -83,19 +83,19 @@ void OS_loopEnd();
 /***********************************************************************************************************/
 void setup() 
 {
-  init_IO();
   init_UART();
-  init_SD();
-  init_NetSetup();
-  init_Webduino();
+  init_IO();
+  init_Relay();
+  init_LCD();
   init_DHT11();
   init_BMP085(); 
   init_MS5611();
+  init_SD();
+  init_NetSetup();
+  init_Webduino();
   init_NTP();
   init_DS1302();
-  init_LCD();
   init_OS();
-  init_Relay();
 }
 
 /***********************************************************************************************************/

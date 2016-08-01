@@ -1,15 +1,21 @@
 void init_SD()
 {
     //SD card initialization
-  Serial.print("Initializing SD card...");
+  Serial.print("#INIT: SD Card => ");
 
   //Default CS port must be set to output
   pinMode(PIN_SPI_CS, OUTPUT);
   
-  if (!SD.begin(PIN_SD_CS)) 
-    Serial.println("initialization failed!");
+  if (!SD.begin(PIN_SD_CS))
+  { 
+    Serial.println("FAILED");
+    delay(5000);
+    softReset();
+  }
   else
-    Serial.println("initialization done.");
+  {
+    Serial.println("DONE");
+  }
 }
 
 void saveDataToLog()
@@ -50,11 +56,11 @@ void saveDataToLog()
     dataFile.println(dataString);
     dataFile.close();
     // print to the serial port too:
-    Serial.println(dataString);
+    Serial.println("#SD: Datalog saved");
   }
   // if the file isn't open, pop up an error:
   else {
-    Serial.println("error opening datalog.txt");
+    Serial.println("#SD: Error opening datalog.txt");
   }
 }
 
