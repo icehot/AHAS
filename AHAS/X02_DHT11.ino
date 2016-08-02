@@ -1,3 +1,10 @@
+/** DHT11 **/
+#ifdef USE_DHT11
+
+/** DHT11 sensor **/
+#include <dht11.h>
+
+
 /** DHT11 sensor **/
 DHT11 dht11;
 
@@ -72,3 +79,4 @@ double dewPointFast(double celsius, double humidity)
 	double Td = (b * temp) / (a - temp);
 	return Td;
 }
+#endif

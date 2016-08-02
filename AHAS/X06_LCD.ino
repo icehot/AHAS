@@ -1,3 +1,6 @@
+/** LCD - HD44780 Display **/
+
+#ifdef USE_LCD
 #include <LiquidCrystal.h>
 
 #define NR_OF_SCREENS 2;
@@ -36,32 +39,43 @@ void updateLCD()
   {
     case 0:
       /* First Row */
+      #ifdef USE_DS1302
       lcd.print("Date: ");
       printDigits(DataPool.DS1302_Year);lcd.print("/");
       printDigits(DataPool.DS1302_Month);lcd.print("/");
       printDigits(DataPool.DS1302_Day);
+      
     
       /* Second Row */
       lcd.setCursor(0,1);//bottom left corner
       lcd.print("Time: ");
       printDigits(DataPool.DS1302_Hour);lcd.print(":");
       printDigits(DataPool.DS1302_Minute);
+      #endif
     break;
 
     case 1:
       /* First Row */
+      #ifdef USE_MS5611
       lcd.print("T: ");
       lcd.print(DataPool.MS5611_Temperature,1);
       lcd.write(byte(0));
+      #endif
+      
+      #ifdef USE_DHT11
       lcd.print("C H: ");
       lcd.print(DataPool.DHT11_Humidity);
       lcd.print("%");
+      #endif
      
       /* Second Row */
+      #ifdef USE_MS5611
       lcd.setCursor(0, 1);//bottom left corner
       lcd.print("P: ");
       lcd.print(DataPool.MS5611_Pressure/(float)100);
       lcd.print(" mBar");
+      #endif
+      
     break;
       
     case 2:
@@ -84,3 +98,4 @@ void printDigits(int digits)
     lcd.print('0');
   lcd.print(digits);
 }
+#endif

@@ -1,29 +1,35 @@
 /** DS1302 Real-time Clock **/
+#ifdef USE_DS1302
 
-/** DS1302 Real-time Clock **/
+#include <DS1302.h>
+#include <Time.h> 
+
 DS1302 ds1302;
 
 void init_DS1302()
 {
-    time_t t;
     ds1302.init(PIN_DS1302_SCLK, PIN_DS1302_IO, PIN_DS1302_CE);
-
     Serial.println("#INIT: DS1302 => DONE");
+}
 
-    if (timeStatus() != timeNotSet) 
-    {/*NTP synchronised */
-      Serial.println(" NTP is synchronised");
-      t = now();
-      ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
-    }
-    else
-    {/*NTP not synchronised */
-      Serial.println(" NTP is not synchronised");
-      //ds1302.setTimeAndDate(99,12,31,1,23,58,58);
-    }
+void read_DS1302()
+{ 
+  ds1302.getTimeAndDate((byte*)&DataPool.DS1302_Year, &DataPool.DS1302_Month, &DataPool.DS1302_Day, &DataPool.DS1302_DayOfWeek, &DataPool.DS1302_Hour, &DataPool.DS1302_Minute, &DataPool.DS1302_Second);
+}
 
+#ifdef USE_NTP
+void sync_DS1302withNTP()
+{
+    time_t t;
+    
     switch (timeStatus())
     {
+      case timeSet:
+      DataPool.DS1302_SyncStatus = "Time set!";
+      t = now();
+      ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
+      break;
+      
       case timeNotSet:
       DataPool.DS1302_SyncStatus = "Time not set!";
       break;
@@ -31,18 +37,13 @@ void init_DS1302()
       case timeNeedsSync:
       DataPool.DS1302_SyncStatus = "Time needs sync!";
       break;
-
-      case timeSet:
-      DataPool.DS1302_SyncStatus = "Time set!";
-      break;
       
       default:
       DataPool.DS1302_SyncStatus = "Error!";
       break;
     }
-}
 
-void read_DS1302()
-{ 
-  ds1302.getTimeAndDate((byte*)&DataPool.DS1302_Year, &DataPool.DS1302_Month, &DataPool.DS1302_Day, &DataPool.DS1302_DayOfWeek, &DataPool.DS1302_Hour, &DataPool.DS1302_Minute, &DataPool.DS1302_Second);
+    Serial.println("#DS1302: synchronized to NTP");
 }
+#endif
+#endif

@@ -1,4 +1,10 @@
 /** BMP085 sensor **/
+#ifdef USE_BMP085
+
+#include <Wire.h>
+#include <BMP085.h>
+
+/** BMP085 sensor **/
 #define I2C_ADDRESS 0x77
 
 /** BMP085 sensor **/
@@ -15,4 +21,4 @@ void read_BMP085()
   DataPool.BMP085_Pressure = bmp085.readPressure();
   DataPool.BMP085_Temperature = bmp085.readTemperature();
 }
-
+#endif

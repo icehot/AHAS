@@ -1,3 +1,17 @@
+/** NTP - Network Time Protocol **/
+#ifdef USE_NTP
+#include <Time.h> 
+#include <EthernetUdp.h>
+
+/*Configuration*/
+
+const int timeZone = 2;     // Eastern European Time
+// NTP Servers:
+IPAddress timeServer(132, 163, 4, 101); // time-a.timefreq.bldrdoc.gov
+// IPAddress timeServer(132, 163, 4, 102); // time-b.timefreq.bldrdoc.gov
+// IPAddress timeServer(132, 163, 4, 103); // time-c.timefreq.bldrdoc.gov
+unsigned int localPort = 8888;  // local port to listen for UDP packets
+
 EthernetUDP Udp;
 
 time_t getNtpTime();
@@ -15,12 +29,12 @@ void read_time()
   time_t t;
   t = now();
 
-  DataPool.DS1302_Year = year(t);
-  DataPool.DS1302_Month = month(t);
-  DataPool.DS1302_Day = day(t);
-  DataPool.DS1302_Hour = hour(t);
-  DataPool.DS1302_Minute = minute(t);
-  DataPool.DS1302_Second = second(t);
+  DataPool.NTP_Year = year(t);
+  DataPool.NTP_Month = month(t);
+  DataPool.NTP_Day = day(t);
+  DataPool.NTP_Hour = hour(t);
+  DataPool.NTP_Minute = minute(t);
+  DataPool.NTP_Second = second(t);
 }
 
 /*-------- NTP code ----------*/
@@ -76,3 +90,4 @@ void sendNTPpacket(IPAddress &address)
   Udp.write(packetBuffer, NTP_PACKET_SIZE);
   Udp.endPacket();
 }
+#endif

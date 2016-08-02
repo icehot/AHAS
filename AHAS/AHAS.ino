@@ -1,75 +1,120 @@
 /*
  AHAS - Arduino Home Automation System
+
+  A versatile home automation platform based on Arduino Mega2560 board
  
- Components:
+ Supported HW components:
    
-   1. Web Server
-     - A simple web server that shows the value of the attached sensors
-     using an Arduino Wiznet Ethernet shield.
-   2. DHT11 Temperature and humidity sensor   
-   3. BMP085 temperature and barometric pressure sensor
+   1.  Ethernet Shield based on Wiznet 5100 
+   2.  DHT11 Temperature and humidity sensor   
+   3.  BMP085 Temperature and barometric pressure sensor
+   4.  MS5611 Temperature and barometric pressure sensor
+   5.  DS1302 Real time clock
+   6.  HD44780 based 2x16 Char LCD Display
+   7.  SD Card support
+   8.  Relay module
+   9.  RGB LED
+   10. Button for restoring factory default settings
+   11. Debug Led
+
+Supported SW components:
+
+  1. Network Time Protocol (NTP) synchronisation
+  2. Webduino webserver
+  3. Serial monitor
+  4. SD card logging
+  5. EEPROM storage for settings
    
- 
-  Circuit:
- * Ethernet shield attached to pins 10, 11, 12, 13
- * DHT11 sensor attached to pin 2
- * BMP085 sensor attached to I2C port
- * Analog inputs attached to pins A0 through A5 (optional)
- 
- created 12 Jan 2015
+ Created on 12 Jan 2015
  by Orbán Balázs
- modified 13 Jan 2015
+ modified 02 Aug 2016
  by Orbán Balázs
- 
  */
 
 /***********************************************************************************************************/
 /*** Include ***/
 /***********************************************************************************************************/
-/** Ethernet Shield **/
-#include <SPI.h>
-#include <Ethernet.h>
-#include <EthernetUdp.h>
-#include <SD.h>
 
-#include <Time.h> 
+/** Project Configuration **/
 
-#include "avr/pgmspace.h" 
-#include <EEPROM.h>
+/* Comment out the not wanted component`s define */
 
-/** Webduino **/
-#include <WebServer.h>
+/* HW */
 
-/** DHT11 sensor **/
-#include <dht11.h>
+#define USE_ETH_SHIELD
+#define USE_DHT11
+#define USE_BMP085
+#define USE_MS5611
+#define USE_DS1302
+#define USE_LCD
+#define USE_SD
+#define USE_RELAY
+#define USE_RGB
+#define USE_FACTDEF_BTN
+#define USE_DEBUG_LED
 
-/** BMP085 sensor **/
-#include <Wire.h>
-#include <BMP085.h>
+/* SW */
 
-/** MS5611 sensor **/
-#include <MS5611.h>
+#define USE_NTP
+#define USE_WEBDUINO
+#define USE_SERIAL_MONITOR //TBD
 
-/** DS1302 Real-time Clock **/
-#include <DS1302.h>
 
-/***********************************************************************************************************/
+/* Cross dependency check*/
+#ifndef USE_ETH_SHIELD
+  #ifdef USE_NTP
+    #error "NTP is enabled without ETH Shield"
+  #endif
+  #ifdef USE_WEBDUINO
+    #error "WEBDUINO is enabled without ETH Shield"
+  #endif
+#endif 
+
+/**********************************************************************************************************/
 /*** Function Declarations ***/
 /***********************************************************************************************************/
 
 void init_UART();
-void init_SD();
-void init_NetSetup();
-void init_Webduino();
-void init_DHT11();
-void init_BMP085(); 
-void init_MS5611();
-void init_NTP();
-void init_DS1302();
-void init_LCD();
+#ifdef USE_SD 
+  void init_SD(); 
+#endif
+#ifdef USE_ETH_SHIELD
+  void init_NetSetup();
+#endif
+#ifdef USE_WEBDUINO
+  void init_Webduino();
+#endif
+#ifdef USE_DHT11
+  void init_DHT11();
+#endif
+#ifdef USE_BMP085
+  void init_BMP085(); 
+#endif
+#ifdef USE_MS5611
+  void init_MS5611();
+#endif
+#ifdef USE_NTP
+  void init_NTP();
+#endif
+#ifdef USE_DS1302
+  void init_DS1302();
+#endif
+#ifdef USE_LCD
+  void init_LCD();
+#endif
+#ifdef USE_RELAY
+  void init_Relay();
+#endif 
+#ifdef USE_RGB
+  void init_RGB();
+#endif
+#ifdef USE_FACTDEF_BTN
+  void init_FACT_DEF_BTN();
+#endif
+#ifdef USE_DEBUG_LED
+  void init_DEBUG_LED();
+#endif 
 void init_OS();
-void init_Relay();
-void init_IO();
 void OS_loopStart();
 void OS_task1s();
 void OS_task2s();
@@ -84,17 +129,59 @@ void OS_loopEnd();
 void setup() 
 {
   init_UART();
-  init_IO();
+  
+  #ifdef USE_DEBUG_LED
+    init_DEBUG_LED();
+  #endif 
+
+  #ifdef USE_FACTDEF_BTN
+    init_FACT_DEF_BTN();
+  #endif
+
+  #ifdef USE_RELAY
   init_Relay();
-  init_LCD();
-  init_DHT11();
-  init_BMP085(); 
-  init_MS5611();
-  init_SD();
-  init_NetSetup();
-  init_Webduino();
-  init_NTP();
-  init_DS1302();
+  #endif 
+
+  #ifdef USE_RGB
+    init_RGB();
+  #endif
+  
+  #ifdef USE_LCD
+    init_LCD();
+  #endif
+
+  #ifdef USE_DHT11
+    init_DHT11();
+  #endif
+
+  #ifdef USE_BMP085
+    init_BMP085(); 
+  #endif
+
+  #ifdef USE_MS5611
+    init_MS5611();
+  #endif
+
+  #ifdef USE_SD
+    init_SD();
+  #endif 
+
+  #ifdef USE_ETH_SHIELD
+    init_NetSetup();
+  #endif
+  
+  #ifdef USE_WEBDUINO
+    init_Webduino();
+  #endif
+  
+  #ifdef USE_NTP
+    init_NTP();
+  #endif
+  
+  #ifdef USE_DS1302
+    init_DS1302();
+  #endif
+  
   init_OS();
 }
 

@@ -1,4 +1,10 @@
-/*Net Setup*/
+/** Net Setup **/
+/** Ethernet Shield **/
+#ifdef USE_ETH_SHIELD
+
+#include <SPI.h>
+#include <Ethernet.h>
+
 
 unsigned long last_dhcp_renew;
 byte dhcp_state;
@@ -67,6 +73,24 @@ void init_NetSetup()
   
 }
 
+void set_Default_Values()
+{
+    char credentialsEE[20];
+    char admin[20]={'Y','W','R','t','a','W','4','6','Y','W','R','t','a','W','4','=','\0'};
+  
+    EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, admin);//admin:admin
+    
+    // set default values
+    set_EEPROM_Default();
+    
+    #ifdef USE_DEBUG_LED
+    digitalWrite(PIN_DEBUG_LED,HIGH);
+    #endif
+       
+    // write the config to eeprom
+    EEPROM_writeAnything(0, eeprom_config);
+}
+
 /**
 * read_EEPROM_Settings function
 * This function is used to read the EEPROM settings at startup
@@ -76,29 +100,26 @@ void init_NetSetup()
 * - Load the stored data from EEPROM into the eeprom_config struct
 * - Check if a config is stored or the reset button is pressed. If one of the conditions is ture, set the defaults
 */
+
 void read_EEPROM_Settings() 
 {
-  digitalWrite(PIN_RESET, HIGH);
-  
-  // read the current config
+  /* Read the current config */
   EEPROM_readAnything(0, eeprom_config);
   
-  // check if config is present or if reset button is pressed
-  if ((eeprom_config.config_set != 1 ) || digitalRead(PIN_RESET) == LOW)
+  /* Check if config is present */
+  if ((eeprom_config.config_set != 1 ))
   {
-    char credentialsEE[20];
-    char admin[20]={'Y','W','R','t','a','W','4','6','Y','W','R','t','a','W','4','=','\0'};
-  
-    EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, admin);//admin:admin
-    
-    // set default values
-    set_EEPROM_Default();
-
-    digitalWrite(PIN_LED,HIGH);
-       
-    // write the config to eeprom
-    EEPROM_writeAnything(0, eeprom_config);
+    set_Default_Values();
   } 
+
+  #ifdef USE_FACTDEF_BTN
+  /* Check if reset button is pressed */
+  digitalWrite(PIN_RESET, HIGH);
+  if (digitalRead(PIN_RESET) == LOW)
+  {
+    set_Default_Values();
+  } 
+  #endif
 }
 
 /** 
@@ -246,3 +267,4 @@ void renewDHCP(int interval) {
     }
   }
 }
+#endif

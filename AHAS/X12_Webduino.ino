@@ -1,3 +1,13 @@
+/** WebDuino - Webserver **/
+#ifdef USE_WEBDUINO
+
+#define PREFIX ""
+
+#define WEBDUINO_FAVICON_DATA ""
+
+/** Webduino **/
+#include <WebServer.h>
+
 /* This creates an instance of the webserver.  By specifying a prefix
  * of "", all pages will be at the root of the server. */
 
@@ -18,6 +28,8 @@ inline Print &operator <<(Print &obj, T arg)
 /* commands are functions that get called by the webserver framework
  * they can read any posted data from client, and they output to the
  * server to send data back to the web browser. */
+
+#ifdef USE_SD
 void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 {
   /* this line sends the standard "we're all OK" headers back to the
@@ -83,47 +95,6 @@ void valuesCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     {/* if the file isn't open, pop up an error */
       Serial.println("Error opening values.htm");
     }
-  }
-}
-
-void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
-{
- char credentialsEE[30];
- EEPROM_readAnything(EEPROM_PSWD_ADDRESS, credentialsEE);
-  
-  if (server.checkCredentials(credentialsEE))
-  {
-      if (type == WebServer::POST)
-      {
-        bool repeat;
-        char name[16], value[30], temp[30];
-        int index;
-        do
-        {
-          repeat = server.readPOSTparam(name, 16, value, 30);
-
-          if (strcmp(name,"pswd")==0)
-          {
-            EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, value);
-
-            Serial.print("New Password saved to EEPROM:");
-            EEPROM_readAnything(EEPROM_PSWD_ADDRESS, temp);
-            Serial.println(temp);
-          }
-    
-        } while (repeat);
-        
-        server.httpSeeOther(PREFIX "/settings.htm");
-    
-        return;
-      }
-      
-      server.httpSuccess();
-
-      /* if we're handling a GET or POST, we can output our data here.
-      For a HEAD request, we just stop after outputting headers. */
-      if (type == WebServer::HEAD)
-          return;
   }
 }
 
@@ -243,6 +214,57 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
   }
 }
 
+#endif
+
+void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+ char credentialsEE[30];
+ EEPROM_readAnything(EEPROM_PSWD_ADDRESS, credentialsEE);
+  
+  if (server.checkCredentials(credentialsEE))
+  {
+      if (type == WebServer::POST)
+      {
+        bool repeat;
+        char name[16], value[30], temp[30];
+        int index;
+        do
+        {
+          repeat = server.readPOSTparam(name, 16, value, 30);
+
+          if (strcmp(name,"pswd")==0)
+          {
+            EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, value);
+
+            Serial.print("New Password saved to EEPROM:");
+            EEPROM_readAnything(EEPROM_PSWD_ADDRESS, temp);
+            Serial.println(temp);
+          }
+    
+        } while (repeat);
+        
+        server.httpSeeOther(PREFIX "/settings.htm");
+    
+        return;
+      }
+      
+      server.httpSuccess();
+
+      /* if we're handling a GET or POST, we can output our data here.
+      For a HEAD request, we just stop after outputting headers. */
+      if (type == WebServer::HEAD)
+          return;
+  }
+}
+
+
+#define USE_SYSTEM_LIBRARY //comment out if you want to save some space (about 1 Byte). You wouldn't see uptime and free RAM if it's commented out.
+
+#ifdef USE_SYSTEM_LIBRARY
+#include <System.h>
+System sys;
+#endif
+
 void settingsJsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
   if (type == WebServer::POST)
@@ -318,10 +340,12 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_BEGIN();
   
   /* Relays */
+  #ifdef USE_RELAY
   JSON_ADD("r1",digitalRead(PIN_RELAY1));
   JSON_ADD("r2",digitalRead(PIN_RELAY2));
   JSON_ADD("r3",digitalRead(PIN_RELAY3));
   JSON_ADD("r4",digitalRead(PIN_RELAY4));
+  #endif
   
   /* Analog inputs */
   JSON_ADD("a0",analogRead(0));
@@ -331,15 +355,22 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_ADD("a4",analogRead(4));
 
   /* DataPool variables */
+  #ifdef USE_DHT11
   JSON_ADD("dht11_temp",DataPool.DHT11_Temperature);
   JSON_ADD("dht11_hum",DataPool.DHT11_Humidity);
   JSON_ADD("dht11_dew",DataPool.DHT11_DewPoint);
+  #endif
+  #ifdef USE_BMP085
   JSON_ADD("bmp085_temp",DataPool.BMP085_Temperature);
   JSON_ADD("bmp085_pres",DataPool.BMP085_Pressure);
+  #endif
+  #ifdef USE_MS5611
   JSON_ADD("ms5611_temp",DataPool.MS5611_Temperature);
   JSON_ADD("ms5611_pres",DataPool.MS5611_Pressure);
   JSON_ADD("ms5611_aalt",DataPool.MS5611_AbsAltitude);
   JSON_ADD("ms5611_ralt",DataPool.MS5611_RelAltitude);
+  #endif
+  #ifdef USE_DS1302
   JSON_ADD("ds1302_year",DataPool.DS1302_Year + 2000);
   JSON_ADD("ds1302_month",DataPool.DS1302_Month);
   JSON_ADD("ds1302_day",DataPool.DS1302_Day);
@@ -347,10 +378,10 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_ADD("ds1302_min",DataPool.DS1302_Minute);
   JSON_ADD("ds1302_sec",DataPool.DS1302_Second);
   JSON_ADD2("ds1302_sync",DataPool.DS1302_SyncStatus);
-    
+  #endif
   JSON_END();
 }
-
+#ifdef USE_RELAY
 void inputCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
   if (type == WebServer::POST)
@@ -402,7 +433,9 @@ void inputCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail,
   /* for a GET or HEAD, send the standard "it's all OK headers" */
   server.httpSuccess();
 }
+#endif
 
+#ifdef USE_RGB
 void rgbCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 {
   if (type == WebServer::POST)
@@ -447,7 +480,7 @@ void rgbCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   /* for a GET or HEAD, send the standard "it's all OK headers" */
   server.httpSuccess();
 }
-
+#endif
 /**
 * errorHTML() function
 * This function is called whenever a non extisting page is called.
@@ -475,20 +508,30 @@ void init_Webduino()
    
    /* setup our default command that will be run when the user accesses
    * the root page on the server */
-  webserver->setDefaultCommand(&indexCmd);
-  webserver->setFailureCommand(&errorHTML);
 
-  /* run the same command if you try to load /index.html, a common
-   * default page name */
+  #ifdef USE_SD
+  webserver->setDefaultCommand(&indexCmd);
   webserver->addCommand("index.htm", &indexCmd);
   webserver->addCommand("values.htm", &valuesCmd);
   webserver->addCommand("settings.htm", &settingsCmd);
+  #else
+  webserver->setDefaultCommand(&errorHTML);
+  #endif
+  
+  webserver->setFailureCommand(&errorHTML);
+
+  #ifdef USE_RELAY
+  webserver->addCommand("input", &inputCmd);
+  #endif
+
+  #ifdef USE_RGB
+  webserver->addCommand("rgb",&rgbCmd);
+  #endif
+  
+  webserver->addCommand("json", &jsonCmd);
   webserver->addCommand("settingsJSON", &settingsJsonCmd);
   webserver->addCommand("pswdChange", &pswdChangeCmd);
-  
-  webserver->addCommand("input", &inputCmd);
-  webserver->addCommand("json", &jsonCmd);
-  webserver->addCommand("rgb",&rgbCmd);
+
   
   /* start the webserver */
   webserver->begin();
@@ -504,4 +547,4 @@ void WebduinoServerLoop()
   /* process incoming connections one at a time forever */
   webserver->processConnection(buff, &len);
 }
-
+#endif

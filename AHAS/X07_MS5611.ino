@@ -1,4 +1,8 @@
 /** MS5611 sensor **/
+#ifdef USE_MS5611
+
+#include <MS5611.h>
+
 MS5611 ms5611;
 double referencePressure;
 
@@ -52,3 +56,4 @@ void checkSettings()
   Serial.print("Oversampling: ");
   Serial.println(ms5611.getOversampling());
 }
+#endif

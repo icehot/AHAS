@@ -1,3 +1,7 @@
+/** SD Card**/
+#ifdef USE_SD
+#include <SD.h>
+
 void init_SD()
 {
     //SD card initialization
@@ -24,6 +28,7 @@ void saveDataToLog()
   String dataString = "";
 
   /* TimeStamp */
+  #ifdef USE_DS1302
   dataString += String(DataPool.DS1302_Year);
   dataString += "/";
   dataString += String(DataPool.DS1302_Month);
@@ -34,17 +39,27 @@ void saveDataToLog()
   dataString += ":";
   dataString += String(DataPool.DS1302_Minute);
   dataString += ",";
+  #endif
+  
   /* Temperature */
-  dataString += String((float)(DataPool.DHT11_Temperature + (float)DataPool.BMP085_Temperature/10 + (float)DataPool.MS5611_Temperature)/(float)3);
+  #ifdef USE_MS5611
+  dataString += String((float)((float)DataPool.MS5611_Temperature));
   dataString += ",";
+  #endif
+  #ifdef USE_DHT11
   /* Humidity */
   dataString += String(DataPool.DHT11_Humidity);
   dataString += ",";
+  #endif
   /* Pressure */
+  #ifdef USE_MS5611
   dataString += String(DataPool.MS5611_Pressure);
   dataString += ",";
+  #endif
   /* Pressure */
+  #ifdef USE_BMP085
   dataString += String(DataPool.BMP085_Pressure);
+  #endif
   
   // open the file. note that only one file can be open at a time,
   // so you have to close this one before opening another.
@@ -63,4 +78,4 @@ void saveDataToLog()
     Serial.println("#SD: Error opening datalog.txt");
   }
 }
-
+#endif

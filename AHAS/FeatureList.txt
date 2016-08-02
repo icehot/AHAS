@@ -22,31 +22,29 @@ Completed Features:
 21. Filename rename, concatenation order
 22. HMTL links between pages. Arduino Home Automation
 23. Serial interface cleanup
-24. HW Initialization statuses DHT11,
+24. HW Initialization statuses DHT11
+25. HW Configuration File Tab
+26. Project Configuration with precompiler switches
 
-Features to be done: 
+Features to be done:
+ 
 - Pir Sensor
 - Sound Detector
 - Value Filtering
-- Log management
+- RGB read back current status
+- Log management (UART/SD)
 - Daylight saving, time servers handling, on demand/auto sync
 - Arduino Scheduler integration
-- Task measurement
+- Task runtime measurement
 - LCD backlight control
 - LCD Menu Navigation through Keyboard
 - Create Final Application Webpage
 - Online data acq service ex: Xively, Display values
-
 - Investigate Web page loading performance (char vs buffered)
 
 
-Source Code related:
-
-Configuration file/tab
-Project Configuration with #ifdef
-Describe HW connections in comment
-
 Future possibilities:
+
 Arduino features discover
 Alarm functionality
 GSM Shield
