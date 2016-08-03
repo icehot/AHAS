@@ -8,8 +8,13 @@ DS1302 ds1302;
 
 void init_DS1302()
 {
-    ds1302.init(PIN_DS1302_SCLK, PIN_DS1302_IO, PIN_DS1302_CE);
+  ds1302.init(PIN_DS1302_SCLK, PIN_DS1302_IO, PIN_DS1302_CE);
+  #ifdef USE_SERIAL_MONITOR
     Serial.println("#INIT: DS1302 => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: DS1302 => DONE");
+  #endif
 }
 
 void read_DS1302()
@@ -43,7 +48,12 @@ void sync_DS1302withNTP()
       break;
     }
 
-    Serial.println("#DS1302: synchronized to NTP");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#DS1302: synchronized to NTP");
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog("#DS1302: synchronized to NTP");
+    #endif
 }
 #endif
 #endif

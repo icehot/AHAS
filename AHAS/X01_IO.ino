@@ -1,4 +1,5 @@
 /** I/O **/
+void add2SysLog(char * entry);
 
 void softReset()
 {
@@ -9,8 +10,14 @@ void init_UART()
 {
   //Serial monitor initialization
   Serial.begin(9600);
-
-  Serial.println("#INIT: UART => DONE");
+  
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("### AHAS - Arduino Home Automation System ###");
+    Serial.println("#INIT: UART => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: UART => DONE");
+  #endif
 }
 
 
@@ -19,7 +26,13 @@ void init_DEBUG_LED()
 {
   pinMode(PIN_DEBUG_LED, OUTPUT);
   digitalWrite(PIN_DEBUG_LED,LOW);
-  Serial.println("#INIT: DEBUG_LED => DONE");
+
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: DEBUG_LED => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: DEBUG_LED => DONE");
+  #endif
 }
 #endif
 
@@ -27,7 +40,13 @@ void init_DEBUG_LED()
 void init_FACT_DEF_BTN()
 {
   pinMode(PIN_RESET, INPUT);
-  Serial.println("#INIT: FACT_DEF_BTN => DONE");
+
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: FACT_DEF_BTN => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: FACT_DEF_BTN => DONE");
+  #endif
 }
 #endif
 
@@ -42,7 +61,14 @@ void init_RGB()
   analogWrite(PIN_RGBLED_G, 128);
   analogWrite(PIN_RGBLED_B, 128);
 
-  Serial.println("#INIT: IO => DONE");
+  Serial.println("#INIT: RGB => DONE");
+
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: RGB => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: RGB => DONE");
+  #endif
 }
 #endif
 
@@ -60,6 +86,51 @@ void init_Relay()
   digitalWrite(PIN_RELAY3,HIGH);
   digitalWrite(PIN_RELAY4,HIGH);
 
-  Serial.println("#INIT: RElAY => DONE");
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: RElAY => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: RElAY => DONE");
+  #endif
 }
 #endif 
+
+/** PIR Sensor **/
+#ifdef USE_PIR
+void init_PIR()
+{
+  pinMode(PIN_PIR_SENSOR, INPUT);
+
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: PIR => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: PIR => DONE");
+  #endif
+}
+
+void get_PIR_State()
+{
+  DataPool.PIR_State = digitalRead(PIN_PIR_SENSOR);
+}
+#endif
+
+/** PIR Sensor **/
+#ifdef USE_SOUND_DETECT
+void init_SoundDetect()
+{
+  pinMode(PIN_SOUND_DETECT, INPUT);
+
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: SOUND DETECT => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: SOUND DETECT => DONE");
+  #endif
+}
+
+void get_SoundDetect_State()
+{
+  DataPool.SOUND_State = digitalRead(PIN_SOUND_DETECT);
+}
+#endif

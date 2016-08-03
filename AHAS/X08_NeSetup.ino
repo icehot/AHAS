@@ -37,7 +37,7 @@ void init_NetSetup()
   
   read_EEPROM_Settings();
   
-  #ifdef DEBUG
+  #ifdef DEBUG_NET_SETUP
    print_EEPROM_Settings();
   #endif
 

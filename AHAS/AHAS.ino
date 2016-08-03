@@ -52,12 +52,15 @@ Supported SW components:
 #define USE_RGB
 #define USE_FACTDEF_BTN
 #define USE_DEBUG_LED
+#define USE_PIR
+#define USE_SOUND_DETECT
 
 /* SW */
 
 #define USE_NTP
 #define USE_WEBDUINO
-#define USE_SERIAL_MONITOR //TBD
+#define USE_SERIAL_MONITOR
+#define USE_SYS_LOG
 
 
 /* Cross dependency check*/
@@ -114,6 +117,9 @@ void init_UART();
 #ifdef USE_DEBUG_LED
   void init_DEBUG_LED();
 #endif 
+#ifdef USE_PIR
+  void init_PIR();
+#endif
 void init_OS();
 void OS_loopStart();
 void OS_task1s();
@@ -139,8 +145,12 @@ void setup()
   #endif
 
   #ifdef USE_RELAY
-  init_Relay();
+    init_Relay();
   #endif 
+
+  #ifdef USE_PIR
+    init_PIR();
+  #endif
 
   #ifdef USE_RGB
     init_RGB();

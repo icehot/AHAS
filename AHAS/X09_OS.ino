@@ -65,7 +65,12 @@ void OS_task1s()
     read_time(); 
     //TimeStamps.ntp = millis();
     #endif
-
+    #ifdef USE_PIR
+    get_PIR_State();
+    #endif
+    #ifdef USE_SOUND_DETECT
+    get_SoundDetect_State();
+    #endif
     #ifdef USE_RGB
     analogWrite(PIN_RGBLED_R, DataPool.RGB_Red);
     analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);

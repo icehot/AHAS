@@ -25,6 +25,9 @@ Completed Features:
 24. HW Initialization statuses DHT11
 25. HW Configuration File Tab
 26. Project Configuration with precompiler switches
+HTML update needed:
+27. PIR Sensor integration
+28. Sound Detectorintegration
 
 Features to be done:
  

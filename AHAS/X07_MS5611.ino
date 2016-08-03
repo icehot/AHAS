@@ -37,11 +37,22 @@ void init_MS5611()
   if(!ms5611.begin())
   {
     //"Could not find a valid MS5611 sensor, check wiring!");
-    Serial.println("FAILED");
+    
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#INIT: MS5611 => FAILED");
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog("#INIT: MS5611 => FAILED");
+    #endif
   }
   else
   {
-    Serial.println("DONE");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#INIT: MS5611 => DONE");
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog("#INIT: MS5611 => DONE");
+    #endif
   }
   
   // Get reference pressure for relative altitude

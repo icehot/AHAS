@@ -78,4 +78,43 @@ void saveDataToLog()
     Serial.println("#SD: Error opening datalog.txt");
   }
 }
+
+void add2SysLog(char * entry)
+{
+  // make a string for assembling the data to log:
+  String dataString = "";
+
+  /* TimeStamp */
+  #ifdef USE_DS1302
+  dataString += String(DataPool.DS1302_Year);
+  dataString += "/";
+  dataString += String(DataPool.DS1302_Month);
+  dataString += "/";
+  dataString += String(DataPool.DS1302_Day);
+  dataString += " ";
+  dataString += String(DataPool.DS1302_Hour);
+  dataString += ":";
+  dataString += String(DataPool.DS1302_Minute);
+  dataString += ",";
+  #endif
+
+  dataString += String(entry);
+  
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  File dataFile = SD.open("system.log", FILE_WRITE);
+
+  // if the file is available, write to it:
+  if (dataFile) 
+  {
+    dataFile.println(dataString);
+    dataFile.close();
+    // print to the serial port too:
+    Serial.println("#SD: Datalog saved");
+  }
+  // if the file isn't open, pop up an error:
+  else {
+    Serial.println("#SD: Error opening system.log");
+  }
+}
 #endif

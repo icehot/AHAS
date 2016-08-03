@@ -379,6 +379,13 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_ADD("ds1302_sec",DataPool.DS1302_Second);
   JSON_ADD2("ds1302_sync",DataPool.DS1302_SyncStatus);
   #endif
+  #ifdef USE_PIR
+  JSON_ADD("pir_state",DataPool.PIR_State);
+  #endif 
+  #ifdef USE_SOUND_DETECT
+  JSON_ADD("sound_state",DataPool.SOUND_State);
+  #endif
+  
   JSON_END();
 }
 #ifdef USE_RELAY
@@ -537,6 +544,13 @@ void init_Webduino()
   webserver->begin();
 
   Serial.println("#INIT: WebDuino Server => DONE");
+
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#INIT: WebDuino Server => DONE");
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog("#INIT: WebDuino Server => DONE");
+    #endif
 }
 
 void WebduinoServerLoop()
