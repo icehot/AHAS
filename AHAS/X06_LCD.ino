@@ -25,7 +25,12 @@ void init_LCD()
   lcd.begin(16, 2);
   lcd.createChar(0, degree);
   
-  Serial.println("#INIT: LCD => DONE");
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: LCD => DONE");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: LCD => DONE");
+  #endif
 }
 
 void updateLCD() 
@@ -45,7 +50,6 @@ void updateLCD()
       printDigits(DataPool.DS1302_Month);lcd.print("/");
       printDigits(DataPool.DS1302_Day);
       
-    
       /* Second Row */
       lcd.setCursor(0,1);//bottom left corner
       lcd.print("Time: ");

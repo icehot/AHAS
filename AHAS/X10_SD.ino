@@ -4,21 +4,29 @@
 
 void init_SD()
 {
-    //SD card initialization
-  Serial.print("#INIT: SD Card => ");
-
   //Default CS port must be set to output
   pinMode(PIN_SPI_CS, OUTPUT);
   
   if (!SD.begin(PIN_SD_CS))
   { 
-    Serial.println("FAILED");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#INIT: SD Card => FAILED");
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog("#INIT: SD Card => FAILED");
+    #endif
+    
     delay(5000);
     softReset();
   }
   else
   {
-    Serial.println("DONE");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#INIT: SD Card => DONE");
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog("#INIT: SD Card => DONED");
+    #endif
   }
 }
 
@@ -71,11 +79,15 @@ void saveDataToLog()
     dataFile.println(dataString);
     dataFile.close();
     // print to the serial port too:
-    Serial.println("#SD: Datalog saved");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#SD: Datalog saved");
+    #endif
   }
   // if the file isn't open, pop up an error:
   else {
-    Serial.println("#SD: Error opening datalog.txt");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#SD: Error opening datalog.txt");
+    #endif
   }
 }
 
@@ -110,11 +122,15 @@ void add2SysLog(char * entry)
     dataFile.println(dataString);
     dataFile.close();
     // print to the serial port too:
-    Serial.println("#SD: Datalog saved");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#SD: System Log saved");
+    #endif
   }
   // if the file isn't open, pop up an error:
   else {
-    Serial.println("#SD: Error opening system.log");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#SD: Error opening system.log");
+    #endif
   }
 }
 #endif

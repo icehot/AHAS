@@ -10,7 +10,12 @@ void init_OS()
   TimeStamps.task2s = 0;
   TimeStamps.task1m = 0;
 
-  Serial.println("#INIT: OS => DONE ");
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("#INIT: OS => DONE ");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: OS => DONE ");
+  #endif
 }
 
 void OS_taskIdle()

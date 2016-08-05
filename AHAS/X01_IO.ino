@@ -61,8 +61,6 @@ void init_RGB()
   analogWrite(PIN_RGBLED_G, 128);
   analogWrite(PIN_RGBLED_B, 128);
 
-  Serial.println("#INIT: RGB => DONE");
-
   #ifdef USE_SERIAL_MONITOR
     Serial.println("#INIT: RGB => DONE");
   #endif

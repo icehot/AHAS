@@ -32,8 +32,6 @@ void read_MS5611()
 
 void init_MS5611()
 {
-  Serial.print("#INIT: MS5611 => ");
-   
   if(!ms5611.begin())
   {
     //"Could not find a valid MS5611 sensor, check wiring!");
@@ -64,7 +62,9 @@ void init_MS5611()
 
 void checkSettings()
 {
-  Serial.print("Oversampling: ");
-  Serial.println(ms5611.getOversampling());
+  #ifdef USE_SERIAL_MONITOR  
+    Serial.print("Oversampling: ");
+    Serial.println(ms5611.getOversampling());
+  #endif
 }
 #endif

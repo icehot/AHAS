@@ -43,19 +43,32 @@ void init_NetSetup()
 
   if (eeprom_config.use_dhcp == 1)
   { 
-    Serial.print("#INIT: Network via DHCP => ");
+    
     
     if (Ethernet.begin(eeprom_config.mac) == 1)
     {
       dhcp_success = true;
-      Serial.println("DONE");
-      Serial.print(" Obtained IP Address through DHCP: ");
-      Serial.println(Ethernet.localIP());
+
+      #ifdef USE_SERIAL_MONITOR
+        Serial.print("#INIT: Network via DHCP => DONE");
+        Serial.print(" Obtained IP Address through DHCP: ");
+        Serial.println(Ethernet.localIP());
+      #endif
+      #ifdef USE_SYS_LOG
+        add2SysLog("#INIT: Network via DHCP => DONE");
+        add2SysLog(" Obtained IP Address through DHCP: ");
+        //add2SysLog(Ethernet.localIP());
+      #endif
     } 
     else
     {
       dhcp_success = false;
-      Serial.println("FAILED");
+      #ifdef USE_SERIAL_MONITOR
+        Serial.print("#INIT: Network via DHCP => FAILED");
+      #endif
+      #ifdef USE_SYS_LOG
+        add2SysLog("#INIT: Network via DHCP => FAILED");
+      #endif
     }
   }
   
@@ -66,11 +79,18 @@ void init_NetSetup()
     IPAddress subnet  (eeprom_config.subnet[0], eeprom_config.subnet[1], eeprom_config.subnet[2], eeprom_config.subnet[3]);  
     IPAddress dns_server  (eeprom_config.dns_server[0], eeprom_config.dns_server[1], eeprom_config.dns_server[2], eeprom_config.dns_server[3]);
     Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
-    Serial.println("#INIT: Network with default settings => DONE");
-    Serial.print(" DefaultIP Address : ");
-    Serial.println(Ethernet.localIP());
+    
+    #ifdef USE_SERIAL_MONITOR
+     Serial.println("#INIT: Network with default settings => DONE");
+     Serial.print(" DefaultIP Address : ");
+     Serial.println(Ethernet.localIP());
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog("#INIT: Network with default settings => DONE");
+      add2SysLog(" Obtained IP Address through DHCP: ");
+      //add2SysLog(Ethernet.localIP());
+    #endif
   } 
-  
 }
 
 void set_Default_Values()

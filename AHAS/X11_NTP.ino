@@ -20,7 +20,14 @@ void sendNTPpacket(IPAddress &address);
 void init_NTP()
 {
   Udp.begin(localPort);
-  Serial.print("#INIT: Network Time Protocol =>");
+  
+  #ifdef USE_SERIAL_MONITOR
+    Serial.print("#INIT: Network Time Protocol =>");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#INIT: Network Time Protocol =>");
+  #endif
+  
   setSyncProvider(getNtpTime);
 }
 
@@ -45,16 +52,26 @@ byte packetBuffer[NTP_PACKET_SIZE]; //buffer to hold incoming & outgoing packets
 time_t getNtpTime()
 {
   while (Udp.parsePacket() > 0) ; // discard any previously received packets
-  //Serial.println("Transmit NTP Request");
-  sendNTPpacket(timeServer);
+
+    sendNTPpacket(timeServer);
+  
   uint32_t beginWait = millis();
-  while (millis() - beginWait < 1500) {
+  while (millis() - beginWait < 1500) 
+  {
     int size = Udp.parsePacket();
-    if (size >= NTP_PACKET_SIZE) {
-      //Serial.println("Receive NTP Response");
-      Serial.println("DONE");
+    if (size >= NTP_PACKET_SIZE) 
+    {
+      #ifdef USE_SERIAL_MONITOR
+        Serial.println("#DONE");
+      #endif
+      #ifdef USE_SYS_LOG
+        add2SysLog("#NTP: Response Received");
+      #endif
+
       Udp.read(packetBuffer, NTP_PACKET_SIZE);  // read packet into the buffer
+      
       unsigned long secsSince1900;
+     
       // convert four bytes starting at location 40 to a long integer
       secsSince1900 =  (unsigned long)packetBuffer[40] << 24;
       secsSince1900 |= (unsigned long)packetBuffer[41] << 16;
@@ -63,8 +80,14 @@ time_t getNtpTime()
       return secsSince1900 - 2208988800UL + timeZone * SECS_PER_HOUR;
     }
   }
-  //Serial.println("No NTP Response :-(");
-  Serial.println("FAILED");
+  
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println("Failed");
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog("#NTP: Response Failed");
+  #endif
+    
   return 0; // return 0 if unable to get the time
 }
 

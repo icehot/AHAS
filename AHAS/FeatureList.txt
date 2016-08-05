@@ -27,12 +27,10 @@ Completed Features:
 26. Project Configuration with precompiler switches
 HTML update needed:
 27. PIR Sensor integration
-28. Sound Detectorintegration
+28. Sound Detector integration
 
 Features to be done:
  
-- Pir Sensor
-- Sound Detector
 - Value Filtering
 - RGB read back current status
 - Log management (UART/SD)
