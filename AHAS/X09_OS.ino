@@ -62,14 +62,15 @@ void OS_task1s()
     read_MS5611();
     TimeStamps.ms5611 = millis();
     #endif
-    #ifdef USE_DS1302
-    read_DS1302();
-    TimeStamps.ds1302 = millis();
-    #endif
     #ifdef USE_NTP
     read_time(); 
     //TimeStamps.ntp = millis();
     #endif
+    #ifdef USE_DS1302
+    read_DS1302();
+    TimeStamps.ds1302 = millis();
+    #endif
+    //sync_DS1302withNTP(); //Uncomment for DS1302 NTP sync
     #ifdef USE_PIR
     get_PIR_State();
     #endif
