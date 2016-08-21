@@ -59,7 +59,12 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     }
     else 
     {/* if the file isn't open, pop up an error */
-      Serial.println("Error opening index.htm");
+      #ifdef USE_SERIAL_MONITOR
+        Serial.println("#WEB: Error opening index.htm");
+      #endif
+      #ifdef USE_SYS_LOG
+        add2SysLog("#WEB: Error opening index.htm");
+      #endif
     }
   }
 }
@@ -93,7 +98,12 @@ void valuesCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     }
     else 
     {/* if the file isn't open, pop up an error */
-      Serial.println("Error opening values.htm");
+      #ifdef USE_SERIAL_MONITOR
+        Serial.println("#WEB: Error opening values.htm");
+      #endif
+      #ifdef USE_SYS_LOG
+        add2SysLog("#WEB: Error opening values.htm");
+      #endif
     }
   }
 }
@@ -203,7 +213,12 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
         }
         else 
         {/* if the file isn't open, pop up an error */
-          Serial.println("Error opening settings.htm");
+          #ifdef USE_SERIAL_MONITOR
+            Serial.println("#WEB: Error opening settings.htm");
+          #endif
+          #ifdef USE_SYS_LOG
+            add2SysLog("#WEB: Error opening settings.htm");
+          #endif
         }
       }
   }
@@ -236,9 +251,15 @@ void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_
           {
             EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, value);
 
-            Serial.print("New Password saved to EEPROM:");
-            EEPROM_readAnything(EEPROM_PSWD_ADDRESS, temp);
-            Serial.println(temp);
+            #ifdef USE_SERIAL_MONITOR
+              Serial.print("WEB: New Password saved to EEPROM:");
+              EEPROM_readAnything(EEPROM_PSWD_ADDRESS, temp);
+              Serial.println(temp);
+            #endif
+            #ifdef USE_SYS_LOG
+              add2SysLog("WEB: New Password saved to EEPROM:");
+            #endif
+            
           }
     
         } while (repeat);
@@ -542,8 +563,6 @@ void init_Webduino()
   
   /* start the webserver */
   webserver->begin();
-
-  Serial.println("#INIT: WebDuino Server => DONE");
 
     #ifdef USE_SERIAL_MONITOR
       Serial.println("#INIT: WebDuino Server => DONE");

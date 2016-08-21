@@ -120,6 +120,10 @@ void init_UART();
 #ifdef USE_PIR
   void init_PIR();
 #endif
+#ifdef USE_SOUND_DETECT
+  void init_SoundDetect();
+#endif
+
 void init_OS();
 void OS_loopStart();
 void OS_task1s();
@@ -136,6 +140,10 @@ void setup()
 {
   init_UART();
   
+  #ifdef USE_SD
+    init_SD();
+  #endif 
+  
   #ifdef USE_DEBUG_LED
     init_DEBUG_LED();
   #endif 
@@ -143,6 +151,10 @@ void setup()
   #ifdef USE_FACTDEF_BTN
     init_FACT_DEF_BTN();
   #endif
+
+  #ifdef USE_SOUND_DETECT
+    init_SoundDetect();
+  #endif 
 
   #ifdef USE_RELAY
     init_Relay();
@@ -156,10 +168,6 @@ void setup()
     init_RGB();
   #endif
   
-  #ifdef USE_LCD
-    init_LCD();
-  #endif
-
   #ifdef USE_DHT11
     init_DHT11();
   #endif
@@ -172,10 +180,6 @@ void setup()
     init_MS5611();
   #endif
 
-  #ifdef USE_SD
-    init_SD();
-  #endif 
-
   #ifdef USE_ETH_SHIELD
     init_NetSetup();
   #endif
@@ -187,11 +191,16 @@ void setup()
   #ifdef USE_NTP
     init_NTP();
   #endif
-  
-  #ifdef USE_DS1302
+
+   #ifdef USE_DS1302
     init_DS1302();
   #endif
-  
+
+  #ifdef USE_LCD
+    init_LCD();
+  #endif
+
+ 
   init_OS();
 }
 

@@ -25,15 +25,17 @@ Completed Features:
 24. HW Initialization statuses DHT11
 25. HW Configuration File Tab
 26. Project Configuration with precompiler switches
+
 HTML update needed:
 27. PIR Sensor integration
 28. Sound Detector integration
+
+29. Log management (UART/SD)
 
 Features to be done:
  
 - Value Filtering
 - RGB read back current status
-- Log management (UART/SD)
 - Daylight saving, time servers handling, on demand/auto sync
 - Arduino Scheduler integration
 - Task runtime measurement
@@ -58,7 +60,6 @@ Light sensor
 Gas Sensor
 Smoke sensor
 Backup Battery
-Light sensor
 Software to download the displa/log file, interpret, etc..
 Multi User handling
 E-mail notification

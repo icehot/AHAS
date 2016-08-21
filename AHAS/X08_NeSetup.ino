@@ -50,7 +50,7 @@ void init_NetSetup()
       dhcp_success = true;
 
       #ifdef USE_SERIAL_MONITOR
-        Serial.print("#INIT: Network via DHCP => DONE");
+        Serial.println("#INIT: Network via DHCP => DONE");
         Serial.print(" Obtained IP Address through DHCP: ");
         Serial.println(Ethernet.localIP());
       #endif
@@ -191,8 +191,11 @@ void set_EEPROM_Default()
     eeprom_config.webserverPort=89;
     
     #ifdef DEBUG
-      Serial.println("Config reset");
+      Serial.println("#NET: Config reset");
     #endif 
+    #ifdef USE_SYS_LOG
+      add2SysLog("#NET: Config reset");
+    #endif
 }
 
 /**

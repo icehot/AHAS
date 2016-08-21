@@ -24,7 +24,7 @@ void BMP085::init(char i2c_address)
   this->i2c_address = i2c_address;
   Wire.begin();
   this->getCalibrationData();
-  this->dumpCalibrationData();
+  //this->dumpCalibrationData();
 }
 
 long BMP085::readPressure()

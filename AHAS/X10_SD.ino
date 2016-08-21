@@ -12,10 +12,7 @@ void init_SD()
     #ifdef USE_SERIAL_MONITOR
       Serial.println("#INIT: SD Card => FAILED");
     #endif
-    #ifdef USE_SYS_LOG
-      add2SysLog("#INIT: SD Card => FAILED");
-    #endif
-    
+       
     delay(5000);
     softReset();
   }
@@ -25,7 +22,7 @@ void init_SD()
       Serial.println("#INIT: SD Card => DONE");
     #endif
     #ifdef USE_SYS_LOG
-      add2SysLog("#INIT: SD Card => DONED");
+      add2SysLog("#INIT: SD Card => DONE");
     #endif
   }
 }
@@ -121,10 +118,10 @@ void add2SysLog(char * entry)
   {
     dataFile.println(dataString);
     dataFile.close();
-    // print to the serial port too:
-    #ifdef USE_SERIAL_MONITOR
-      Serial.println("#SD: System Log saved");
-    #endif
+// print to the serial port too:
+//    #ifdef USE_SERIAL_MONITOR
+//      Serial.println("#SD: System Log saved");
+//    #endif
   }
   // if the file isn't open, pop up an error:
   else {

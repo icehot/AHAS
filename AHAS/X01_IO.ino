@@ -15,9 +15,6 @@ void init_UART()
     Serial.println("### AHAS - Arduino Home Automation System ###");
     Serial.println("#INIT: UART => DONE");
   #endif
-  #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: UART => DONE");
-  #endif
 }
 
 
@@ -110,6 +107,8 @@ void init_PIR()
 void get_PIR_State()
 {
   DataPool.PIR_State = digitalRead(PIN_PIR_SENSOR);
+  Serial.print("#PIR: ");
+  Serial.println(DataPool.PIR_State);
 }
 #endif
 
@@ -130,5 +129,7 @@ void init_SoundDetect()
 void get_SoundDetect_State()
 {
   DataPool.SOUND_State = digitalRead(PIN_SOUND_DETECT);
+  Serial.print("#SOUND: ");
+  Serial.println(DataPool.SOUND_State);
 }
 #endif

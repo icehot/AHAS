@@ -11,6 +11,7 @@ IPAddress timeServer(132, 163, 4, 101); // time-a.timefreq.bldrdoc.gov
 // IPAddress timeServer(132, 163, 4, 102); // time-b.timefreq.bldrdoc.gov
 // IPAddress timeServer(132, 163, 4, 103); // time-c.timefreq.bldrdoc.gov
 unsigned int localPort = 8888;  // local port to listen for UDP packets
+bool isInit = true;
 
 EthernetUDP Udp;
 
@@ -62,7 +63,15 @@ time_t getNtpTime()
     if (size >= NTP_PACKET_SIZE) 
     {
       #ifdef USE_SERIAL_MONITOR
+      if (isInit == true)
+      {
         Serial.println("#DONE");
+        isInit = false;
+      }
+      else
+      {
+        Serial.println("#NTP: Response Received");
+      }
       #endif
       #ifdef USE_SYS_LOG
         add2SysLog("#NTP: Response Received");
