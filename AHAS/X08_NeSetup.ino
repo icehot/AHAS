@@ -9,6 +9,15 @@
 unsigned long last_dhcp_renew;
 byte dhcp_state;
 
+enum
+{
+  NothingHappened = 0,
+  RenewFailed     = 1,
+  RenewSuccess    = 2,
+  RebindFailed    = 3,
+  RebindSuccess   = 4
+}enDHCP_State;
+
 /***********************************************************************************************************/
 /*** Function Declarations ***/
 /***********************************************************************************************************/
@@ -91,6 +100,12 @@ void init_NetSetup()
       //add2SysLog(Ethernet.localIP());
     #endif
   } 
+
+  if (eeprom_config.use_dhcp==1) 
+  {
+    Task_RenewDHCP.setInterval(TASK_MINUTE*eeprom_config.dhcp_refresh_minutes);
+    Task_RenewDHCP.enable();
+  }
 }
 
 void set_Default_Values()
@@ -290,4 +305,5 @@ void renewDHCP(int interval) {
     }
   }
 }
+
 #endif

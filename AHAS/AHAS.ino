@@ -73,135 +73,38 @@ Supported SW components:
   #endif
 #endif 
 
+#include <TaskScheduler.h>
+
+
 /**********************************************************************************************************/
 /*** Function Declarations ***/
 /***********************************************************************************************************/
 
-void init_UART();
-#ifdef USE_SD 
-  void init_SD(); 
-#endif
-#ifdef USE_ETH_SHIELD
-  void init_NetSetup();
-#endif
-#ifdef USE_WEBDUINO
-  void init_Webduino();
-#endif
-#ifdef USE_DHT11
-  void init_DHT11();
-#endif
-#ifdef USE_BMP085
-  void init_BMP085(); 
-#endif
-#ifdef USE_MS5611
-  void init_MS5611();
-#endif
-#ifdef USE_NTP
-  void init_NTP();
-#endif
-#ifdef USE_DS1302
-  void init_DS1302();
-#endif
-#ifdef USE_LCD
-  void init_LCD();
-#endif
-#ifdef USE_RELAY
-  void init_Relay();
-#endif 
-#ifdef USE_RGB
-  void init_RGB();
-#endif
-#ifdef USE_FACTDEF_BTN
-  void init_FACT_DEF_BTN();
-#endif
-#ifdef USE_DEBUG_LED
-  void init_DEBUG_LED();
-#endif 
-#ifdef USE_PIR
-  void init_PIR();
-#endif
-#ifdef USE_SOUND_DETECT
-  void init_SoundDetect();
-#endif
+// Callback methods prototypes
 
-void init_OS();
-void OS_loopStart();
-void OS_task1s();
-void OS_task2s();
-void OS_task1m();
-void OS_taskIdle(); 
-void OS_calcRunTime();
-void OS_loopEnd(); 
+void Task_Init_Callback();
+void Task_Acquisition_Callback();
+void Task_Display_Callback();
+void Task_Webduino_Callback();
+void Task_Log_Callback();
+void Task_RenewDHCP_Callback();
+
+Scheduler TaskScheduler;
+
+//Tasks
+Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback, &TaskScheduler, true);
+Task Task_Acquisition(TASK_SECOND, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, true);
+Task Task_Display(2*TASK_SECOND, TASK_FOREVER, &Task_Display_Callback, &TaskScheduler, false);
+Task Task_Webduino(TASK_SECOND/2, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, false);
+Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback, &TaskScheduler, false);
+Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback, &TaskScheduler, false);
 
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
 void setup() 
 {
-  init_UART();
-  
-  #ifdef USE_SD
-    init_SD();
-  #endif 
-  
-  #ifdef USE_DEBUG_LED
-    init_DEBUG_LED();
-  #endif 
-
-  #ifdef USE_FACTDEF_BTN
-    init_FACT_DEF_BTN();
-  #endif
-
-  #ifdef USE_SOUND_DETECT
-    init_SoundDetect();
-  #endif 
-
-  #ifdef USE_RELAY
-    init_Relay();
-  #endif 
-
-  #ifdef USE_PIR
-    init_PIR();
-  #endif
-
-  #ifdef USE_RGB
-    init_RGB();
-  #endif
-  
-  #ifdef USE_DHT11
-    init_DHT11();
-  #endif
-
-  #ifdef USE_BMP085
-    init_BMP085(); 
-  #endif
-
-  #ifdef USE_MS5611
-    init_MS5611();
-  #endif
-
-  #ifdef USE_ETH_SHIELD
-    init_NetSetup();
-  #endif
-  
-  #ifdef USE_WEBDUINO
-    init_Webduino();
-  #endif
-  
-  #ifdef USE_NTP
-    init_NTP();
-  #endif
-
-   #ifdef USE_DS1302
-    init_DS1302();
-  #endif
-
-  #ifdef USE_LCD
-    init_LCD();
-  #endif
-
- 
-  init_OS();
+  TaskScheduler.init();
 }
 
 /***********************************************************************************************************/
@@ -209,11 +112,5 @@ void setup()
 /***********************************************************************************************************/
 void loop() 
 {
-  OS_loopStart();
-  OS_task1s();
-  OS_task2s();
-  OS_task1m();
-  OS_taskIdle();
-  OS_calcRunTime();
-  OS_loopEnd(); 
+  TaskScheduler.execute();
 }

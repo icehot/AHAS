@@ -4,27 +4,120 @@ void calcRunTime();
 void saveDataToLog();
 void read_time();
 
-void init_OS()
-{
-  TimeStamps.task1s = 0;
-  TimeStamps.task2s = 0;
-  TimeStamps.task1m = 0;
+void init_UART();
+#ifdef USE_SD 
+  void init_SD(); 
+#endif
+#ifdef USE_ETH_SHIELD
+  void init_NetSetup();
+#endif
+#ifdef USE_WEBDUINO
+  void init_Webduino();
+#endif
+#ifdef USE_DHT11
+  void init_DHT11();
+#endif
+#ifdef USE_BMP085
+  void init_BMP085(); 
+#endif
+#ifdef USE_MS5611
+  void init_MS5611();
+#endif
+#ifdef USE_NTP
+  void init_NTP();
+#endif
+#ifdef USE_DS1302
+  void init_DS1302();
+#endif
+#ifdef USE_LCD
+  void init_LCD();
+#endif
+#ifdef USE_RELAY
+  void init_Relay();
+#endif 
+#ifdef USE_RGB
+  void init_RGB();
+#endif
+#ifdef USE_FACTDEF_BTN
+  void init_FACT_DEF_BTN();
+#endif
+#ifdef USE_DEBUG_LED
+  void init_DEBUG_LED();
+#endif 
+#ifdef USE_PIR
+  void init_PIR();
+#endif
+#ifdef USE_SOUND_DETECT
+  void init_SoundDetect();
+#endif
 
-  #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: OS => DONE ");
+void Task_Init_Callback() 
+{
+  init_UART();
+  
+  #ifdef USE_SD
+    init_SD();
+  #endif 
+  
+  #ifdef USE_DEBUG_LED
+    init_DEBUG_LED();
+  #endif 
+
+  #ifdef USE_FACTDEF_BTN
+    init_FACT_DEF_BTN();
   #endif
-  #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: OS => DONE ");
+
+  #ifdef USE_SOUND_DETECT
+    init_SoundDetect();
+  #endif 
+
+  #ifdef USE_RELAY
+    init_Relay();
+  #endif 
+
+  #ifdef USE_PIR
+    init_PIR();
+  #endif
+
+  #ifdef USE_RGB
+    init_RGB();
+  #endif
+  
+  #ifdef USE_DHT11
+    init_DHT11();
+  #endif
+
+  #ifdef USE_BMP085
+    init_BMP085(); 
+  #endif
+
+  #ifdef USE_MS5611
+    init_MS5611();
+  #endif
+
+  #ifdef USE_ETH_SHIELD
+    init_NetSetup();
+  #endif
+  
+  #ifdef USE_WEBDUINO
+    init_Webduino();
+  #endif
+  
+  #ifdef USE_NTP
+    init_NTP();
+  #endif
+
+   #ifdef USE_DS1302
+    init_DS1302();
+  #endif
+
+  #ifdef USE_LCD
+    init_LCD();
   #endif
 }
 
-void OS_taskIdle()
+void Task_Webduino_Callback()
 {
-  #ifdef USE_ETH_SHIELD
-  // renew DHCP lease
-  renewDHCP(eeprom_config.dhcp_refresh_minutes);
-  #endif
-
   #ifdef USE_WEBDUINO
   TimeStamps.webStart = millis();
   WebduinoServerLoop();
@@ -32,23 +125,76 @@ void OS_taskIdle()
   #endif
 }
 
+void Task_RenewDHCP_Callback()
+{
+  #ifdef USE_ETH_SHIELD
+  
+    /* renew DHCP lease */
+  
+    dhcp_state=Ethernet.maintain();
+    
+    switch(dhcp_state)
+    {
+      case NothingHappened:
+        #ifdef USE_SERIAL_MONITOR
+          Serial.println("#DHCP: Nothing Happened");
+        #endif
+        #ifdef USE_SYS_LOG
+          add2SysLog("#DHCP: Nothing Happened");
+        #endif
+      break;
+      case RenewFailed:
+        #ifdef USE_SERIAL_MONITOR
+          Serial.println("#DHCP: Renew Failed");
+        #endif
+        #ifdef USE_SYS_LOG
+          add2SysLog("#DHCP: Renew Failed");
+        #endif
+      break;
+      case RenewSuccess:
+        #ifdef USE_SERIAL_MONITOR
+          Serial.println("#DHCP: Renew Success");
+        #endif
+        #ifdef USE_SYS_LOG
+          add2SysLog("#DHCP: Renew Success");
+        #endif
+      break;
+      case RebindFailed:
+        #ifdef USE_SERIAL_MONITOR
+          Serial.println("#DHCP: Rebind Failed");
+        #endif
+        #ifdef USE_SYS_LOG
+          add2SysLog("#DHCP: Rebind Failed");
+        #endif
+      break;
+      case RebindSuccess:
+        #ifdef USE_SERIAL_MONITOR
+          Serial.println("#DHCP: Rebind Success");
+        #endif
+        #ifdef USE_SYS_LOG
+          add2SysLog("#DHCP: Rebind Success");
+        #endif
+      break;
+      default:
+        #ifdef USE_SERIAL_MONITOR
+          Serial.println("#DHCP: Unknown Error");
+        #endif
+        #ifdef USE_SYS_LOG
+          add2SysLog("#DHCP: Unknown Error");
+        #endif
+      break;
+    }
+  #endif
+}
 void OS_loopStart()
 {
   TimeStamps.start = TimeStamps.current;
   TimeStamps.current = millis();
 }
 
-void OS_loopEnd()
-{
-  TimeStamps.end = millis();
-}
 
-void OS_task1s()
+void Task_Acquisition_Callback()
 {
-  if (TimeStamps.current - TimeStamps.task1s > 1000)
-  {
-    TimeStamps.task1s = TimeStamps.current;
-
     TimeStamps.cycleStart = millis();
     #ifdef USE_DHT11
     read_DHT11();
@@ -82,28 +228,28 @@ void OS_task1s()
     analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);
     analogWrite(PIN_RGBLED_B, DataPool.RGB_Blue);
     #endif
-  }
+
+   if (Task_Acquisition.isFirstIteration())
+   {
+      Task_Display.enable();
+      Task_Webduino.enable();
+      Task_Log.enable();
+   }
 }
 
-void OS_task2s()
+void Task_Display_Callback()
 {
-  if (TimeStamps.current - TimeStamps.task2s > 2000)
-  {
     TimeStamps.task2s = TimeStamps.current;
     #ifdef USE_LCD
     updateLCD();
     #endif
-  }
 }
-void OS_task1m()
+void Task_Log_Callback()
 {
-  if (TimeStamps.current - TimeStamps.task1m > 60000)
-  {
     TimeStamps.task1m = TimeStamps.current;
     #ifdef USE_SD
     saveDataToLog();
     #endif
-  }
 }
 
 void OS_calcRunTime()
