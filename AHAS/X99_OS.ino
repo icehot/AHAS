@@ -1,58 +1,13 @@
 /** OS **/
-void WebduinoServerLoop();
-void calcRunTime();
-void saveDataToLog();
-void read_time();
 
-void init_UART();
-#ifdef USE_SD 
-  void init_SD(); 
-#endif
-#ifdef USE_ETH_SHIELD
-  void init_NetSetup();
-#endif
-#ifdef USE_WEBDUINO
-  void init_Webduino();
-#endif
-#ifdef USE_DHT11
-  void init_DHT11();
-#endif
-#ifdef USE_BMP085
-  void init_BMP085(); 
-#endif
-#ifdef USE_MS5611
-  void init_MS5611();
-#endif
-#ifdef USE_NTP
-  void init_NTP();
-#endif
-#ifdef USE_DS1302
-  void init_DS1302();
-#endif
-#ifdef USE_LCD
-  void init_LCD();
-#endif
-#ifdef USE_RELAY
-  void init_Relay();
-#endif 
-#ifdef USE_RGB
-  void init_RGB();
-#endif
-#ifdef USE_FACTDEF_BTN
-  void init_FACT_DEF_BTN();
-#endif
-#ifdef USE_DEBUG_LED
-  void init_DEBUG_LED();
-#endif 
-#ifdef USE_PIR
-  void init_PIR();
-#endif
-#ifdef USE_SOUND_DETECT
-  void init_SoundDetect();
-#endif
+//#define DEBUG
 
 void Task_Init_Callback() 
 {
+  #ifdef DEBUG
+    Serial.println("#OS: Init Task");
+  #endif 
+  
   init_UART();
   
   #ifdef USE_SD
@@ -116,8 +71,72 @@ void Task_Init_Callback()
   #endif
 }
 
+void Task_Acquisition_Callback()
+{
+    #ifdef DEBUG
+      Serial.println("#OS: Acquisition Task");
+    #endif 
+  
+    TimeStamps.cycleStart = millis();
+    #ifdef USE_DHT11
+    read_DHT11();
+    TimeStamps.dht11 = millis();
+    #endif
+    #ifdef USE_BMP085
+    read_BMP085(); 
+    TimeStamps.bmp085 = millis();
+    #endif
+    #ifdef USE_MS5611
+    read_MS5611();
+    TimeStamps.ms5611 = millis();
+    #endif
+    #ifdef USE_NTP
+    read_time(); 
+    //TimeStamps.ntp = millis();
+    #endif
+    #ifdef USE_DS1302
+    read_DS1302();
+    TimeStamps.ds1302 = millis();
+    #endif
+    //sync_DS1302withNTP(); //Uncomment for DS1302 NTP sync
+    #ifdef USE_PIR
+    get_PIR_State();
+    #endif
+    #ifdef USE_SOUND_DETECT
+    get_SoundDetect_State();
+    #endif
+    #ifdef USE_RGB
+    analogWrite(PIN_RGBLED_R, DataPool.RGB_Red);
+    analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);
+    analogWrite(PIN_RGBLED_B, DataPool.RGB_Blue);
+    #endif
+
+   if (Task_Acquisition.isFirstIteration())
+   {
+      Task_Display.enable();
+      Task_Webduino.enable();
+      Task_Log.enable();
+   }
+}
+
+void Task_Display_Callback()
+{
+    #ifdef DEBUG
+      Serial.println("#OS: Display Task");
+    #endif 
+    
+    TimeStamps.task2s = TimeStamps.current;
+    #ifdef USE_LCD
+    updateLCD();
+    #endif
+}
+
 void Task_Webduino_Callback()
 {
+    #ifdef DEBUG
+      Serial.println("#OS: Webduino Task");
+    #endif 
+  
   #ifdef USE_WEBDUINO
   TimeStamps.webStart = millis();
   WebduinoServerLoop();
@@ -125,8 +144,24 @@ void Task_Webduino_Callback()
   #endif
 }
 
+void Task_Log_Callback()
+{
+    #ifdef DEBUG
+      Serial.println("#OS: Log Task");
+    #endif 
+    
+    TimeStamps.task1m = TimeStamps.current;
+    #ifdef USE_SD
+    saveDataToLog();
+    #endif
+}
+
 void Task_RenewDHCP_Callback()
 {
+   #ifdef DEBUG
+     Serial.println("#OS: Renew DHCP Task");
+   #endif 
+  
   #ifdef USE_ETH_SHIELD
   
     /* renew DHCP lease */
@@ -186,71 +221,6 @@ void Task_RenewDHCP_Callback()
     }
   #endif
 }
-void OS_loopStart()
-{
-  TimeStamps.start = TimeStamps.current;
-  TimeStamps.current = millis();
-}
-
-
-void Task_Acquisition_Callback()
-{
-    TimeStamps.cycleStart = millis();
-    #ifdef USE_DHT11
-    read_DHT11();
-    TimeStamps.dht11 = millis();
-    #endif
-    #ifdef USE_BMP085
-    read_BMP085(); 
-    TimeStamps.bmp085 = millis();
-    #endif
-    #ifdef USE_MS5611
-    read_MS5611();
-    TimeStamps.ms5611 = millis();
-    #endif
-    #ifdef USE_NTP
-    read_time(); 
-    //TimeStamps.ntp = millis();
-    #endif
-    #ifdef USE_DS1302
-    read_DS1302();
-    TimeStamps.ds1302 = millis();
-    #endif
-    //sync_DS1302withNTP(); //Uncomment for DS1302 NTP sync
-    #ifdef USE_PIR
-    get_PIR_State();
-    #endif
-    #ifdef USE_SOUND_DETECT
-    get_SoundDetect_State();
-    #endif
-    #ifdef USE_RGB
-    analogWrite(PIN_RGBLED_R, DataPool.RGB_Red);
-    analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);
-    analogWrite(PIN_RGBLED_B, DataPool.RGB_Blue);
-    #endif
-
-   if (Task_Acquisition.isFirstIteration())
-   {
-      Task_Display.enable();
-      Task_Webduino.enable();
-      Task_Log.enable();
-   }
-}
-
-void Task_Display_Callback()
-{
-    TimeStamps.task2s = TimeStamps.current;
-    #ifdef USE_LCD
-    updateLCD();
-    #endif
-}
-void Task_Log_Callback()
-{
-    TimeStamps.task1m = TimeStamps.current;
-    #ifdef USE_SD
-    saveDataToLog();
-    #endif
-}
 
 void OS_calcRunTime()
 {
@@ -263,3 +233,7 @@ void OS_calcRunTime()
   RunTime.web    = TimeStamps.webEnd - TimeStamps.webStart; 
   */
 }
+
+#ifdef DEBUG
+  #undef DEBUG
+#endif

@@ -1,10 +1,47 @@
 /** Configuration **/
 
 /***********************************************************************************************************/
-/*** Macro definition section ***/
+/** Project Configuration **/
 /***********************************************************************************************************/
+/* Comment out the not wanted component`s defines */
 
+/* HW Components */
+
+#define USE_ETH_SHIELD
+#define USE_DHT11
+#define USE_BMP085
+#define USE_MS5611
+#define USE_DS1302
+#define USE_LCD
+#define USE_SD
+#define USE_RELAY
+#define USE_RGB
+#define USE_FACTDEF_BTN
+#define USE_DEBUG_LED
+#define USE_PIR
+#define USE_SOUND_DETECT
+#define USE_ANALOG_BTN
+
+/* SW Components */
+
+#define USE_NTP
+#define USE_WEBDUINO
+#define USE_SERIAL_MONITOR
+#define USE_SYS_LOG
+
+/* Cross dependency check*/
+#ifndef USE_ETH_SHIELD
+  #ifdef USE_NTP
+    #error "NTP is enabled without ETH Shield"
+  #endif
+  #ifdef USE_WEBDUINO
+    #error "WEBDUINO is enabled without ETH Shield"
+  #endif
+#endif 
+
+/***********************************************************************************************************/
 /** PIN configuration **/
+/***********************************************************************************************************/
 #ifdef USE_LCD
   #define PIN_LCD_RS 22
   #define PIN_LCD_EN 23
@@ -26,7 +63,7 @@
 #endif
 
 #ifdef USE_FACTDEF_BTN
-  #define PIN_RESET 33  //Connect a button to this PIN. If the button is hold, an the device is turned on the default ethernet settings are restored.
+  #define PIN_RESET 33
 #endif
 
 #ifdef USE_DEBUG_LED
@@ -53,122 +90,12 @@
   #define PIN_DS1302_CE     49    // Arduino pin for the Chip Enablev
 #endif
 
+#ifdef USE_ANALOG_BTN
+  #define PIN_ANALOG_BUTTON a15
+#endif
+
+#ifdef USE_ETH_SHIELD or USE_SD
+  #define PIN_SD_CS 4 //SD card chip select
+#endif
+
 #define PIN_SPI_CS 53 //default chip select
-#define PIN_SD_CS 4 //SD card chip select
-#define PIN_ANALOG_BUTTON a15
-
-/*Configuration*/
-
-
-/***********************************************************************************************************/
-/*** Global Variable definition  ***/
-/***********************************************************************************************************/
-
-/** Data Pool **/
-/* Used for data exchange between webserver and sensors */
-
-struct{
-  #ifdef USE_DHT11
-  char* DHT11_Status;
-  int DHT11_Temperature;
-  int DHT11_Humidity;
-  int DHT11_DewPoint;
-  #endif
-  
-  #ifdef USE_BMP085
-  int BMP085_Temperature;
-  long BMP085_Pressure;
-  #endif
-  
-  #ifdef USE_MS5611
-  double MS5611_Temperature;
-  long MS5611_Pressure;
-  float MS5611_AbsAltitude;
-  float MS5611_RelAltitude;
-  #endif
-  
-  #ifdef USE_DS1302
-  word DS1302_Year;
-  byte DS1302_Month;
-  byte DS1302_Day;
-  byte DS1302_Hour;
-  byte DS1302_Minute;
-  byte DS1302_Second;
-  byte DS1302_DayOfWeek;
-  char* DS1302_SyncStatus;
-  #endif
-  
-  #ifdef USE_NTP
-  word NTP_Year;
-  byte NTP_Month;
-  byte NTP_Day;
-  byte NTP_Hour;
-  byte NTP_Minute;
-  byte NTP_Second;
-  char* NTP_Status;
-  #endif
-
-  #ifdef USE_RGB
-  byte RGB_Red;
-  byte RGB_Green;
-  byte RGB_Blue;
-  #endif
-
-  #ifdef USE_PIR
-  byte PIR_State;
-  #endif
-
-  #ifdef USE_SOUND_DETECT
-  byte SOUND_State;
-  #endif
-
-}DataPool;
-
-struct{
-  unsigned long start;
-  unsigned long cycleStart;
-  unsigned long cycleEnd;
-  #ifdef USE_DHT11
-  unsigned long dht11;
-  #endif
-  #ifdef USE_BMP085
-  unsigned long bmp085;
-  #endif
-  #ifdef USE_MS5611
-  unsigned long ms5611;
-  #endif
-  
-  #ifdef USE_DS1302
-  unsigned long ds1302;
-  #endif
-  
-  #ifdef USE_WEBDUINO
-  unsigned long webStart;
-  unsigned long webEnd;
-  #endif
-  
-  unsigned long current;
-  unsigned long task1s;
-  unsigned long task2s;
-  unsigned long task1m;
-  unsigned long end;
-}TimeStamps;
-
-struct{
-  int total;
-  #ifdef USE_DHT11
-  int dht11;
-  #endif
-  #ifdef USE_BMP085
-  int bmp085;
-  #endif
-  #ifdef USE_MS5611
-  int ms5611;
-  #endif
-  #ifdef USE_DS1302
-  int ds1302;
-  #endif
-  #ifdef USE_WEBDUINO
-  int web;
-  #endif
-}RunTime;

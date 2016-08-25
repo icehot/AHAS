@@ -33,24 +33,26 @@ HTML update needed:
 29. Log management (UART/SD)
 
 Features to be done:
- 
+
+- Arduino Scheduler integration
+- Task runtime measurement
 - Value Filtering
 - RGB read back current status
 - Daylight saving, time servers handling, on demand/auto sync
-- Arduino Scheduler integration
-- Task runtime measurement
 - LCD backlight control
 - LCD Menu Navigation through Keyboard
 - Create Final Application Webpage
 - Online data acq service ex: Xively, Display values
 - Investigate Web page loading performance (char vs buffered)
+- RFID integration
 
 
 Future possibilities:
 
 Arduino features discover
-Alarm functionality
 GSM Shield
+Alarm functionality
+E-mail notification
 Radio receiver/transmitter
 ESP8829 Wifi for sensors
 File Upload through web
@@ -60,11 +62,10 @@ Light sensor
 Gas Sensor
 Smoke sensor
 Backup Battery
-Software to download the displa/log file, interpret, etc..
+Software to download the display/log file, interpret, etc..
 Multi User handling
-E-mail notification
-
-
+Firmata
+Database access
 
 
 

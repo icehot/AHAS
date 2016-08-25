@@ -1,10 +1,10 @@
 /** Net Setup **/
 /** Ethernet Shield **/
 #ifdef USE_ETH_SHIELD
+//#define DEBUG
 
 #include <SPI.h>
 #include <Ethernet.h>
-
 
 unsigned long last_dhcp_renew;
 byte dhcp_state;
@@ -46,7 +46,7 @@ void init_NetSetup()
   
   read_EEPROM_Settings();
   
-  #ifdef DEBUG_NET_SETUP
+  #ifdef DEBUG
    print_EEPROM_Settings();
   #endif
 
@@ -305,5 +305,9 @@ void renewDHCP(int interval) {
     }
   }
 }
+
+#ifdef DEBUG
+  #undef DEBUG
+#endif
 
 #endif
