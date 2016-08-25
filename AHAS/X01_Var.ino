@@ -1,24 +1,14 @@
 /**********************************************************************************************************/
 /*** Function Declarations ***/
 /***********************************************************************************************************/
-void Task_Init_Callback();
-void Task_Acquisition_Callback();
-void Task_Display_Callback();
-void Task_Webduino_Callback();
-void Task_Log_Callback();
-void Task_RenewDHCP_Callback();
-
-/***********************************************************************************************************/
-/*** Global Variable definition  ***/
-/***********************************************************************************************************/
-
 /** Task Definitions **/
-Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback, &TaskScheduler, true);
-Task Task_Acquisition(TASK_SECOND, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, true);
-Task Task_Display(2*TASK_SECOND, TASK_FOREVER, &Task_Display_Callback, &TaskScheduler, false);
-Task Task_Webduino(TASK_SECOND/2, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, false);
-Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback, &TaskScheduler, false);
-Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback, &TaskScheduler, false);
+//Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback, &TaskScheduler, true);
+//Task Task_Acquisition(TASK_SECOND, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, true);
+//Task Task_Display(2*TASK_SECOND, TASK_FOREVER, &Task_Display_Callback, &TaskScheduler, false);
+//Task Task_Webduino(TASK_SECOND/2, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, false);
+//Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback, &TaskScheduler, false);
+//Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback, &TaskScheduler, false);
+
 
 /** Data Pool **/
 /* Used for data exchange between webserver and sensors */
@@ -112,6 +102,8 @@ void inline startRuntimeMeasurement()
 
 void endRuntimeMeasurement(RunTime_Type* module)
 {
+  /* Increment the counter */
+  module->count++;
   /* Calculate the runtime */
   module->act = (unsigned int)(millis() - RunTime.TimeStampStart);
   /* Check the maximum */

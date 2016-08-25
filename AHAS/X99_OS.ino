@@ -1,14 +1,14 @@
 /** OS **/
 
-//#define DEBUG
+#define DEBUG
 
 void Task_Init_Callback() 
 {
   #ifdef DEBUG
     Serial.print(millis());
-    Serial.print(" #OS: Init Task - ");
-    Serial.print("Delayed: ");
-    Serial.println(Task_Init.getStartDelay());
+    Serial.println(" #OS: Init Task");
+    //Serial.print("Delayed: ");
+    //Serial.println(Task_Init.getStartDelay());
   #endif 
   
   init_UART();
@@ -78,9 +78,9 @@ void Task_Acquisition_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.print("# OS: Acquisition Task - ");
-      Serial.print("Delayed: ");
-      Serial.println(Task_Acquisition.getStartDelay());
+      Serial.println(" #OS: Acquisition Task");
+      //Serial.print("Delayed: ");
+      //Serial.println(Task_Acquisition.getStartDelay());
     #endif 
 
     startRuntimeMeasurement();
@@ -128,9 +128,9 @@ void Task_Display_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.print(" #OS: Display Task" - ");
-      Serial.print("Delayed: ");
-      Serial.println(Task_Display.getStartDelay());
+      Serial.println(" #OS: Display Task");
+      //Serial.print("Delayed: ");
+      //Serial.println(Task_Display.getStartDelay());
     #endif 
 
     Serial.println("Runtime for Acquisition:");
@@ -145,9 +145,9 @@ void Task_Webduino_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.print(" #OS: Webduino Task - ");
-      Serial.print("Delayed: ");
-      Serial.println(Task_Display.getStartDelay());
+      Serial.println(" #OS: Webduino Task");
+      //Serial.print("Delayed: ");
+      //Serial.println(Task_Display.getStartDelay());
     #endif 
   
   #ifdef USE_WEBDUINO
@@ -159,9 +159,9 @@ void Task_Log_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.print(" #OS: Log Task - ");
-      Serial.print("Delayed: ");
-      Serial.println(Task_Log.getStartDelay());
+      Serial.println(" #OS: Log Task");
+      //Serial.print("Delayed: ");
+      //Serial.println(Task_Log.getStartDelay());
     #endif
     
     #ifdef USE_SD
@@ -173,9 +173,9 @@ void Task_RenewDHCP_Callback()
 {
    #ifdef DEBUG
       Serial.print(millis());
-      Serial.print(" #OS: Renew DHCP Task - ");
-      Serial.print("Delayed: ");
-      Serial.println(Task_Log.getStartDelay());
+      Serial.println(" #OS: Renew DHCP Task");
+      //Serial.print("Delayed: ");
+      //Serial.println(Task_Log.getStartDelay());
     #endif
   
   #ifdef USE_ETH_SHIELD

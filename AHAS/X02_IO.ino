@@ -107,8 +107,8 @@ void init_PIR()
 void get_PIR_State()
 {
   DataPool.PIR_State = digitalRead(PIN_PIR_SENSOR);
-  Serial.print("#PIR: ");
-  Serial.println(DataPool.PIR_State);
+  //Serial.print("#PIR: ");
+  //Serial.println(DataPool.PIR_State);
 }
 #endif
 
@@ -129,7 +129,7 @@ void init_SoundDetect()
 void get_SoundDetect_State()
 {
   DataPool.SOUND_State = digitalRead(PIN_SOUND_DETECT);
-  Serial.print("#SOUND: ");
-  Serial.println(DataPool.SOUND_State);
+  //Serial.print("#SOUND: ");
+  //Serial.println(DataPool.SOUND_State);
 }
 #endif

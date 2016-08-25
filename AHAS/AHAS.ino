@@ -40,12 +40,45 @@ Supported SW components:
 #define _TASK_TIMECRITICAL
 Scheduler TaskScheduler;
 
+void Task_Init_Callback();
+void Task_Acquisition_Callback();
+void Task_Display_Callback();
+void Task_Webduino_Callback();
+void Task_Log_Callback();
+void Task_RenewDHCP_Callback();
+
+/***********************************************************************************************************/
+/*** Global Variable definition  ***/
+/***********************************************************************************************************/
+
+/** Task Definitions **/
+Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback);
+Task Task_Acquisition(1000, TASK_FOREVER, &Task_Acquisition_Callback);
+Task Task_Display(2000, TASK_FOREVER, &Task_Display_Callback);
+Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
+Task Task_Log(60000, TASK_FOREVER, &Task_Log_Callback);
+Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
+
+
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
 void setup() 
 {
   TaskScheduler.init();
+
+  TaskScheduler.addTask(Task_Init);
+  TaskScheduler.addTask(Task_Acquisition);
+  TaskScheduler.addTask(Task_Display);
+  TaskScheduler.addTask(Task_Webduino);
+  TaskScheduler.addTask(Task_Log);
+  TaskScheduler.addTask(Task_RenewDHCP);
+  
+  Task_Init.enable();
+  Task_Acquisition.enable();
+  Task_RenewDHCP.enable();
+  
+  //TaskScheduler.startNow();
 }
 
 /***********************************************************************************************************/
