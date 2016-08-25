@@ -25,17 +25,15 @@ Completed Features:
 24. HW Initialization statuses DHT11
 25. HW Configuration File Tab
 26. Project Configuration with precompiler switches
-
-HTML update needed:
 27. PIR Sensor integration
-28. Sound Detector integration
 
-29. Log management (UART/SD)
+28. Sound Detector integration - Ongoing
+29. Log management (UART/SD) - Need to be verified
+30. Arduino Scheduler integration - Ongoing
+31. Task runtime measurement - ongoing
 
 Features to be done:
 
-- Arduino Scheduler integration
-- Task runtime measurement
 - Value Filtering
 - RGB read back current status
 - Daylight saving, time servers handling, on demand/auto sync
@@ -46,10 +44,8 @@ Features to be done:
 - Investigate Web page loading performance (char vs buffered)
 - RFID integration
 
-
 Future possibilities:
 
-Arduino features discover
 GSM Shield
 Alarm functionality
 E-mail notification
@@ -66,6 +62,8 @@ Software to download the display/log file, interpret, etc..
 Multi User handling
 Firmata
 Database access
+PROGMEM - internal web pages
+Piezo Buzzer - tone();
 
 
 

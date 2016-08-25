@@ -5,7 +5,10 @@
 void Task_Init_Callback() 
 {
   #ifdef DEBUG
-    Serial.println("#OS: Init Task");
+    Serial.print(millis());
+    Serial.print(" #OS: Init Task - ");
+    Serial.print("Delayed: ");
+    Serial.println(Task_Init.getStartDelay());
   #endif 
   
   init_UART();
@@ -62,7 +65,7 @@ void Task_Init_Callback()
     init_NTP();
   #endif
 
-   #ifdef USE_DS1302
+  #ifdef USE_DS1302
     init_DS1302();
   #endif
 
@@ -74,29 +77,28 @@ void Task_Init_Callback()
 void Task_Acquisition_Callback()
 {
     #ifdef DEBUG
-      Serial.println("#OS: Acquisition Task");
+      Serial.print(millis());
+      Serial.print("# OS: Acquisition Task - ");
+      Serial.print("Delayed: ");
+      Serial.println(Task_Acquisition.getStartDelay());
     #endif 
+
+    startRuntimeMeasurement();
   
-    TimeStamps.cycleStart = millis();
     #ifdef USE_DHT11
     read_DHT11();
-    TimeStamps.dht11 = millis();
     #endif
     #ifdef USE_BMP085
     read_BMP085(); 
-    TimeStamps.bmp085 = millis();
     #endif
     #ifdef USE_MS5611
     read_MS5611();
-    TimeStamps.ms5611 = millis();
     #endif
     #ifdef USE_NTP
     read_time(); 
-    //TimeStamps.ntp = millis();
     #endif
     #ifdef USE_DS1302
-    read_DS1302();
-    TimeStamps.ds1302 = millis();
+    read_DS1302();  
     #endif
     //sync_DS1302withNTP(); //Uncomment for DS1302 NTP sync
     #ifdef USE_PIR
@@ -105,6 +107,7 @@ void Task_Acquisition_Callback()
     #ifdef USE_SOUND_DETECT
     get_SoundDetect_State();
     #endif
+    
     #ifdef USE_RGB
     analogWrite(PIN_RGBLED_R, DataPool.RGB_Red);
     analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);
@@ -117,15 +120,22 @@ void Task_Acquisition_Callback()
       Task_Webduino.enable();
       Task_Log.enable();
    }
+
+   endRuntimeMeasurement(&RunTime.Task_Acquisition);
 }
 
 void Task_Display_Callback()
 {
     #ifdef DEBUG
-      Serial.println("#OS: Display Task");
+      Serial.print(millis());
+      Serial.print(" #OS: Display Task" - ");
+      Serial.print("Delayed: ");
+      Serial.println(Task_Display.getStartDelay());
     #endif 
+
+    Serial.println("Runtime for Acquisition:");
+    printRuntTime(&RunTime.Task_Acquisition);
     
-    TimeStamps.task2s = TimeStamps.current;
     #ifdef USE_LCD
     updateLCD();
     #endif
@@ -134,23 +144,26 @@ void Task_Display_Callback()
 void Task_Webduino_Callback()
 {
     #ifdef DEBUG
-      Serial.println("#OS: Webduino Task");
+      Serial.print(millis());
+      Serial.print(" #OS: Webduino Task - ");
+      Serial.print("Delayed: ");
+      Serial.println(Task_Display.getStartDelay());
     #endif 
   
   #ifdef USE_WEBDUINO
-  TimeStamps.webStart = millis();
   WebduinoServerLoop();
-  TimeStamps.webEnd = millis();
   #endif
 }
 
 void Task_Log_Callback()
 {
     #ifdef DEBUG
-      Serial.println("#OS: Log Task");
-    #endif 
+      Serial.print(millis());
+      Serial.print(" #OS: Log Task - ");
+      Serial.print("Delayed: ");
+      Serial.println(Task_Log.getStartDelay());
+    #endif
     
-    TimeStamps.task1m = TimeStamps.current;
     #ifdef USE_SD
     saveDataToLog();
     #endif
@@ -159,8 +172,11 @@ void Task_Log_Callback()
 void Task_RenewDHCP_Callback()
 {
    #ifdef DEBUG
-     Serial.println("#OS: Renew DHCP Task");
-   #endif 
+      Serial.print(millis());
+      Serial.print(" #OS: Renew DHCP Task - ");
+      Serial.print("Delayed: ");
+      Serial.println(Task_Log.getStartDelay());
+    #endif
   
   #ifdef USE_ETH_SHIELD
   
@@ -220,18 +236,6 @@ void Task_RenewDHCP_Callback()
       break;
     }
   #endif
-}
-
-void OS_calcRunTime()
-{
-  /*
-  RunTime.dht11  = TimeStamps.dht11  - TimeStamps.cycleStart;
-  RunTime.bmp085 = TimeStamps.bmp085 - TimeStamps.dht11;
-  RunTime.ms5611 = TimeStamps.ms5611 - TimeStamps.bmp085;
-  RunTime.ds1302 = TimeStamps.ds1302 - TimeStamps.ms5611;
-  RunTime.total  = TimeStamps.end    - TimeStamps.start;
-  RunTime.web    = TimeStamps.webEnd - TimeStamps.webStart; 
-  */
 }
 
 #ifdef DEBUG

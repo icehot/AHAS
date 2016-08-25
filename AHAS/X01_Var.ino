@@ -77,54 +77,57 @@ struct{
   #ifdef USE_SOUND_DETECT
   byte SOUND_State;
   #endif
-
 }DataPool;
 
-struct{
-  unsigned long start;
-  unsigned long cycleStart;
-  unsigned long cycleEnd;
-  #ifdef USE_DHT11
-  unsigned long dht11;
-  #endif
-  #ifdef USE_BMP085
-  unsigned long bmp085;
-  #endif
-  #ifdef USE_MS5611
-  unsigned long ms5611;
-  #endif
-  
-  #ifdef USE_DS1302
-  unsigned long ds1302;
-  #endif
-  
-  #ifdef USE_WEBDUINO
-  unsigned long webStart;
-  unsigned long webEnd;
-  #endif
-  
-  unsigned long current;
-  unsigned long task1s;
-  unsigned long task2s;
-  unsigned long task1m;
-  unsigned long end;
-}TimeStamps;
+
+typedef struct
+{
+  unsigned int act;
+  unsigned int max;
+  unsigned int min;
+  float avg;
+  unsigned long int count;
+}RunTime_Type;
 
 struct{
-  int total;
-  #ifdef USE_DHT11
-  int dht11;
-  #endif
-  #ifdef USE_BMP085
-  int bmp085;
-  #endif
-  #ifdef USE_MS5611
-  int ms5611;
-  #endif
-  #ifdef USE_DS1302
-  int ds1302;
-  #endif
-  #ifdef USE_WEBDUINO
-  int web;
-  #endif
+  unsigned long TimeStampStart = 0;
+  RunTime_Type Task_Init = {0,0,65535,0.0,0};
+  RunTime_Type Task_Acquisition = {0,0,65535,0.0,0};
+  RunTime_Type Task_Display = {0,0,65535,0.0,0};
+  RunTime_Type Task_Webduino = {0,0,65535,0.0,0};
+  RunTime_Type Task_Log = {0,0,65535,0.0,0};
+  RunTime_Type Task_RenewDHCP = {0,0,65535,0.0,0};
 }RunTime;
+
+void init_RuntimeMeasurement()
+{
+  //zero the variables, initialize min max values;
+}
+
+void inline startRuntimeMeasurement()
+{
+  /* Get the timestamp */
+  RunTime.TimeStampStart = millis();
+}
+
+void endRuntimeMeasurement(RunTime_Type* module)
+{
+  /* Calculate the runtime */
+  module->act = (unsigned int)(millis() - RunTime.TimeStampStart);
+  /* Check the maximum */
+  module->act>module->max?module->max=module->act:module->max=module->max;
+  /* Check the minimum */
+  module->act<module->min?module->min=module->act:module->min=module->min;
+  /* Calculate the average */
+  module->avg = (float)(module->avg)*((module->count-1)/(float)module->count) + (module->act)/(float)module->count; 
+}
+
+void printRuntTime(RunTime_Type* module)
+{
+  Serial.print("Act:");Serial.println(module->act);
+  Serial.print("Max:");Serial.println(module->max);
+  Serial.print("Min:");Serial.println(module->min);
+  Serial.print("Avg:");Serial.println(module->avg);
+  Serial.print("Count:");Serial.println(module->count);
+}
+
