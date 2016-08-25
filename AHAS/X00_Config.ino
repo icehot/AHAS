@@ -71,7 +71,7 @@
 #endif
 
 #ifdef USE_SOUND_DETECT
-  #define PIN_SOUND_DETECT 42
+  #define PIN_SOUND_DETECT 2
 #endif 
 
 #ifdef USE_PIR

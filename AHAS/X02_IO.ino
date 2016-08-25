@@ -1,6 +1,7 @@
 /** I/O **/
 void add2SysLog(char * entry);
 
+
 void softReset()
 {
     asm volatile ("jmp 0");
@@ -114,9 +115,19 @@ void get_PIR_State()
 
 /** PIR Sensor **/
 #ifdef USE_SOUND_DETECT
+
+void ISR_SoundDetect()
+{
+  DataPool.SOUND_State = 1;
+  // Temporary print
+  Serial.print("#SOUND: Activated!");
+  Serial.println(millis());
+}
+
 void init_SoundDetect()
 {
   pinMode(PIN_SOUND_DETECT, INPUT);
+  attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT),ISR_SoundDetect, FALLING);
 
   #ifdef USE_SERIAL_MONITOR
     Serial.println("#INIT: SOUND DETECT => DONE");
@@ -128,8 +139,8 @@ void init_SoundDetect()
 
 void get_SoundDetect_State()
 {
-  DataPool.SOUND_State = digitalRead(PIN_SOUND_DETECT);
   Serial.print("#SOUND: ");
   Serial.println(DataPool.SOUND_State);
 }
+
 #endif
