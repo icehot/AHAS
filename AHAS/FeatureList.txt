@@ -28,9 +28,9 @@ Completed Features:
 27. PIR Sensor integration
 
 28. Sound Detector integration - Ongoing
-29. Log management (UART/SD) - Need to be verified
-30. Arduino Scheduler integration - Ongoing
-31. Task runtime measurement - ongoing
+29. Log management (UART/SD) - Need to be verified/DS1302 initialization at the beginning
+30. Arduino Scheduler integration - Ongoing - Task cycle time optimization
+31. Task runtime measurement - ongoing - checking
 
 Features to be done:
 
@@ -40,30 +40,35 @@ Features to be done:
 - LCD backlight control
 - LCD Menu Navigation through Keyboard
 - Create Final Application Webpage
-- Online data acq service ex: Xively, Display values
+- Online data acq service ex: Xively, Exosite to Display values
 - Investigate Web page loading performance (char vs buffered)
 - RFID integration
+- Piezo Buzzer - tone();
+- Alarm functionality
+- E-mail notification
+- GSM Shield
 
 Future possibilities:
 
-GSM Shield
-Alarm functionality
-E-mail notification
-Radio receiver/transmitter
-ESP8829 Wifi for sensors
+SW
+
+Interactive Serial Interface
 File Upload through web
 File Download through web
 SDCARD bootloader
-Light sensor
-Gas Sensor
-Smoke sensor
-Backup Battery
 Software to download the display/log file, interpret, etc..
 Multi User handling
 Firmata
 Database access
-PROGMEM - internal web pages
-Piezo Buzzer - tone();
+
+HW
+
+Backup Battery
+ESP8829 Wifi for sensors
+Smoke sensor
+Gas Sensor
+Light sensor
+Radio receiver/transmitter
 
 
 
