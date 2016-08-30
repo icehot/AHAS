@@ -26,7 +26,7 @@ Completed Features:
 25. HW Configuration File Tab
 26. Project Configuration with precompiler switches
 27. PIR Sensor integration
-28. Sound Detector integration - Ongoing
+28. Sound Detector integration
 29. Log management (UART/SD)
 30. Arduino Scheduler integration
 31. Task runtime measurement
@@ -35,7 +35,6 @@ Completed Features:
 Features to be done:
 
 - Value Filtering
-
 - Daylight saving, time servers handling, on demand/auto sync
 - LCD backlight control, contrast control
 - LCD Menu Navigation through Keyboard

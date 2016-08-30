@@ -112,11 +112,23 @@ void get_PIR_State()
 }
 #endif
 
-/** PIR Sensor **/
+/** Sound Sensor **/
 #ifdef USE_SOUND_DETECT
+
+void ISR_SoundDetect()
+{
+  DataPool.SOUND_State = 1;
+  /* Disable the interrupt for a while, debouncing*/
+  detachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT));
+}
 void init_SoundDetect()
 {
   pinMode(PIN_SOUND_DETECT, INPUT);
+  
+  /* Clear the interrupt flag */
+  EIFR = 0x10;//INTF4 for pin 2
+  /* Enable the interrupt */
+  attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT),ISR_SoundDetect, FALLING);
 
   #ifdef USE_SERIAL_MONITOR
     Serial.println("#INIT: SOUND DETECT => DONE");
@@ -126,11 +138,14 @@ void init_SoundDetect()
   #endif
 }
 
-void get_SoundDetect_State()
+byte inline get_SoundDetect_State()
 {
-  DataPool.SOUND_State = digitalRead(PIN_SOUND_DETECT);
-  //Serial.print("#SOUND: ");
-  //Serial.println(DataPool.SOUND_State);
+  return DataPool.SOUND_State;
+}
+
+void inline clear_SoundDetect_State()
+{
+  DataPool.SOUND_State = 0;
 }
 #endif
 

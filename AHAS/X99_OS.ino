@@ -105,7 +105,22 @@ void Task_Acquisition_Callback()
     get_PIR_State();
     #endif
     #ifdef USE_SOUND_DETECT
-    get_SoundDetect_State();
+    
+    if (get_SoundDetect_State() == 1)
+    {
+      #ifdef USE_SERIAL_MONITOR
+        Serial.println("#SOUND: Activated!");
+      #endif
+      #ifdef USE_SYS_LOG
+       add2SysLog("#SOUND: Activated!");
+      #endif
+      clear_SoundDetect_State();
+      
+      /* Clear the pending interrupts */
+      EIFR = 0x10;//INTF4 for pin 2
+      /* Reenable the interrupt */
+      attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT),ISR_SoundDetect, FALLING);
+    }
     #endif
     
     #ifdef USE_RGB
