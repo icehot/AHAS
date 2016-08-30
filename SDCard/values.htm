@@ -95,6 +95,10 @@ function DisplayPortValues(portData )
 	document.getElementById("ds1302_min").innerHTML   = portData.ds1302_min;
 	document.getElementById("ds1302_sec").innerHTML   = portData.ds1302_sec;
 	document.getElementById("ds1302_sync").innerHTML   = portData.ds1302_sync;
+    
+    document.getElementById("red_val").value   = portdata.rgb_red;
+    document.getElementById("green_val").value   = portdata.rgb_green;
+    document.getElementById("blue_val").value   = portdata.rgb_blue;
 }
 
 function relayStatus(relay)
@@ -247,13 +251,13 @@ function r4Off() {$.post('/input', {r4: 1} );}
 	  
 	  <p>
 		 <div class="w3-container w3-red w3-round-xlarge w3-tiny w3-margin-2">
-		 <span id="red_val">128</span><input class="w3-input" type="range" id="rgb_r" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 <span id="red_val">128</span><input class="w3-input" type="range" id="rgb_r" value="0" " min="0" max="255" onchange="rgbChange()"><br/>
 		 </div>
 		 <div class="w3-container w3-green w3-round-xlarge w3-tiny w3-margin-2">
-		 <span id="green_val">128</span><input class="w3-input" type="range" id="rgb_g" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 <span id="green_val">128</span><input class="w3-input" type="range" id="rgb_g" value="0" " min="0" max="255" onchange="rgbChange()"><br/>
 		 </div>
 		 <div class="w3-container w3-blue w3-round-xlarge w3-tiny w3-margin-2">
-		 <span id="blue_val">128</span><input class="w3-input" type="range" id="rgb_b" value="128" " min="0" max="255" onchange="rgbChange()"><br/>
+		 <span id="blue_val">128</span><input class="w3-input" type="range" id="rgb_b" value="0" " min="0" max="255" onchange="rgbChange()"><br/>
 		 </div>
 	  </p>
 	  </form>

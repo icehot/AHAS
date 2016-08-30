@@ -37,7 +37,7 @@ Features to be done:
 - Value Filtering
 - RGB read back current status
 - Daylight saving, time servers handling, on demand/auto sync
-- LCD backlight control
+- LCD backlight control, contrast control
 - LCD Menu Navigation through Keyboard
 - Create Final Application Webpage
 - Online data acq service ex: Xively, Exosite to Display values
@@ -64,6 +64,7 @@ Database access
 HW
 
 Backup Battery
+Current Consumption
 ESP8829 Wifi for sensors
 Smoke sensor
 Gas Sensor

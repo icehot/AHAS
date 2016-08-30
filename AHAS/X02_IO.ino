@@ -133,3 +133,9 @@ void get_SoundDetect_State()
   //Serial.println(DataPool.SOUND_State);
 }
 #endif
+
+void filterJacob(float * filtValue,float newValue, byte order)
+{
+  *filtValue = ((*filtValue)*(order-1))/order + newValue/order;
+}
+

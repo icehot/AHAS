@@ -406,7 +406,12 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   #ifdef USE_SOUND_DETECT
   JSON_ADD("sound_state",DataPool.SOUND_State);
   #endif
-  
+  #ifdef USE_RGB
+  JSON_ADD("rgb_red",DataPool.RGB_Red);
+  JSON_ADD("rgb_green",DataPool.RGB_Green);
+  JSON_ADD("rgb_blue",DataPool.RGB_Blue);
+  #endif
+
   JSON_END();
 }
 #ifdef USE_RELAY
