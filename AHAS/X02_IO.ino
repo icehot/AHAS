@@ -9,7 +9,7 @@ void softReset()
 void init_UART()
 {
   //Serial monitor initialization
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   #ifdef USE_SERIAL_MONITOR
     Serial.println("### AHAS - Arduino Home Automation System ###");

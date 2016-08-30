@@ -26,16 +26,16 @@ Completed Features:
 25. HW Configuration File Tab
 26. Project Configuration with precompiler switches
 27. PIR Sensor integration
-
 28. Sound Detector integration - Ongoing
-29. Log management (UART/SD) - Need to be verified/DS1302 initialization at the beginning
-30. Arduino Scheduler integration - Ongoing - Task cycle time optimization
-31. Task runtime measurement - ongoing - checking
+29. Log management (UART/SD)
+30. Arduino Scheduler integration
+31. Task runtime measurement
+32. RGB read back current status
 
 Features to be done:
 
 - Value Filtering
-- RGB read back current status
+
 - Daylight saving, time servers handling, on demand/auto sync
 - LCD backlight control, contrast control
 - LCD Menu Navigation through Keyboard

@@ -6,9 +6,15 @@
 
 DS1302 ds1302;
 
+void read_DS1302();
+
 void init_DS1302()
 {
+  /* Initialize the date and time */
   ds1302.init(PIN_DS1302_SCLK, PIN_DS1302_IO, PIN_DS1302_CE);
+  /* Read the date and time */
+  read_DS1302();
+  
   #ifdef USE_SERIAL_MONITOR
     Serial.println("#INIT: DS1302 => DONE");
   #endif

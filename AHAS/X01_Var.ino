@@ -76,17 +76,20 @@ typedef struct
   unsigned int max;
   unsigned int min;
   float avg;
+  float avgNZ;
   unsigned long int count;
+  unsigned long int countNZ;
+  
 }RunTime_Type;
 
 struct{
   unsigned long TimeStampStart = 0;
-  RunTime_Type Task_Init = {0,0,65535,0.0,0};
-  RunTime_Type Task_Acquisition = {0,0,65535,0.0,0};
-  RunTime_Type Task_Display = {0,0,65535,0.0,0};
-  RunTime_Type Task_Webduino = {0,0,65535,0.0,0};
-  RunTime_Type Task_Log = {0,0,65535,0.0,0};
-  RunTime_Type Task_RenewDHCP = {0,0,65535,0.0,0};
+  RunTime_Type Task_Init = {0,0,65535,0.0,0.0,0,0};
+  RunTime_Type Task_Acquisition = {0,0,65535,0.0,0.0,0,0};
+  RunTime_Type Task_Display = {0,0,65535,0.0,0.0,0,0};
+  RunTime_Type Task_Webduino = {0,0,65535,0.0,0.0,0,0};
+  RunTime_Type Task_Log = {0,0,65535,0.0,0.0,0,0};
+  RunTime_Type Task_RenewDHCP = {0,0,65535,0.0,0.0,0,0};
 }RunTime;
 
 void init_RuntimeMeasurement()
@@ -112,6 +115,16 @@ void endRuntimeMeasurement(RunTime_Type* module)
   module->act<module->min?module->min=module->act:module->min=module->min;
   /* Calculate the average */
   module->avg = (float)(module->avg)*((module->count-1)/(float)module->count) + (module->act)/(float)module->count; 
+
+  /* When runtime is not zero */
+  if(module->act > 1)
+  {
+    /* Increment the counter */
+    module->countNZ++; 
+    /* Calculate the average when runtime is not zero*/
+    module->avgNZ = (float)(module->avgNZ)*((module->countNZ-1)/(float)module->countNZ) + (module->act)/(float)module->countNZ;
+  }
+  
 }
 
 void printRuntTime(RunTime_Type* module)
@@ -120,6 +133,7 @@ void printRuntTime(RunTime_Type* module)
   Serial.print("Max:");Serial.println(module->max);
   Serial.print("Min:");Serial.println(module->min);
   Serial.print("Avg:");Serial.println(module->avg);
+  Serial.print("AvgNZ:");Serial.println(module->avgNZ);
   Serial.print("Count:");Serial.println(module->count);
 }
 

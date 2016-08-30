@@ -2,6 +2,8 @@
 #ifdef USE_SD
 #include <SD.h>
 
+void add2SysLogWOTimeStamp(char * entry);
+
 void init_SD()
 {
   //Default CS port must be set to output
@@ -21,8 +23,8 @@ void init_SD()
     #ifdef USE_SERIAL_MONITOR
       Serial.println("#INIT: SD Card => DONE");
     #endif
-    #ifdef USE_SYS_LOG
-      add2SysLog("#INIT: SD Card => DONE");
+    #ifdef USE_SD
+      add2SysLogWOTimeStamp("### AHAS - Arduino Home Automation System ###");
     #endif
   }
 }
@@ -106,6 +108,35 @@ void add2SysLog(char * entry)
   dataString += String(DataPool.DS1302_Minute);
   dataString += ",";
   #endif
+
+  dataString += String(entry);
+  
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  File dataFile = SD.open("system.log", FILE_WRITE);
+
+  // if the file is available, write to it:
+  if (dataFile) 
+  {
+    dataFile.println(dataString);
+    dataFile.close();
+// print to the serial port too:
+//    #ifdef USE_SERIAL_MONITOR
+//      Serial.println("#SD: System Log saved");
+//    #endif
+  }
+  // if the file isn't open, pop up an error:
+  else {
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#SD: Error opening system.log");
+    #endif
+  }
+}
+
+void add2SysLogWOTimeStamp(char * entry)
+{
+  // make a string for assembling the data to log:
+  String dataString = "";
 
   dataString += String(entry);
   

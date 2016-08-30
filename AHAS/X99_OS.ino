@@ -1,22 +1,26 @@
 /** OS **/
 
-#define DEBUG
+//#define DEBUG
 
 void Task_Init_Callback() 
 {
   #ifdef DEBUG
     Serial.print(millis());
     Serial.println(" #OS: Init Task");
-    //Serial.print("Delayed: ");
-    //Serial.println(Task_Init.getStartDelay());
+    Serial.print("Delayed: ");
+    Serial.println(Task_Init.getStartDelay());
   #endif 
   
   init_UART();
-  
+
   #ifdef USE_SD
     init_SD();
   #endif 
-  
+
+  #ifdef USE_DS1302
+    init_DS1302();
+  #endif
+
   #ifdef USE_DEBUG_LED
     init_DEBUG_LED();
   #endif 
@@ -65,10 +69,6 @@ void Task_Init_Callback()
     init_NTP();
   #endif
 
-  #ifdef USE_DS1302
-    init_DS1302();
-  #endif
-
   #ifdef USE_LCD
     init_LCD();
   #endif
@@ -79,8 +79,8 @@ void Task_Acquisition_Callback()
     #ifdef DEBUG
       Serial.print(millis());
       Serial.println(" #OS: Acquisition Task");
-      //Serial.print("Delayed: ");
-      //Serial.println(Task_Acquisition.getStartDelay());
+      Serial.print("Delayed: ");
+      Serial.println(Task_Acquisition.getStartDelay());
     #endif 
 
     startRuntimeMeasurement();
@@ -129,12 +129,12 @@ void Task_Display_Callback()
     #ifdef DEBUG
       Serial.print(millis());
       Serial.println(" #OS: Display Task");
-      //Serial.print("Delayed: ");
-      //Serial.println(Task_Display.getStartDelay());
+      Serial.print("Delayed: ");
+      Serial.println(Task_Display.getStartDelay());
     #endif 
 
-    Serial.println("Runtime for Acquisition:");
-    printRuntTime(&RunTime.Task_Acquisition);
+    //Serial.println("Runtime for Webserver:");
+    //printRuntTime(&RunTime.Task_Webduino);
     
     #ifdef USE_LCD
     updateLCD();
@@ -146,13 +146,23 @@ void Task_Webduino_Callback()
     #ifdef DEBUG
       Serial.print(millis());
       Serial.println(" #OS: Webduino Task");
-      //Serial.print("Delayed: ");
-      //Serial.println(Task_Display.getStartDelay());
+      Serial.print("Delayed: ");
+      Serial.println(Task_Display.getStartDelay());
     #endif 
+
+  startRuntimeMeasurement();
   
   #ifdef USE_WEBDUINO
   WebduinoServerLoop();
   #endif
+
+  endRuntimeMeasurement(&RunTime.Task_Webduino);
+    
+    Serial.print(millis());
+    Serial.print(" #WEB ");
+    Serial.print("Delay: ");
+    Serial.println(Task_Display.getStartDelay());
+    printRuntTime(&RunTime.Task_Webduino);
 }
 
 void Task_Log_Callback()
@@ -160,8 +170,8 @@ void Task_Log_Callback()
     #ifdef DEBUG
       Serial.print(millis());
       Serial.println(" #OS: Log Task");
-      //Serial.print("Delayed: ");
-      //Serial.println(Task_Log.getStartDelay());
+      Serial.print("Delayed: ");
+      Serial.println(Task_Log.getStartDelay());
     #endif
     
     #ifdef USE_SD
@@ -174,8 +184,8 @@ void Task_RenewDHCP_Callback()
    #ifdef DEBUG
       Serial.print(millis());
       Serial.println(" #OS: Renew DHCP Task");
-      //Serial.print("Delayed: ");
-      //Serial.println(Task_Log.getStartDelay());
+      Serial.print("Delayed: ");
+      Serial.println(Task_Log.getStartDelay());
     #endif
   
   #ifdef USE_ETH_SHIELD
