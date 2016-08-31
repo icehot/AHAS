@@ -89,9 +89,9 @@ void read_DHT11()
     break;
   }
 
-  DataPool.DHT11_Temperature = dht11.temperature;
-  DataPool.DHT11_Humidity    = dht11.humidity;
-  DataPool.DHT11_DewPoint    = dewPointFast(dht11.temperature, dht11.humidity);
+  filterJacob(&DataPool.DHT11_Temperature,(float)dht11.temperature, 4);
+  filterJacob(&DataPool.DHT11_Humidity,(float)dht11.humidity, 4);
+  DataPool.DHT11_DewPoint    = (float) dewPointFast(DataPool.DHT11_Temperature, DataPool.DHT11_Humidity);
 }
 
 // 6.9 x faster than dewPoint()

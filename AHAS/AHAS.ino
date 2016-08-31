@@ -78,8 +78,6 @@ void setup()
   Task_Init.enable();
   Task_Acquisition.enable();
   Task_RenewDHCP.enable();
-  
-  //TaskScheduler.startNow();
 }
 
 /***********************************************************************************************************/

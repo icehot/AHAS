@@ -22,8 +22,8 @@ void read_MS5611()
   rawPressure = ms5611.readRawPressure();
 
   // Read true temperature & Pressure
-  DataPool.MS5611_Temperature = ms5611.readTemperature();
-  DataPool.MS5611_Pressure = ms5611.readPressure();
+  filterJacob(&DataPool.MS5611_Temperature,(float)ms5611.readTemperature(), 4);
+  filterJacob(&DataPool.MS5611_Pressure,(float)ms5611.readPressure(), 4);
 
   // Calculate altitude
   DataPool.MS5611_AbsAltitude = ms5611.getAltitude(DataPool.MS5611_Pressure);

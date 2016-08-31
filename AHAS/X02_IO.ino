@@ -126,7 +126,7 @@ void init_SoundDetect()
   pinMode(PIN_SOUND_DETECT, INPUT);
   
   /* Clear the interrupt flag */
-  EIFR = 0x10;//INTF4 for pin 2
+  EIFR |= 0x10;//INTF4 for pin 2
   /* Enable the interrupt */
   attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT),ISR_SoundDetect, FALLING);
 
@@ -149,7 +149,7 @@ void inline clear_SoundDetect_State()
 }
 #endif
 
-void filterJacob(float * filtValue,float newValue, byte order)
+void inline filterJacob(float * filtValue,float newValue, byte order)
 {
   *filtValue = ((*filtValue)*(order-1))/order + newValue/order;
 }

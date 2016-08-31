@@ -1,14 +1,6 @@
 /**********************************************************************************************************/
 /*** Function Declarations ***/
 /***********************************************************************************************************/
-/** Task Definitions **/
-//Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback, &TaskScheduler, true);
-//Task Task_Acquisition(TASK_SECOND, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, true);
-//Task Task_Display(2*TASK_SECOND, TASK_FOREVER, &Task_Display_Callback, &TaskScheduler, false);
-//Task Task_Webduino(TASK_SECOND/2, TASK_FOREVER, &Task_Acquisition_Callback, &TaskScheduler, false);
-//Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback, &TaskScheduler, false);
-//Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback, &TaskScheduler, false);
-
 
 /** Data Pool **/
 /* Used for data exchange between webserver and sensors */
@@ -16,19 +8,19 @@
 struct{
   #ifdef USE_DHT11
   char* DHT11_Status;
-  int DHT11_Temperature;
-  int DHT11_Humidity;
-  int DHT11_DewPoint;
+  float DHT11_Temperature;
+  float DHT11_Humidity;
+  float DHT11_DewPoint;
   #endif
   
   #ifdef USE_BMP085
-  int BMP085_Temperature;
-  long BMP085_Pressure;
+  float BMP085_Temperature;
+  float BMP085_Pressure;
   #endif
   
   #ifdef USE_MS5611
-  double MS5611_Temperature;
-  long MS5611_Pressure;
+  float MS5611_Temperature;
+  float MS5611_Pressure;
   float MS5611_AbsAltitude;
   float MS5611_RelAltitude;
   #endif

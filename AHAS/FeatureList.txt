@@ -31,10 +31,10 @@ Completed Features:
 30. Arduino Scheduler integration
 31. Task runtime measurement
 32. RGB read back current status
+33. Value Filtering
 
 Features to be done:
 
-- Value Filtering
 - Daylight saving, time servers handling, on demand/auto sync
 - LCD backlight control, contrast control
 - LCD Menu Navigation through Keyboard

@@ -381,10 +381,12 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_ADD("dht11_hum",DataPool.DHT11_Humidity);
   JSON_ADD("dht11_dew",DataPool.DHT11_DewPoint);
   #endif
+  
   #ifdef USE_BMP085
   JSON_ADD("bmp085_temp",DataPool.BMP085_Temperature);
   JSON_ADD("bmp085_pres",DataPool.BMP085_Pressure);
   #endif
+  
   #ifdef USE_MS5611
   JSON_ADD("ms5611_temp",DataPool.MS5611_Temperature);
   JSON_ADD("ms5611_pres",DataPool.MS5611_Pressure);
@@ -400,16 +402,28 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_ADD("ds1302_sec",DataPool.DS1302_Second);
   JSON_ADD2("ds1302_sync",DataPool.DS1302_SyncStatus);
   #endif
+  
   #ifdef USE_PIR
   JSON_ADD("pir_state",DataPool.PIR_State);
   #endif 
   #ifdef USE_SOUND_DETECT
   JSON_ADD("sound_state",DataPool.SOUND_State);
   #endif
+  
   #ifdef USE_RGB
   JSON_ADD("rgb_red",DataPool.RGB_Red);
   JSON_ADD("rgb_green",DataPool.RGB_Green);
   JSON_ADD("rgb_blue",DataPool.RGB_Blue);
+  #endif
+
+  #ifdef USE_NTP
+  JSON_ADD("ntp_year",DataPool.NTP_Year);
+  JSON_ADD("ntp_month",DataPool.NTP_Month);
+  JSON_ADD("ntp_day",DataPool.NTP_Day);
+  JSON_ADD("ntp_hour",DataPool.NTP_Hour);
+  JSON_ADD("ntp_min",DataPool.NTP_Minute);
+  JSON_ADD("ntp_sec",DataPool.NTP_Second);
+  JSON_ADD2("ntp_sync",DataPool.NTP_Status);
   #endif
 
   JSON_END();

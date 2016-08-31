@@ -24,7 +24,7 @@ void init_BMP085()
 
 void read_BMP085()
 {
-  DataPool.BMP085_Pressure = bmp085.readPressure();
-  DataPool.BMP085_Temperature = bmp085.readTemperature();
+  filterJacob(&DataPool.BMP085_Pressure,(float)bmp085.readPressure(), 4);
+  filterJacob(&DataPool.BMP085_Temperature,(float)bmp085.readTemperature(), 4);
 }
 #endif
