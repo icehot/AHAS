@@ -263,6 +263,27 @@ void Task_RenewDHCP_Callback()
   #endif
 }
 
+void Task_TimeSync_Callback()
+{
+     #ifdef DEBUG
+      Serial.print(millis());
+      Serial.println(" #OS: Time Sync Task");
+      Serial.print("Delayed: ");
+      Serial.println(Task_TimeSync.getStartDelay());
+    #endif
+    
+    switch (timeStatus())
+    {
+      case timeSet:
+        autoTimeSync();
+      break;
+      
+      default:
+      /* NTP is not available */
+      break;
+    }
+}
+
 #ifdef DEBUG
   #undef DEBUG
 #endif

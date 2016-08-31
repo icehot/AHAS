@@ -47,6 +47,7 @@ void Task_Display_Callback();
 void Task_Webduino_Callback();
 void Task_Log_Callback();
 void Task_RenewDHCP_Callback();
+void Task_TimeSync_Callback();
 
 /***********************************************************************************************************/
 /*** Global Variable definition  ***/
@@ -59,6 +60,7 @@ Task Task_Display(2000, TASK_FOREVER, &Task_Display_Callback);
 Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
 Task Task_Log(60000, TASK_FOREVER, &Task_Log_Callback);
 Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
+Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
 
 
 /***********************************************************************************************************/
@@ -74,10 +76,12 @@ void setup()
   TaskScheduler.addTask(Task_Webduino);
   TaskScheduler.addTask(Task_Log);
   TaskScheduler.addTask(Task_RenewDHCP);
+  TaskScheduler.addTask(Task_TimeSync);
   
   Task_Init.enable();
   Task_Acquisition.enable();
   Task_RenewDHCP.enable();
+  Task_TimeSync.enable();
 }
 
 /***********************************************************************************************************/

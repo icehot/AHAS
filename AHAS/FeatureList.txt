@@ -32,10 +32,10 @@ Completed Features:
 31. Task runtime measurement
 32. RGB read back current status
 33. Value Filtering
+34. Daylight saving, time servers handling, on demand/auto sync, html update with ntp time, browser time.
 
 Features to be done:
 
-- Daylight saving, time servers handling, on demand/auto sync
 - LCD backlight control, contrast control
 - LCD Menu Navigation through Keyboard
 - Create Final Application Webpage

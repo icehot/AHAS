@@ -4,9 +4,15 @@
 #include <DS1302.h>
 #include <Time.h> 
 
+#define TIME_SYNC_TRESHOLD_SEC 120
+
 DS1302 ds1302;
 
 void read_DS1302();
+
+#ifdef USE_NTP
+  void  sync_DS1302withNTP(); 
+#endif
 
 void init_DS1302()
 {
@@ -28,6 +34,45 @@ void read_DS1302()
   ds1302.getTimeAndDate((byte*)&DataPool.DS1302_Year, &DataPool.DS1302_Month, &DataPool.DS1302_Day, &DataPool.DS1302_DayOfWeek, &DataPool.DS1302_Hour, &DataPool.DS1302_Minute, &DataPool.DS1302_Second);
 }
 
+void autoTimeSync()
+{
+  time_t ds1302time;
+  time_t ntptime; 
+  
+  tmElements_t ds1302timeElements;
+  
+  ds1302.getTimeAndDate((byte*)&DataPool.DS1302_Year, &DataPool.DS1302_Month, &DataPool.DS1302_Day, &DataPool.DS1302_DayOfWeek, &DataPool.DS1302_Hour, &DataPool.DS1302_Minute, &DataPool.DS1302_Second);
+  ntptime = now();
+  
+  ds1302timeElements.Year = DataPool.DS1302_Year + 30; /* DS1302 year on 2 digit from 2000 , NTP year is from 1970 */
+  ds1302timeElements.Month = DataPool.DS1302_Month;
+  ds1302timeElements.Day = DataPool.DS1302_Day;
+  ds1302timeElements.Hour = DataPool.DS1302_Hour;
+  ds1302timeElements.Minute = DataPool.DS1302_Minute;
+  ds1302timeElements.Second = DataPool.DS1302_Second;
+   
+  /* convert time elements into time_t */
+  ds1302time = makeTime(ds1302timeElements);  
+  
+  if (abs(ds1302time - ntptime) > TIME_SYNC_TRESHOLD_SEC)
+  {
+    /* The RTC and the NTP are not in synchron */
+
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#RTC The RTC need to be synchronised");
+    #endif
+    
+    
+    #ifdef USE_NTP
+      sync_DS1302withNTP();     
+    #endif
+  }
+  else
+  {
+    /* The RTC and the NTP are in synchron */ 
+  }
+}
+
 #ifdef USE_NTP
 void sync_DS1302withNTP()
 {
@@ -36,9 +81,16 @@ void sync_DS1302withNTP()
     switch (timeStatus())
     {
       case timeSet:
-      DataPool.DS1302_SyncStatus = "Time set!";
-      t = now();
-      ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
+        DataPool.DS1302_SyncStatus = "Time set!";
+        t = now();
+        ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
+  
+        #ifdef USE_SERIAL_MONITOR
+          Serial.println("#DS1302: synchronized to NTP");
+        #endif
+        #ifdef USE_SYS_LOG
+          add2SysLog("#DS1302: synchronized to NTP");
+        #endif
       break;
       
       case timeNotSet:
@@ -53,13 +105,6 @@ void sync_DS1302withNTP()
       DataPool.DS1302_SyncStatus = "Error!";
       break;
     }
-
-    #ifdef USE_SERIAL_MONITOR
-      Serial.println("#DS1302: synchronized to NTP");
-    #endif
-    #ifdef USE_SYS_LOG
-      add2SysLog("#DS1302: synchronized to NTP");
-    #endif
 }
 #endif
 #endif

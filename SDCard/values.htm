@@ -103,6 +103,13 @@ function DisplayPortValues(portData )
 	document.getElementById("rgb_r").value   = portData.rgb_red;
     document.getElementById("rgb_g").value   = portData.rgb_green;
     document.getElementById("rgb_b").value   = portData.rgb_blue;
+    
+	document.getElementById("year").innerHTML  = getFullYear();
+	document.getElementById("month").innerHTML = getMonth();
+	document.getElementById("day").innerHTML   = getDate();
+	document.getElementById("hour").innerHTML  = getHour();
+	document.getElementById("min").innerHTML   = getMinutes();
+	document.getElementById("sec").innerHTML   = getSeconds();
 }
 
 function relayStatus(relay)
@@ -268,6 +275,33 @@ function r4Off() {$.post('/input', {r4: 1} );}
     </div>
   </div>  
 </div>
+
+<div class="w3-row-padding">
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+		<h1>NTP Time</h1>
+        <p>
+        Sync Status: <span id="ntp_sync">N/A</span><br/>
+        Time:        <span id="ntp_hour">N/A</span>:<span id="ntp_min">N/A</span>:<span id="ntp_sec">N/A</span><br/>
+        Date:        <span id="ntp_year">N/A</span>\<span id="ntp_month">N/A</span>\<span id="ntp_day">N/A</span><br/>
+	  </p>
+    </div>
+  </div>
+  
+  <div class="w3-quarter">
+    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+		<h1>Browser Time</h1>
+        <p>
+        Time:        <span id="hour">N/A</span>:<span id="ntp_min">N/A</span>:<span id="ntp_sec">N/A</span><br/>
+        Date:        <span id="year">N/A</span>\<span id="month">N/A</span>\<span id="day">N/A</span><br/>
+	  </p>
+    </div>
+  </div>
+
+</div>
+
+
+
 </section> <!-- End main -->
 
 <footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">
