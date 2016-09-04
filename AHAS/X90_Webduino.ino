@@ -30,6 +30,64 @@ inline Print &operator <<(Print &obj, T arg)
  * server to send data back to the web browser. */
 
 #ifdef USE_SD
+
+#define SIZE_OF_BUFFER 64
+
+void sendHtmlFromSD(WebServer &server,char * filename)
+{ 
+    char HtmlReadBuffer [SIZE_OF_BUFFER+1];
+    unsigned long fileSize = 0;
+    unsigned long quotient = 0;
+    unsigned int remainder = 0;
+    unsigned int i;
+
+    /* Close the end of buffer with \0 */
+    HtmlReadBuffer[SIZE_OF_BUFFER] = '\0';
+    
+    /* Open the file */ 
+    File dataFile = SD.open(filename);
+  
+    /* If the file is available */
+    if (dataFile) 
+    {
+      /* Get the size */
+      fileSize = dataFile.size();
+      /* Calculate the nr of whole data chunks */
+      quotient = fileSize / SIZE_OF_BUFFER;
+      /* Calculate the remaining data chunk size */
+      remainder = fileSize % SIZE_OF_BUFFER;
+
+      /* Get the whole data chunks */
+      for (i = 0; i < quotient; i++)
+      {
+        /* Read From File */
+        dataFile.read(HtmlReadBuffer,SIZE_OF_BUFFER);
+        /* Send to the browser */
+        server << HtmlReadBuffer;
+      }
+
+      /* Get the remaining data chunk  */
+      dataFile.read(HtmlReadBuffer,remainder);
+      /* Close the end of buffer with \0 */
+      HtmlReadBuffer[remainder] = '\0';
+      /* Send to the browser */
+      server << HtmlReadBuffer;
+
+      /* Opent the file */
+      dataFile.close();
+    }
+    else 
+    {/* if the file isn't open, pop up an error */
+      #ifdef USE_SERIAL_MONITOR
+        Serial.print("#WEB: Error opening: ");
+        Serial.println(filename);
+      #endif
+      #ifdef USE_SYS_LOG
+        add2SysLog("#WEB: Error opening file");
+      #endif
+    }
+}
+
 void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 {
   /* this line sends the standard "we're all OK" headers back to the
@@ -40,37 +98,13 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
      For a HEAD request, we just stop after outputting headers. */
   if (type != WebServer::HEAD)
   {
-    /* this defines some HTML text in read-only memory aka PROGMEM.
-     * This is needed to avoid having the string copied to our limited
-     * amount of RAM. */
-
-     // open the file. note that only one file can be open at a time,
-    // so you have to close this one before opening another.
-    File dataFile = SD.open("index.htm");
-  
-    // if the file is available, write to it:
-    if (dataFile) 
-    {
-      while (dataFile.available()) 
-      {
-        server << ((char)(dataFile.read()));
-      }
-      dataFile.close();
-    }
-    else 
-    {/* if the file isn't open, pop up an error */
-      #ifdef USE_SERIAL_MONITOR
-        Serial.println("#WEB: Error opening index.htm");
-      #endif
-      #ifdef USE_SYS_LOG
-        add2SysLog("#WEB: Error opening index.htm");
-      #endif
-    }
+      sendHtmlFromSD(server,"index.htm");
   }
 }
 
 void valuesCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 {
+  
   /* this line sends the standard "we're all OK" headers back to the
      browser */
   server.httpSuccess();
@@ -79,32 +113,7 @@ void valuesCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
      For a HEAD request, we just stop after outputting headers. */
   if (type != WebServer::HEAD)
   {
-    /* this defines some HTML text in read-only memory aka PROGMEM.
-     * This is needed to avoid having the string copied to our limited
-     * amount of RAM. */
-
-     // open the file. note that only one file can be open at a time,
-    // so you have to close this one before opening another.
-    File dataFile = SD.open("values.htm");
-  
-    // if the file is available, read from it:
-    if (dataFile) 
-    {
-      while (dataFile.available()) 
-      {
-        server << ((char)(dataFile.read()));
-      }
-      dataFile.close();
-    }
-    else 
-    {/* if the file isn't open, pop up an error */
-      #ifdef USE_SERIAL_MONITOR
-        Serial.println("#WEB: Error opening values.htm");
-      #endif
-      #ifdef USE_SYS_LOG
-        add2SysLog("#WEB: Error opening values.htm");
-      #endif
-    }
+      sendHtmlFromSD(server,"values.htm");
   }
 }
 
@@ -198,28 +207,7 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
       
       if (type == WebServer::GET)
       {
-         // open the file. note that only one file can be open at a time,
-        // so you have to close this one before opening another.
-        File dataFile = SD.open("settings.htm");
-      
-        // if the file is available, read from it:
-        if (dataFile) 
-        {
-          while (dataFile.available()) 
-          {
-            server << ((char)(dataFile.read()));
-          }
-          dataFile.close();
-        }
-        else 
-        {/* if the file isn't open, pop up an error */
-          #ifdef USE_SERIAL_MONITOR
-            Serial.println("#WEB: Error opening settings.htm");
-          #endif
-          #ifdef USE_SYS_LOG
-            add2SysLog("#WEB: Error opening settings.htm");
-          #endif
-        }
+          sendHtmlFromSD(server,"settings.htm");
       }
   }
   else

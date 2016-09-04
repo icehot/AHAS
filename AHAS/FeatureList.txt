@@ -33,6 +33,7 @@ Completed Features:
 32. RGB read back current status
 33. Value Filtering
 34. Daylight saving, time servers handling, on demand/auto sync, html update with ntp time, browser time.
+35. Improving of Web page loading performance
 
 Features to be done:
 
@@ -40,7 +41,6 @@ Features to be done:
 - LCD Menu Navigation through Keyboard
 - Create Final Application Webpage
 - Online data acq service ex: Xively, Exosite to Display values
-- Investigate Web page loading performance (char vs buffered)
 - RFID integration
 - Piezo Buzzer - tone();
 - Alarm functionality
