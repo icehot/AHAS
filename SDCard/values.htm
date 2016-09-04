@@ -65,6 +65,7 @@ xmlhttp.onreadystatechange = function()
 
 function DisplayPortValues(portData ) 
 {
+	var d = new Date();
     document.getElementById("a0").innerHTML = (portData.a0*5/1023).toFixed(2) + " V";
     document.getElementById("a1").innerHTML = (portData.a1*5/1023).toFixed(2) + " V";
     document.getElementById("a2").innerHTML = (portData.a2*5/1023).toFixed(2) + " V";
@@ -76,17 +77,17 @@ function DisplayPortValues(portData )
     document.getElementById("relay3").innerHTML = relayStatus(portData.r3);
     document.getElementById("relay4").innerHTML = relayStatus(portData.r4);
 	
-	document.getElementById("dht11_temp").innerHTML = portData.dht11_temp + " &#8451";
-	document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum + " %";
-	document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew + " &#8451";
+	document.getElementById("dht11_temp").innerHTML = portData.dht11_temp.toFixed(2) + " &#8451";
+	document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum.toFixed(2) + " %";
+	document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew.toFixed(2) + " &#8451";
 	
-	document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp/10.0) + " &#8451";
-	document.getElementById("bmp085_pres").innerHTML = (portData.bmp085_pres/100) + " hPa";
+	document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp/10.0).toFixed(2) + " &#8451";
+	document.getElementById("bmp085_pres").innerHTML = (portData.bmp085_pres/100).toFixed(2) + " hPa";
 	
-	document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp + " &#8451";
-	document.getElementById("ms5611_pres").innerHTML = (portData.ms5611_pres/100) + " mB";
-	document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt + " m";
-	document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt + " m";
+	document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp.toFixed(2) + " &#8451";
+	document.getElementById("ms5611_pres").innerHTML = (portData.ms5611_pres/100).toFixed(2) + " mB";
+	document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt.toFixed(2) + " m";
+	document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt.toFixed(2) + " m";
 	
 	document.getElementById("ds1302_year").innerHTML  = portData.ds1302_year;
 	document.getElementById("ds1302_month").innerHTML = portData.ds1302_month;
@@ -104,12 +105,22 @@ function DisplayPortValues(portData )
     document.getElementById("rgb_g").value   = portData.rgb_green;
     document.getElementById("rgb_b").value   = portData.rgb_blue;
     
-	document.getElementById("year").innerHTML  = getFullYear();
-	document.getElementById("month").innerHTML = getMonth();
-	document.getElementById("day").innerHTML   = getDate();
-	document.getElementById("hour").innerHTML  = getHour();
-	document.getElementById("min").innerHTML   = getMinutes();
-	document.getElementById("sec").innerHTML   = getSeconds();
+    document.getElementById("ntp_year").innerHTML  = portData.ntp_year;
+	document.getElementById("ntp_month").innerHTML = portData.ntp_month;
+	document.getElementById("ntp_day").innerHTML   = portData.ntp_day;
+	document.getElementById("ntp_hour").innerHTML  = portData.ntp_hour;
+	document.getElementById("ntp_min").innerHTML   = portData.ntp_min;
+	document.getElementById("ntp_sec").innerHTML   = portData.ntp_sec;
+	document.getElementById("ntp_sync").innerHTML   = portData.ntp_sync;
+	
+	document.getElementById("year").innerHTML  = d.getFullYear();
+	document.getElementById("month").innerHTML = d.getMonth() + 1;
+	document.getElementById("day").innerHTML   = d.getDate();
+	document.getElementById("hour").innerHTML  = d.getHours();
+	document.getElementById("min").innerHTML   = d.getMinutes();
+	document.getElementById("sec").innerHTML   = d.getSeconds();
+	
+	
 }
 
 function relayStatus(relay)
@@ -292,7 +303,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
     <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
 		<h1>Browser Time</h1>
         <p>
-        Time:        <span id="hour">N/A</span>:<span id="ntp_min">N/A</span>:<span id="ntp_sec">N/A</span><br/>
+        Time:        <span id="hour">N/A</span>:<span id="min">N/A</span>:<span id="sec">N/A</span><br/>
         Date:        <span id="year">N/A</span>\<span id="month">N/A</span>\<span id="day">N/A</span><br/>
 	  </p>
     </div>
