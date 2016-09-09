@@ -28,24 +28,25 @@ Completed Features:
 27. PIR Sensor integration
 28. Sound Detector integration
 29. Log management (UART/SD)
-30. Arduino Scheduler integration
-31. Task runtime measurement
-32. RGB read back current status
-33. Value Filtering
-34. Daylight saving, time servers handling, on demand/auto sync, html update with ntp time, browser time.
-35. Improving of Web page loading performance
+30. Arduino Scheduler integration - Adjust task times
+31. Task runtime measurement - Add for all task, display mechanism on web
+32. RGB read back current status - mechanism to avoid cursor jump back
+33. Value Filtering - Jacob filter
+34. Daylight saving, time servers handling, on demand/auto sync, html update with ntp time, browser time. -> daylight saving UI needed
+35. Improving of Web page loading performance -> webserver buffer adaptation
+36. Improving memory usage by using F() for string literals
 
 Features to be done:
 
 - LCD backlight control, contrast control
-- LCD Menu Navigation through Keyboard
-- Create Final Application Webpage
-- Online data acq service ex: Xively, Exosite to Display values
+- MenWizz integration
+- Online data acq service ex: Xively, Exosite, Thingspeak
 - RFID integration
 - Piezo Buzzer - tone();
 - Alarm functionality
 - E-mail notification
 - GSM Shield
+- Finalize Application Webpage
 
 Future possibilities:
 

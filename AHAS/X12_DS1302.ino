@@ -22,10 +22,10 @@ void init_DS1302()
   read_DS1302();
   
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: DS1302 => DONE");
+    Serial.println(F("#INIT: DS1302 => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: DS1302 => DONE");
+    add2SysLog(F("#INIT: DS1302 => DONE"));
   #endif
 }
 
@@ -59,7 +59,7 @@ void autoTimeSync()
     /* The RTC and the NTP are not in synchron */
 
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#RTC The RTC need to be synchronised");
+      Serial.println(F("#RTC The RTC need to be synchronised"));
     #endif
     
     
@@ -86,10 +86,10 @@ void sync_DS1302withNTP()
         ds1302.setTimeAndDate(year(t)-2000,month(t),day(t),1,hour(t),minute(t),second(t));
   
         #ifdef USE_SERIAL_MONITOR
-          Serial.println("#DS1302: synchronized to NTP");
+          Serial.println(F("#DS1302: synchronized to NTP"));
         #endif
         #ifdef USE_SYS_LOG
-          add2SysLog("#DS1302: synchronized to NTP");
+          add2SysLog(F("#DS1302: synchronized to NTP"));
         #endif
       break;
       

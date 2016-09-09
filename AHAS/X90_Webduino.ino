@@ -11,10 +11,10 @@
 /* This creates an instance of the webserver.  By specifying a prefix
  * of "", all pages will be at the root of the server. */
 
-#define JSON_BEGIN() server << "{ ";
-#define JSON_ADD(name,value)  server << "\"" << (name) << "\": " << (value) << ", ";
-#define JSON_ADD2(name,value)  server << "\"" << (name) << "\": " << "\"" << (value) << "\"" << ", ";
-#define JSON_END() server << " \"end\": " << 0 << " }";
+#define JSON_BEGIN() server << F("{ ");
+#define JSON_ADD(name,value)  server << F("\"") << (name) << F("\": ") << (value) << F(", ");
+#define JSON_ADD2(name,value)  server << F("\"") << (name) << F("\": ") << F("\"") << (value) << F("\"") << F(", ");
+#define JSON_END() server << F(" \"end\": ") << 0 << F(" }");
 
 /* This creates an pointer to instance of the webserver. */
 WebServer * webserver;
@@ -79,11 +79,11 @@ void sendHtmlFromSD(WebServer &server,char * filename)
     else 
     {/* if the file isn't open, pop up an error */
       #ifdef USE_SERIAL_MONITOR
-        Serial.print("#WEB: Error opening: ");
+        Serial.print(F("#WEB: Error opening: "));
         Serial.println(filename);
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#WEB: Error opening file");
+        add2SysLog(F("#WEB: Error opening file"));
       #endif
     }
 }
@@ -240,12 +240,12 @@ void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_
             EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, value);
 
             #ifdef USE_SERIAL_MONITOR
-              Serial.print("WEB: New Password saved to EEPROM:");
+              Serial.print(F("WEB: New Password saved to EEPROM:"));
               EEPROM_readAnything(EEPROM_PSWD_ADDRESS, temp);
               Serial.println(temp);
             #endif
             #ifdef USE_SYS_LOG
-              add2SysLog("WEB: New Password saved to EEPROM:");
+              add2SysLog(F("WEB: New Password saved to EEPROM:"));
             #endif
             
           }
@@ -291,42 +291,42 @@ void settingsJsonCmd(WebServer &server, WebServer::ConnectionType type, char *ur
   JSON_BEGIN();
   
   /* Relays */
-  JSON_ADD("mac0",eeprom_config.mac[0]);
-  JSON_ADD("mac1",eeprom_config.mac[1]);
-  JSON_ADD("mac2",eeprom_config.mac[2]);
-  JSON_ADD("mac3",eeprom_config.mac[3]);
-  JSON_ADD("mac4",eeprom_config.mac[4]);
-  JSON_ADD("mac5",eeprom_config.mac[5]);
+  JSON_ADD(F("mac0"),eeprom_config.mac[0]);
+  JSON_ADD(F("mac1"),eeprom_config.mac[1]);
+  JSON_ADD(F("mac2"),eeprom_config.mac[2]);
+  JSON_ADD(F("mac3"),eeprom_config.mac[3]);
+  JSON_ADD(F("mac4"),eeprom_config.mac[4]);
+  JSON_ADD(F("mac5"),eeprom_config.mac[5]);
 
-  JSON_ADD("ip0",eeprom_config.ip[0]);
-  JSON_ADD("ip1",eeprom_config.ip[1]);
-  JSON_ADD("ip2",eeprom_config.ip[2]);
-  JSON_ADD("ip3",eeprom_config.ip[3]);
+  JSON_ADD(F("ip0"),eeprom_config.ip[0]);
+  JSON_ADD(F("ip1"),eeprom_config.ip[1]);
+  JSON_ADD(F("ip2"),eeprom_config.ip[2]);
+  JSON_ADD(F("ip3"),eeprom_config.ip[3]);
 
-  JSON_ADD("sub0",eeprom_config.subnet[0]);
-  JSON_ADD("sub1",eeprom_config.subnet[1]);
-  JSON_ADD("sub2",eeprom_config.subnet[2]);
-  JSON_ADD("sub3",eeprom_config.subnet[3]);
+  JSON_ADD(F("sub0"),eeprom_config.subnet[0]);
+  JSON_ADD(F("sub1"),eeprom_config.subnet[1]);
+  JSON_ADD(F("sub2"),eeprom_config.subnet[2]);
+  JSON_ADD(F("sub3"),eeprom_config.subnet[3]);
 
-  JSON_ADD("gw0",eeprom_config.gateway[0]);
-  JSON_ADD("gw1",eeprom_config.gateway[1]);
-  JSON_ADD("gw2",eeprom_config.gateway[2]);
-  JSON_ADD("gw3",eeprom_config.gateway[3]);
+  JSON_ADD(F("gw0"),eeprom_config.gateway[0]);
+  JSON_ADD(F("gw1"),eeprom_config.gateway[1]);
+  JSON_ADD(F("gw2"),eeprom_config.gateway[2]);
+  JSON_ADD(F("gw3"),eeprom_config.gateway[3]);
 
-  JSON_ADD("dns0",eeprom_config.dns_server[0]);
-  JSON_ADD("dns1",eeprom_config.dns_server[1]);
-  JSON_ADD("dns2",eeprom_config.dns_server[2]);
-  JSON_ADD("dns3",eeprom_config.dns_server[3]);
+  JSON_ADD(F("dns0"),eeprom_config.dns_server[0]);
+  JSON_ADD(F("dns1"),eeprom_config.dns_server[1]);
+  JSON_ADD(F("dns2"),eeprom_config.dns_server[2]);
+  JSON_ADD(F("dns3"),eeprom_config.dns_server[3]);
 
-  JSON_ADD("port",eeprom_config.webserverPort);
-  JSON_ADD("dhcp",eeprom_config.use_dhcp);
-  JSON_ADD("renew",eeprom_config.dhcp_refresh_minutes);
+  JSON_ADD(F("port"),eeprom_config.webserverPort);
+  JSON_ADD(F("dhcp"),eeprom_config.use_dhcp);
+  JSON_ADD(F("renew"),eeprom_config.dhcp_refresh_minutes);
 
-  JSON_ADD("dhcp_state",dhcp_state);
-  JSON_ADD("dhcp_renew",last_dhcp_renew/1000);
-  JSON_ADD2("uptime",sys.uptime());
-  JSON_ADD("ramsize",sys.ramSize());
-  JSON_ADD("ramfree",sys.ramFree());
+  JSON_ADD(F("dhcp_state"),dhcp_state);
+  JSON_ADD(F("dhcp_renew"),last_dhcp_renew/1000);
+  JSON_ADD2(F("uptime"),sys.uptime());
+  JSON_ADD(F("ramsize"),sys.ramSize());
+  JSON_ADD(F("ramfree"),sys.ramFree());
   
   JSON_END();
 }
@@ -350,68 +350,68 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   
   /* Relays */
   #ifdef USE_RELAY
-  JSON_ADD("r1",digitalRead(PIN_RELAY1));
-  JSON_ADD("r2",digitalRead(PIN_RELAY2));
-  JSON_ADD("r3",digitalRead(PIN_RELAY3));
-  JSON_ADD("r4",digitalRead(PIN_RELAY4));
+  JSON_ADD(F("r1"),digitalRead(PIN_RELAY1));
+  JSON_ADD(F("r2"),digitalRead(PIN_RELAY2));
+  JSON_ADD(F("r3"),digitalRead(PIN_RELAY3));
+  JSON_ADD(F("r4"),digitalRead(PIN_RELAY4));
   #endif
   
   /* Analog inputs */
-  JSON_ADD("a0",analogRead(0));
-  JSON_ADD("a1",analogRead(1));
-  JSON_ADD("a2",analogRead(2));
-  JSON_ADD("a3",analogRead(3));
-  JSON_ADD("a4",analogRead(4));
+  JSON_ADD(F("a0"),analogRead(0));
+  JSON_ADD(F("a1"),analogRead(1));
+  JSON_ADD(F("a2"),analogRead(2));
+  JSON_ADD(F("a3"),analogRead(3));
+  JSON_ADD(F("a4"),analogRead(4));
 
   /* DataPool variables */
   #ifdef USE_DHT11
-  JSON_ADD("dht11_temp",DataPool.DHT11_Temperature);
-  JSON_ADD("dht11_hum",DataPool.DHT11_Humidity);
-  JSON_ADD("dht11_dew",DataPool.DHT11_DewPoint);
+  JSON_ADD(F("dht11_temp"),DataPool.DHT11_Temperature);
+  JSON_ADD(F("dht11_hum"),DataPool.DHT11_Humidity);
+  JSON_ADD(F("dht11_dew"),DataPool.DHT11_DewPoint);
   #endif
   
   #ifdef USE_BMP085
-  JSON_ADD("bmp085_temp",DataPool.BMP085_Temperature);
-  JSON_ADD("bmp085_pres",DataPool.BMP085_Pressure);
+  JSON_ADD(F("bmp085_temp"),DataPool.BMP085_Temperature);
+  JSON_ADD(F("bmp085_pres"),DataPool.BMP085_Pressure);
   #endif
   
   #ifdef USE_MS5611
-  JSON_ADD("ms5611_temp",DataPool.MS5611_Temperature);
-  JSON_ADD("ms5611_pres",DataPool.MS5611_Pressure);
-  JSON_ADD("ms5611_aalt",DataPool.MS5611_AbsAltitude);
-  JSON_ADD("ms5611_ralt",DataPool.MS5611_RelAltitude);
+  JSON_ADD(F("ms5611_temp"),DataPool.MS5611_Temperature);
+  JSON_ADD(F("ms5611_pres"),DataPool.MS5611_Pressure);
+  JSON_ADD(F("ms5611_aalt"),DataPool.MS5611_AbsAltitude);
+  JSON_ADD(F("ms5611_ralt"),DataPool.MS5611_RelAltitude);
   #endif
   #ifdef USE_DS1302
-  JSON_ADD("ds1302_year",DataPool.DS1302_Year + 2000);
-  JSON_ADD("ds1302_month",DataPool.DS1302_Month);
-  JSON_ADD("ds1302_day",DataPool.DS1302_Day);
-  JSON_ADD("ds1302_hour",DataPool.DS1302_Hour);
-  JSON_ADD("ds1302_min",DataPool.DS1302_Minute);
-  JSON_ADD("ds1302_sec",DataPool.DS1302_Second);
-  JSON_ADD2("ds1302_sync",DataPool.DS1302_SyncStatus);
+  JSON_ADD(F("ds1302_year"),DataPool.DS1302_Year + 2000);
+  JSON_ADD(F("ds1302_month"),DataPool.DS1302_Month);
+  JSON_ADD(F("ds1302_day"),DataPool.DS1302_Day);
+  JSON_ADD(F("ds1302_hour"),DataPool.DS1302_Hour);
+  JSON_ADD(F("ds1302_min"),DataPool.DS1302_Minute);
+  JSON_ADD(F("ds1302_sec"),DataPool.DS1302_Second);
+  JSON_ADD2(F("ds1302_sync"),DataPool.DS1302_SyncStatus);
   #endif
   
   #ifdef USE_PIR
-  JSON_ADD("pir_state",DataPool.PIR_State);
+  JSON_ADD(F("pir_state"),DataPool.PIR_State);
   #endif 
   #ifdef USE_SOUND_DETECT
-  JSON_ADD("sound_state",DataPool.SOUND_State);
+  JSON_ADD(F("sound_state"),DataPool.SOUND_State);
   #endif
   
   #ifdef USE_RGB
-  JSON_ADD("rgb_red",DataPool.RGB_Red);
-  JSON_ADD("rgb_green",DataPool.RGB_Green);
-  JSON_ADD("rgb_blue",DataPool.RGB_Blue);
+  JSON_ADD(F("rgb_red"),DataPool.RGB_Red);
+  JSON_ADD(F("rgb_green"),DataPool.RGB_Green);
+  JSON_ADD(F("rgb_blue"),DataPool.RGB_Blue);
   #endif
 
   #ifdef USE_NTP
-  JSON_ADD("ntp_year",DataPool.NTP_Year);
-  JSON_ADD("ntp_month",DataPool.NTP_Month);
-  JSON_ADD("ntp_day",DataPool.NTP_Day);
-  JSON_ADD("ntp_hour",DataPool.NTP_Hour);
-  JSON_ADD("ntp_min",DataPool.NTP_Minute);
-  JSON_ADD("ntp_sec",DataPool.NTP_Second);
-  JSON_ADD2("ntp_sync",DataPool.NTP_Status);
+  JSON_ADD(F("ntp_year"),DataPool.NTP_Year);
+  JSON_ADD(F("ntp_month"),DataPool.NTP_Month);
+  JSON_ADD(F("ntp_day"),DataPool.NTP_Day);
+  JSON_ADD(F("ntp_hour"),DataPool.NTP_Hour);
+  JSON_ADD(F("ntp_min"),DataPool.NTP_Minute);
+  JSON_ADD(F("ntp_sec"),DataPool.NTP_Second);
+  JSON_ADD2(F("ntp_sync"),DataPool.NTP_Status);
   #endif
 
   JSON_END();
@@ -532,9 +532,11 @@ void errorHTML(WebServer &server, WebServer::ConnectionType type, char *url_tail
   if (type == WebServer::HEAD)
     return;
     
-  server.printP("HTTP 400 - BAD REQUEST");
+  //server.printP("HTTP 400 - BAD REQUEST");
+  server << F("HTTP 400 - BAD REQUEST");
   
-  server.printP("</body></html>");
+  //server.printP("</body></html>");
+  server << F("</body></html>");
 }
 
 void init_Webduino()
@@ -571,12 +573,12 @@ void init_Webduino()
   /* start the webserver */
   webserver->begin();
 
-    #ifdef USE_SERIAL_MONITOR
-      Serial.println("#INIT: WebDuino Server => DONE");
-    #endif
-    #ifdef USE_SYS_LOG
-      add2SysLog("#INIT: WebDuino Server => DONE");
-    #endif
+  #ifdef USE_SERIAL_MONITOR
+    Serial.println(F("#INIT: WebDuino Server => DONE"));
+  #endif
+  #ifdef USE_SYS_LOG
+    add2SysLog(F("#INIT: WebDuino Server => DONE"));
+  #endif
 }
 
 void WebduinoServerLoop()

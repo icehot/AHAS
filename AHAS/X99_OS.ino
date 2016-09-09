@@ -6,8 +6,8 @@ void Task_Init_Callback()
 {
   #ifdef DEBUG
     Serial.print(millis());
-    Serial.println(" #OS: Init Task");
-    Serial.print("Delayed: ");
+    Serial.println(F(" #OS: Init Task"));
+    Serial.print(F("Delayed: "));
     Serial.println(Task_Init.getStartDelay());
   #endif 
   
@@ -78,8 +78,8 @@ void Task_Acquisition_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.println(" #OS: Acquisition Task");
-      Serial.print("Delayed: ");
+      Serial.println(F(" #OS: Acquisition Task"));
+      Serial.print(F("Delayed: "));
       Serial.println(Task_Acquisition.getStartDelay());
     #endif 
 
@@ -109,10 +109,10 @@ void Task_Acquisition_Callback()
     if (get_SoundDetect_State() == 1)
     {
       #ifdef USE_SERIAL_MONITOR
-        Serial.println("#SOUND: Activated!");
+        Serial.println(F("#SOUND: Activated!"));
       #endif
       #ifdef USE_SYS_LOG
-       add2SysLog("#SOUND: Activated!");
+       add2SysLog(F("#SOUND: Activated!"));
       #endif
       clear_SoundDetect_State();
       
@@ -143,8 +143,8 @@ void Task_Display_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.println(" #OS: Display Task");
-      Serial.print("Delayed: ");
+      Serial.println(F(" #OS: Display Task"));
+      Serial.print(F("Delayed: "));
       Serial.println(Task_Display.getStartDelay());
     #endif 
 
@@ -160,8 +160,8 @@ void Task_Webduino_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.println(" #OS: Webduino Task");
-      Serial.print("Delayed: ");
+      Serial.println(F(" #OS: Webduino Task"));
+      Serial.print(F("Delayed: "));
       Serial.println(Task_Display.getStartDelay());
     #endif 
 
@@ -174,8 +174,8 @@ void Task_Webduino_Callback()
   //endRuntimeMeasurement(&RunTime.Task_Webduino);
     
     Serial.print(millis());
-    Serial.print(" #WEB ");
-    Serial.print("Delay: ");
+    Serial.print(F(" #WEB "));
+    Serial.print(F("Delay: "));
     Serial.println(Task_Display.getStartDelay());
     printRuntTime(&RunTime.Task_Webduino);
 }
@@ -184,8 +184,8 @@ void Task_Log_Callback()
 {
     #ifdef DEBUG
       Serial.print(millis());
-      Serial.println(" #OS: Log Task");
-      Serial.print("Delayed: ");
+      Serial.println(F(" #OS: Log Task"));
+      Serial.print(F("Delayed: "));
       Serial.println(Task_Log.getStartDelay());
     #endif
     
@@ -198,8 +198,8 @@ void Task_RenewDHCP_Callback()
 {
    #ifdef DEBUG
       Serial.print(millis());
-      Serial.println(" #OS: Renew DHCP Task");
-      Serial.print("Delayed: ");
+      Serial.println(F(" #OS: Renew DHCP Task"));
+      Serial.print(F("Delayed: "));
       Serial.println(Task_Log.getStartDelay());
     #endif
   
@@ -213,50 +213,50 @@ void Task_RenewDHCP_Callback()
     {
       case NothingHappened:
         #ifdef USE_SERIAL_MONITOR
-          Serial.println("#DHCP: Nothing Happened");
+          Serial.println(F("#DHCP: Nothing Happened"));
         #endif
         #ifdef USE_SYS_LOG
-          add2SysLog("#DHCP: Nothing Happened");
+          add2SysLog(F("#DHCP: Nothing Happened"));
         #endif
       break;
       case RenewFailed:
         #ifdef USE_SERIAL_MONITOR
-          Serial.println("#DHCP: Renew Failed");
+          Serial.println(F("#DHCP: Renew Failed"));
         #endif
         #ifdef USE_SYS_LOG
-          add2SysLog("#DHCP: Renew Failed");
+          add2SysLog(F("#DHCP: Renew Failed"));
         #endif
       break;
       case RenewSuccess:
         #ifdef USE_SERIAL_MONITOR
-          Serial.println("#DHCP: Renew Success");
+          Serial.println(F("#DHCP: Renew Success"));
         #endif
         #ifdef USE_SYS_LOG
-          add2SysLog("#DHCP: Renew Success");
+          add2SysLog(F("#DHCP: Renew Success"));
         #endif
       break;
       case RebindFailed:
         #ifdef USE_SERIAL_MONITOR
-          Serial.println("#DHCP: Rebind Failed");
+          Serial.println(F("#DHCP: Rebind Failed"));
         #endif
         #ifdef USE_SYS_LOG
-          add2SysLog("#DHCP: Rebind Failed");
+          add2SysLog(F("#DHCP: Rebind Failed"));
         #endif
       break;
       case RebindSuccess:
         #ifdef USE_SERIAL_MONITOR
-          Serial.println("#DHCP: Rebind Success");
+          Serial.println(F("#DHCP: Rebind Success"));
         #endif
         #ifdef USE_SYS_LOG
-          add2SysLog("#DHCP: Rebind Success");
+          add2SysLog(F("#DHCP: Rebind Success"));
         #endif
       break;
       default:
         #ifdef USE_SERIAL_MONITOR
-          Serial.println("#DHCP: Unknown Error");
+          Serial.println(F("#DHCP: Unknown Error"));
         #endif
         #ifdef USE_SYS_LOG
-          add2SysLog("#DHCP: Unknown Error");
+          add2SysLog(F("#DHCP: Unknown Error"));
         #endif
       break;
     }
@@ -267,8 +267,8 @@ void Task_TimeSync_Callback()
 {
      #ifdef DEBUG
       Serial.print(millis());
-      Serial.println(" #OS: Time Sync Task");
-      Serial.print("Delayed: ");
+      Serial.println(F(" #OS: Time Sync Task"));
+      Serial.print(F("Delayed: "));
       Serial.println(Task_TimeSync.getStartDelay());
     #endif
     

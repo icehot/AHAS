@@ -26,10 +26,10 @@ void init_LCD()
   lcd.createChar(0, degree);
   
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: LCD => DONE");
+    Serial.println(F("#INIT: LCD => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: LCD => DONE");
+    add2SysLog(F("#INIT: LCD => DONE"));
   #endif
 }
 
@@ -45,15 +45,15 @@ void updateLCD()
     case 0:
       /* First Row */
       #ifdef USE_DS1302
-      lcd.print("Date: ");
-      printDigits(DataPool.DS1302_Year);lcd.print("/");
-      printDigits(DataPool.DS1302_Month);lcd.print("/");
+      lcd.print(F("Date: "));
+      printDigits(DataPool.DS1302_Year);lcd.print(F("/"));
+      printDigits(DataPool.DS1302_Month);lcd.print(F("/"));
       printDigits(DataPool.DS1302_Day);
       
       /* Second Row */
       lcd.setCursor(0,1);//bottom left corner
-      lcd.print("Time: ");
-      printDigits(DataPool.DS1302_Hour);lcd.print(":");
+      lcd.print(F("Time: "));
+      printDigits(DataPool.DS1302_Hour);lcd.print(F(":"));
       printDigits(DataPool.DS1302_Minute);
       #endif
     break;
@@ -61,13 +61,13 @@ void updateLCD()
     case 1:
       /* First Row */
       #ifdef USE_MS5611
-      lcd.print("T: ");
+      lcd.print(F("T: "));
       lcd.print(DataPool.MS5611_Temperature,1);
       lcd.write(byte(0));
       #endif
       
       #ifdef USE_DHT11
-      lcd.print("C H: ");
+      lcd.print(F("C H: "));
       lcd.print(DataPool.DHT11_Humidity);
       lcd.print("%");
       #endif
@@ -75,9 +75,9 @@ void updateLCD()
       /* Second Row */
       #ifdef USE_MS5611
       lcd.setCursor(0, 1);//bottom left corner
-      lcd.print("P: ");
+      lcd.print(F("P: "));
       lcd.print(DataPool.MS5611_Pressure/(float)100);
-      lcd.print(" mBar");
+      lcd.print(F(" mBar"));
       #endif
       
     break;
@@ -99,7 +99,7 @@ void printDigits(int digits)
 {
   // utility for digital clock display: prints leading 0
   if(digits < 10)
-    lcd.print('0');
+    lcd.print(F("0"));
   lcd.print(digits);
 }
 #endif

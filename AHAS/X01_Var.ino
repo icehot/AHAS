@@ -121,11 +121,11 @@ void endRuntimeMeasurement(RunTime_Type* module)
 
 void printRuntTime(RunTime_Type* module)
 {
-  Serial.print("Act:");Serial.println(module->act);
-  Serial.print("Max:");Serial.println(module->max);
-  Serial.print("Min:");Serial.println(module->min);
-  Serial.print("Avg:");Serial.println(module->avg);
-  Serial.print("AvgNZ:");Serial.println(module->avgNZ);
-  Serial.print("Count:");Serial.println(module->count);
+  Serial.print(F("Act:"));Serial.println(module->act);
+  Serial.print(F("Max:"));Serial.println(module->max);
+  Serial.print(F("Min:"));Serial.println(module->min);
+  Serial.print(F("Avg:"));Serial.println(module->avg);
+  Serial.print(F("AvgNZ:"));Serial.println(module->avgNZ);
+  Serial.print(F("Count:"));Serial.println(module->count);
 }
 

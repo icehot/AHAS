@@ -47,10 +47,10 @@ void init_NTP()
   timeServer[2] = &timeServerC;
     
   #ifdef USE_SERIAL_MONITOR
-    Serial.print("#INIT: Network Time Protocol =>");
+    Serial.print(F("#INIT: Network Time Protocol =>"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: Network Time Protocol =>");
+    add2SysLog(F("#INIT: Network Time Protocol =>"));
   #endif
   
   setSyncProvider(getNtpTimeMultiServer);
@@ -104,11 +104,11 @@ time_t getNtpTime()
       }
       else
       {
-        Serial.println("#NTP: Response Received");
+        Serial.println(F("#NTP: Response Received"));
       }
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#NTP: Response Received");
+        add2SysLog(F("#NTP: Response Received"));
       #endif
 
       /* Read packet into the buffer */
@@ -160,19 +160,19 @@ time_t getNtpTimeMultiServer()
       #ifdef USE_SERIAL_MONITOR
       if (isInit == true)
       {
-        Serial.println("#DONE");
-        Serial.print("#NTP: Response Received from server #");
+        Serial.println(F("#DONE"));
+        Serial.print(F("#NTP: Response Received from server #"));
         Serial.println(i+1);
         isInit = false;
       }
       else
       {
-        Serial.print("#NTP: Response Received from server #");
+        Serial.print(F("#NTP: Response Received from server #"));
         Serial.println(i+1);
       }
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#NTP: Response Received");
+        add2SysLog(F("#NTP: Response Received"));
       #endif
       break;
     }
@@ -181,10 +181,10 @@ time_t getNtpTimeMultiServer()
   if ((i == NR_OF_TIMESERVERS) && (secsSince1900 == 0))
   {
      #ifdef USE_SERIAL_MONITOR
-      Serial.println("FAILED");
+      Serial.println(F("FAILED"));
     #endif
     #ifdef USE_SYS_LOG
-      add2SysLog("#NTP: Response Failed");
+      add2SysLog(F("#NTP: Response Failed"));
     #endif
     return 0; // return 0 if unable to get the time
   }

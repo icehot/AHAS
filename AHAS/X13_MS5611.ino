@@ -37,19 +37,19 @@ void init_MS5611()
     //"Could not find a valid MS5611 sensor, check wiring!");
     
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#INIT: MS5611 => FAILED");
+      Serial.println(F("#INIT: MS5611 => FAILED"));
     #endif
     #ifdef USE_SYS_LOG
-      add2SysLog("#INIT: MS5611 => FAILED");
+      add2SysLog(F("#INIT: MS5611 => FAILED"));
     #endif
   }
   else
   {
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#INIT: MS5611 => DONE");
+      Serial.println(F("#INIT: MS5611 => DONE"));
     #endif
     #ifdef USE_SYS_LOG
-      add2SysLog("#INIT: MS5611 => DONE");
+      add2SysLog(F("#INIT: MS5611 => DONE"));
     #endif
   }
   
@@ -63,7 +63,7 @@ void init_MS5611()
 void checkSettings()
 {
   #ifdef USE_SERIAL_MONITOR  
-    Serial.print("Oversampling: ");
+    Serial.print(F("Oversampling: "));
     Serial.println(ms5611.getOversampling());
   #endif
 }

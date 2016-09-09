@@ -59,13 +59,13 @@ void init_NetSetup()
       dhcp_success = true;
 
       #ifdef USE_SERIAL_MONITOR
-        Serial.println("#INIT: Network via DHCP => DONE");
-        Serial.print(" Obtained IP Address through DHCP: ");
+        Serial.println(F("#INIT: Network via DHCP => DONE"));
+        Serial.print(F(" Obtained IP Address through DHCP: "));
         Serial.println(Ethernet.localIP());
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#INIT: Network via DHCP => DONE");
-        add2SysLog(" Obtained IP Address through DHCP: ");
+        add2SysLog(F("#INIT: Network via DHCP => DONE"));
+        add2SysLog(F(" Obtained IP Address through DHCP: "));
         //add2SysLog(Ethernet.localIP());
       #endif
     } 
@@ -73,10 +73,10 @@ void init_NetSetup()
     {
       dhcp_success = false;
       #ifdef USE_SERIAL_MONITOR
-        Serial.print("#INIT: Network via DHCP => FAILED");
+        Serial.print(F("#INIT: Network via DHCP => FAILED"));
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#INIT: Network via DHCP => FAILED");
+        add2SysLog(F("#INIT: Network via DHCP => FAILED"));
       #endif
     }
   }
@@ -90,13 +90,13 @@ void init_NetSetup()
     Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
     
     #ifdef USE_SERIAL_MONITOR
-     Serial.println("#INIT: Network with default settings => DONE");
-     Serial.print(" DefaultIP Address : ");
+     Serial.println(F("#INIT: Network with default settings => DONE"));
+     Serial.print(F(" DefaultIP Address : "));
      Serial.println(Ethernet.localIP());
     #endif
     #ifdef USE_SYS_LOG
-      add2SysLog("#INIT: Network with default settings => DONE");
-      add2SysLog(" Obtained IP Address through DHCP: ");
+      add2SysLog(F("#INIT: Network with default settings => DONE"));
+      add2SysLog(F(" Obtained IP Address through DHCP: "));
       //add2SysLog(Ethernet.localIP());
     #endif
   } 
@@ -221,7 +221,7 @@ void set_EEPROM_Default()
 */
 #ifdef DEBUG
 void print_EEPROM_Settings() {
-    Serial.print("IP: ");
+    Serial.print(F("IP: "));
     for(int i = 0; i<4; i++) {
       Serial.print(eeprom_config.ip[i]);
       if (i<3) {
@@ -230,7 +230,7 @@ void print_EEPROM_Settings() {
     }
     Serial.println();
   
-    Serial.print("Subnet: ");
+    Serial.print(F("Subnet: "));
     for(int i = 0; i<4; i++) {
       Serial.print(eeprom_config.subnet[i]);
       if (i<3) {
@@ -239,7 +239,7 @@ void print_EEPROM_Settings() {
     }
     Serial.println();
     
-    Serial.print("Gateway: ");
+    Serial.print(F("Gateway: "));
     for(int i = 0; i<4; i++) {
       Serial.print(eeprom_config.gateway[i]);
       if (i<3) {
@@ -248,7 +248,7 @@ void print_EEPROM_Settings() {
     }
     Serial.println();
 
-    Serial.print("DNS Server: ");
+    Serial.print(F("DNS Server: "));
     for(int i = 0; i<4; i++) {
       Serial.print(eeprom_config.dns_server[i]);
       if (i<3) {
@@ -257,7 +257,7 @@ void print_EEPROM_Settings() {
     }
     Serial.println();
     
-    Serial.print("MAC: ");
+    Serial.print(F("MAC: "));
     for (int a=0;a<6;a++) {
       Serial.print(eeprom_config.mac[a],HEX);
       if(a<5) {
@@ -266,17 +266,17 @@ void print_EEPROM_Settings() {
     }
     Serial.println();
     
-    Serial.print("Webserver Port: ");
+    Serial.print(F("Webserver Port: "));
     Serial.println(eeprom_config.webserverPort);
     
-    Serial.print("USE DHCP: ");
+    Serial.print(F("USE DHCP: "));
     Serial.println(eeprom_config.use_dhcp);
     
-    Serial.print(" DHCP renew every ");
+    Serial.print(F(" DHCP renew every "));
     Serial.print(eeprom_config.dhcp_refresh_minutes);
-    Serial.println(" minutes");
+    Serial.println(F(" minutes"));
     
-    Serial.print("Config Set: ");
+    Serial.print(F("Config Set: "));
     Serial.println(eeprom_config.config_set);
 }
 #endif

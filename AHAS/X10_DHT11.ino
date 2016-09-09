@@ -17,12 +17,12 @@ void init_DHT11()
   chk = dht11.read(PIN_DHT11);  
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.print("#INIT: DHT11 Version");
+    Serial.print(F("#INIT: DHT11 Version"));
     Serial.print(DHT11LIB_VERSION);
-    Serial.print(" => ");
+    Serial.print(F(" => "));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: SOUND DETECT => DONE");
+    add2SysLog(F("#INIT: SOUND DETECT => DONE"));
   #endif
   
   switch (chk)
@@ -30,37 +30,37 @@ void init_DHT11()
     case DHTLIB_OK: 
       DataPool.DHT11_Status = "OK"; 
       #ifdef USE_SERIAL_MONITOR
-        Serial.println("DONE");
+        Serial.println(F("DONE"));
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#INIT: DHT11 => DONE");
+        add2SysLog(F("#INIT: DHT11 => DONE"));
       #endif
     break;
     case DHTLIB_ERROR_CHECKSUM: 
       DataPool.DHT11_Status = "Checksum error"; 
       #ifdef USE_SERIAL_MONITOR
-        Serial.println("FAILED (Checksum error)");
+        Serial.println(F("FAILED (Checksum error)"));
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#INIT: DHT11 => FAILED (Checksum error)");
+        add2SysLog(F("#INIT: DHT11 => FAILED (Checksum error)"));
       #endif
     break;
     case DHTLIB_ERROR_TIMEOUT: 
       DataPool.DHT11_Status = "Time out error";
       #ifdef USE_SERIAL_MONITOR
-        Serial.println("FAILED (Time out error)");
+        Serial.println(F("FAILED (Time out error)"));
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#INIT: DHT11 => FAILED (Time out error)");
+        add2SysLog(F("#INIT: DHT11 => FAILED (Time out error)"));
       #endif
     break;
     default: 
       DataPool.DHT11_Status = "Unknown error";
       #ifdef USE_SERIAL_MONITOR
-        Serial.println("FAILED (Unknown error)");
+        Serial.println(F("FAILED (Unknown error)"));
       #endif
       #ifdef USE_SYS_LOG
-        add2SysLog("#INIT: DHT11 => FAILED (Unknown error)");
+        add2SysLog(F("#INIT: DHT11 => FAILED (Unknown error)"));
       #endif
     break;
   }

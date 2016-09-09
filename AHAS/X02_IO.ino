@@ -1,5 +1,6 @@
 /** I/O **/
 void add2SysLog(char * entry);
+void add2SysLog(const __FlashStringHelper * entry);
 
 void softReset()
 {
@@ -12,8 +13,8 @@ void init_UART()
   Serial.begin(115200);
   
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("### AHAS - Arduino Home Automation System ###");
-    Serial.println("#INIT: UART => DONE");
+    Serial.println(F("### AHAS - Arduino Home Automation System ###"));
+    Serial.println(F("#INIT: UART => DONE"));
   #endif
 }
 
@@ -25,10 +26,10 @@ void init_DEBUG_LED()
   digitalWrite(PIN_DEBUG_LED,LOW);
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: DEBUG_LED => DONE");
+    Serial.println(F("#INIT: DEBUG_LED => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: DEBUG_LED => DONE");
+    add2SysLog(F("#INIT: DEBUG_LED => DONE"));
   #endif
 }
 #endif
@@ -39,10 +40,10 @@ void init_FACT_DEF_BTN()
   pinMode(PIN_RESET, INPUT);
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: FACT_DEF_BTN => DONE");
+    Serial.println(F("#INIT: FACT_DEF_BTN => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: FACT_DEF_BTN => DONE");
+    add2SysLog(F("#INIT: FACT_DEF_BTN => DONE"));
   #endif
 }
 #endif
@@ -59,10 +60,10 @@ void init_RGB()
   analogWrite(PIN_RGBLED_B, 128);
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: RGB => DONE");
+    Serial.println(F("#INIT: RGB => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: RGB => DONE");
+    add2SysLog(F("#INIT: RGB => DONE"));
   #endif
 }
 #endif
@@ -82,10 +83,10 @@ void init_Relay()
   digitalWrite(PIN_RELAY4,HIGH);
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: RElAY => DONE");
+    Serial.println(F("#INIT: RElAY => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: RElAY => DONE");
+    add2SysLog(F("#INIT: RElAY => DONE"));
   #endif
 }
 #endif 
@@ -97,10 +98,10 @@ void init_PIR()
   pinMode(PIN_PIR_SENSOR, INPUT);
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: PIR => DONE");
+    Serial.println(F("#INIT: PIR => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: PIR => DONE");
+    add2SysLog(F("#INIT: PIR => DONE"));
   #endif
 }
 
@@ -131,10 +132,10 @@ void init_SoundDetect()
   attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT),ISR_SoundDetect, FALLING);
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: SOUND DETECT => DONE");
+    Serial.println(F("#INIT: SOUND DETECT => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: SOUND DETECT => DONE");
+    add2SysLog(F("#INIT: SOUND DETECT => DONE"));
   #endif
 }
 

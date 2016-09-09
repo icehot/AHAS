@@ -3,6 +3,7 @@
 #include <SD.h>
 
 void add2SysLogWOTimeStamp(char * entry);
+void add2SysLogWOTimeStamp(const __FlashStringHelper * entry);
 
 void init_SD()
 {
@@ -12,7 +13,7 @@ void init_SD()
   if (!SD.begin(PIN_SD_CS))
   { 
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#INIT: SD Card => FAILED");
+      Serial.println(F("#INIT: SD Card => FAILED"));
     #endif
        
     delay(5000);
@@ -21,10 +22,10 @@ void init_SD()
   else
   {
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#INIT: SD Card => DONE");
+      Serial.println(F("#INIT: SD Card => DONE"));
     #endif
     #ifdef USE_SD
-      add2SysLogWOTimeStamp("### AHAS - Arduino Home Automation System ###");
+      add2SysLogWOTimeStamp(F("### AHAS - Arduino Home Automation System ###"));
     #endif
   }
 }
@@ -79,13 +80,56 @@ void saveDataToLog()
     dataFile.close();
     // print to the serial port too:
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#SD: Datalog saved");
+      Serial.println(F("#SD: Datalog saved"));
     #endif
   }
   // if the file isn't open, pop up an error:
   else {
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#SD: Error opening datalog.txt");
+      Serial.println(F("#SD: Error opening datalog.txt"));
+    #endif
+  }
+}
+
+void add2SysLog(const __FlashStringHelper * entry)
+{
+  // make a string for assembling the data to log:
+  String dataString = "";
+
+  /* TimeStamp */
+  #ifdef USE_DS1302
+  dataString += String(DataPool.DS1302_Year);
+  dataString += "/";
+  dataString += String(DataPool.DS1302_Month);
+  dataString += "/";
+  dataString += String(DataPool.DS1302_Day);
+  dataString += " ";
+  dataString += String(DataPool.DS1302_Hour);
+  dataString += ":";
+  dataString += String(DataPool.DS1302_Minute);
+  dataString += ",";
+  #endif
+
+  dataString += String(entry);
+  
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  File dataFile = SD.open("system.log", FILE_WRITE);
+
+  // if the file is available, write to it:
+  if (dataFile) 
+  {
+    dataFile.println(dataString);
+    dataFile.close();
+// print to the serial port too:
+//    #ifdef USE_SERIAL_MONITOR
+//      Serial.println("#SD: System Log saved");
+//    #endif
+  }
+  // if the file isn't open, pop up an error:
+  else {
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println(F("#SD: Error opening system.log"));
     #endif
   }
 }
@@ -128,7 +172,7 @@ void add2SysLog(char * entry)
   // if the file isn't open, pop up an error:
   else {
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#SD: Error opening system.log");
+      Serial.println(F("#SD: Error opening system.log"));
     #endif
   }
 }
@@ -157,7 +201,36 @@ void add2SysLogWOTimeStamp(char * entry)
   // if the file isn't open, pop up an error:
   else {
     #ifdef USE_SERIAL_MONITOR
-      Serial.println("#SD: Error opening system.log");
+      Serial.println(F("#SD: Error opening system.log"));
+    #endif
+  }
+}
+
+void add2SysLogWOTimeStamp(const __FlashStringHelper * entry)
+{
+  // make a string for assembling the data to log:
+  String dataString = "";
+
+  dataString += String(entry);
+  
+  // open the file. note that only one file can be open at a time,
+  // so you have to close this one before opening another.
+  File dataFile = SD.open("system.log", FILE_WRITE);
+
+  // if the file is available, write to it:
+  if (dataFile) 
+  {
+    dataFile.println(dataString);
+    dataFile.close();
+// print to the serial port too:
+//    #ifdef USE_SERIAL_MONITOR
+//      Serial.println("#SD: System Log saved");
+//    #endif
+  }
+  // if the file isn't open, pop up an error:
+  else {
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println(F("#SD: Error opening system.log"));
     #endif
   }
 }

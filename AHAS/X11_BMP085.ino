@@ -15,10 +15,10 @@ void init_BMP085()
   bmp085.init(I2C_ADDRESS);
 
   #ifdef USE_SERIAL_MONITOR
-    Serial.println("#INIT: BMP085 => DONE");
+    Serial.println(F("#INIT: BMP085 => DONE"));
   #endif
   #ifdef USE_SYS_LOG
-    add2SysLog("#INIT: BMP085 => DONE");
+    add2SysLog(F("#INIT: BMP085 => DONE"));
   #endif
 }
 
