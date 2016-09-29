@@ -68,8 +68,8 @@ void updateLCD()
       
       #ifdef USE_DHT11
       lcd.print(F("C H: "));
-      lcd.print(DataPool.DHT11_Humidity);
-      lcd.print("%");
+      lcd.print((byte)DataPool.DHT11_Humidity);
+      lcd.print(F("%"));
       #endif
      
       /* Second Row */

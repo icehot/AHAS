@@ -21,6 +21,8 @@
 #define USE_PIR
 #define USE_SOUND_DETECT
 #define USE_ANALOG_BTN
+#define USE_BACKLIGHT
+#define USE_CONTRAST
 
 /* SW Components */
 
@@ -49,6 +51,14 @@
   #define PIN_LCD_D5 25
   #define PIN_LCD_D6 26
   #define PIN_LCD_D7 27
+#endif
+
+#ifdef USE_BACKLIGHT
+  #define PIN_BACKLIGHT 3
+#endif
+
+#ifdef USE_CONTRAST
+  #define PIN_CONTRAST 4
 #endif
 
 #ifdef USE_RELAY

@@ -59,6 +59,14 @@ struct{
   #ifdef USE_SOUND_DETECT
   byte SOUND_State;
   #endif
+
+  #ifdef USE_BACKLIGHT
+  byte LCD_BackLight = 128;
+  #endif
+
+  #ifdef USE_CONTRAST
+  byte LCD_Contrast = 64;
+  #endif
 }DataPool;
 
 

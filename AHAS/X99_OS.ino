@@ -72,6 +72,14 @@ void Task_Init_Callback()
   #ifdef USE_LCD
     init_LCD();
   #endif
+
+  #ifdef USE_BACKLIGHT
+    init_BackLight();
+  #endif
+
+  #ifdef USE_CONTRAST
+    init_Contrast();
+  #endif
 }
 
 void Task_Acquisition_Callback()
@@ -127,6 +135,14 @@ void Task_Acquisition_Callback()
     analogWrite(PIN_RGBLED_R, DataPool.RGB_Red);
     analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);
     analogWrite(PIN_RGBLED_B, DataPool.RGB_Blue);
+    #endif
+
+    #ifdef USE_BACKLIGHT
+      setBackLight(LCD_BackLight);
+    #endif
+
+    #ifdef USE_CONTRAST
+      setContrast(LCD_Contrast);
     #endif
 
    if (Task_Acquisition.isFirstIteration())

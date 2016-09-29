@@ -48,6 +48,31 @@ void init_FACT_DEF_BTN()
 }
 #endif
 
+#ifdef USE_BACKLIGHT
+void init_BackLight()
+{
+  pinMode(PIN_BACKLIGHT, OUTPUT);
+}
+
+void setBackLight(byte value)
+{
+  analogWrite(PIN_BACKLIGHT, value);
+}
+#endif
+
+#ifdef USE_CONTRAST
+void init_Contrast()
+{
+  pinMode(PIN_CONTRAST, OUTPUT);
+}
+
+void setContrast(byte value)
+{
+  analogWrite(PIN_CONTRAST, value);
+}
+
+#endif
+
 #ifdef USE_RGB
 void init_RGB()
 {
