@@ -58,7 +58,7 @@
 #endif
 
 #ifdef USE_CONTRAST
-  #define PIN_CONTRAST 4
+  #define PIN_CONTRAST 5
 #endif
 
 #ifdef USE_RELAY
@@ -101,7 +101,7 @@
 #endif
 
 #ifdef USE_ANALOG_BTN
-  #define PIN_ANALOG_BUTTON a15
+  #define PIN_ANALOG_BUTTON A15
 #endif
 
 #ifdef USE_ETH_SHIELD or USE_SD

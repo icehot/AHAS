@@ -138,11 +138,11 @@ void Task_Acquisition_Callback()
     #endif
 
     #ifdef USE_BACKLIGHT
-      setBackLight(LCD_BackLight);
+      setBackLight(DataPool.LCD_BackLight);
     #endif
 
     #ifdef USE_CONTRAST
-      setContrast(LCD_Contrast);
+      setContrast(DataPool.LCD_Contrast);
     #endif
 
    if (Task_Acquisition.isFirstIteration())
