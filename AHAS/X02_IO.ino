@@ -73,15 +73,7 @@ void setContrast(byte value)
 #endif
 
 #ifdef USE_ANALOG_BTN
-
-#define MW_BTNULL      30   //NOBUTTON 
-#define MW_BTU         31   //UP 
-#define MW_BTD         32   //DOWN 
-#define MW_BTL         33   //RIGTH 
-#define MW_BTR         34   //LEFT 
-#define MW_BTE         35   //ESCAPE 
-#define MW_BTC         36   //CONFIRM
-
+#include <MENWIZ.h>
 #define AN_BTN_TOLERANCE 30
 
 #define BTNULL        1005   //NOBUTTON  

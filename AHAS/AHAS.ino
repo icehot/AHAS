@@ -56,7 +56,7 @@ void Task_TimeSync_Callback();
 /** Task Definitions **/
 Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback);
 Task Task_Acquisition(1000, TASK_FOREVER, &Task_Acquisition_Callback);
-Task Task_Display(2000, TASK_FOREVER, &Task_Display_Callback);
+Task Task_Display(200, TASK_FOREVER, &Task_Display_Callback); //TBD
 Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
 Task Task_Log(60000, TASK_FOREVER, &Task_Log_Callback);
 Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);

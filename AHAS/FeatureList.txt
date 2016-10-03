@@ -35,11 +35,11 @@ Completed Features:
 34. Daylight saving, time servers handling, on demand/auto sync, html update with ntp time, browser time. -> daylight saving UI needed
 35. Improving of Web page loading performance -> webserver buffer adaptation
 36. Improving memory usage by using F() for string literals
+37. LCD backlight control, contrast control 
+38. MenWizz integration -> Finalize the menu configuration
 
 Features to be done:
 
-- LCD backlight control, contrast control
-- MenWizz integration
 - Online data acq service ex: Xively, Exosite, Thingspeak
 - RFID integration
 - Piezo Buzzer - tone();

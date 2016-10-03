@@ -30,6 +30,7 @@
 #define USE_WEBDUINO
 #define USE_SERIAL_MONITOR
 #define USE_SYS_LOG
+#define USE_MENWIZZ
 
 /* Cross dependency check*/
 #ifndef USE_ETH_SHIELD

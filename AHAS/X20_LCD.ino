@@ -3,9 +3,63 @@
 #ifdef USE_LCD
 #include <LiquidCrystal.h>
 
-#define NR_OF_SCREENS 2;
-
 LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_EN, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
+
+#ifdef USE_MENWIZZ
+#include <MENWIZ.h>
+#include <EEPROM.h>
+
+menwiz tree;
+int  list,sp=110;
+
+void DisplayValues()
+{
+  static  char buf[7];
+  
+  /* First line */
+  strcpy(tree.sbuf,"Date: "); 
+  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Year,buf,10)); 
+  strcat(tree.sbuf,"/");
+  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Month,buf,10)); 
+  strcat(tree.sbuf,"/");
+  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Day,buf,10)); 
+  strcat(tree.sbuf,"\n");
+
+  /* Second line */
+  strcat(tree.sbuf,"Time: "); 
+  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Hour,buf,10)); 
+  strcat(tree.sbuf,":");
+  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Minute,buf,10)); 
+  strcat(tree.sbuf,"\n");
+  
+  tree.drawUsrScreen(tree.sbuf);
+}
+
+
+void init_MenWizz()
+{
+  _menu *r,*s1,*s2;
+    
+  tree.begin(&lcd,16,2); //declare lcd object and screen size to menwiz lib
+
+  r=tree.addMenu(MW_ROOT,NULL,F("Settings"));
+    s1=tree.addMenu(MW_VAR,r, F("Contrast"));
+      s1->addVar(MW_AUTO_BYTE,&DataPool.LCD_Contrast,0,255,10);  
+    s2=tree.addMenu(MW_VAR,r, F("Backlight"));
+      s2->addVar(MW_AUTO_BYTE,&DataPool.LCD_BackLight,0,255,10);    
+    
+    tree.addUsrNav(readAnalogButton, 6);
+    tree.addUsrScreen(DisplayValues,5000);
+
+    strcpy(tree.sbuf,"MENWIZ TEST \n V 3.13" );
+    tree.addSplash((char *) tree.sbuf, 5000);
+}
+
+
+
+#else
+
+#define NR_OF_SCREENS 2;
 
 byte degree[8] = {
   0b00100,
@@ -102,4 +156,5 @@ void printDigits(int digits)
     lcd.print(F("0"));
   lcd.print(digits);
 }
+#endif
 #endif

@@ -26,8 +26,17 @@
 
 #define SCREATE(p,s)     p=(char *)malloc(strlen((char *)s)+1); strcpy((char *)p,(char *)s)
 #define SFORM(b,s,l)     memset(b,32,l); memcpy(b,s,strlen(s)); b[l]=NULL; lcd->print(b)
-#define TSFORM(b,s,l)    memset(b,32,l);strcpy_P(b,(const prog_char*)s); b[strlen(b)]=' ';itoa(cur_menu->cur_item+1,tmp,10);strcat(tmp,"/");itoa(cur_menu->idx_o,tmp+strlen(tmp),10);b[col-strlen(tmp)-1]=126;memcpy(b+(col-strlen(tmp)),tmp,strlen(tmp));b[l]=NULL;lcd->print(b)
-#define FSFORM(b,s,l)    memset(b,32,l);strcpy_P(b,(const prog_char*)s);b[strlen(b)]=' ';b[l]=NULL;lcd->print(b)
+#define TSFORM(b,s,l)    memset(b,32,l);\
+					     strcpy_P(b,(const char*)s);\
+					     b[strlen(b)]=' ';\
+						 itoa(cur_menu->cur_item+1,tmp,10);\
+						 strcat(tmp,"/");\
+						 itoa(cur_menu->idx_o,tmp+strlen(tmp),10);\
+						 b[col-strlen(tmp)-1]=126;\
+						 memcpy(b+(col-strlen(tmp)),tmp,strlen(tmp));\
+						 b[l]=NULL;\
+						 lcd->print(b)
+#define FSFORM(b,s,l)    memset(b,32,l);strcpy_P(b,(const char*)s);b[strlen(b)]=' ';b[l]=NULL;lcd->print(b)
 #define ERROR(a)         MW_error=a
 #define BLANKLINE(b,r,c) memset(b,32,c);b[c]=NULL; lcd->setCursor(0,r);lcd->print(b)
 
@@ -282,7 +291,7 @@ void menwiz::begin(void *l,int c, int r){
   col=c;
   lcd=(MW_LCD*)l; 
   lcd->begin(c,r);  //  LCD size
-  lcd->setBacklight(HIGH);
+  //lcd->setBacklight(HIGH);
   lcd->noCursor();
   lcd->createChar(0,(uint8_t*)c0);
   lcd->createChar(1,(uint8_t*)c1);
@@ -400,7 +409,7 @@ void menwiz::drawMenu(_menu *mc){
 	    buf[0]=165;
 	    fl=false;
 	    }
-	  strcpy_P(&buf[1],(const prog_char*)mn->label);
+	  strcpy_P(&buf[1],(const char*)mn->label);
 	  strcpy(sbuf,buf);//@
 	  if(mn->type==MW_VAR){
 

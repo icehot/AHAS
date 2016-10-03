@@ -27,10 +27,10 @@
 #define MENWIZ_h
 
 #define EEPROM_SUPPORT     //uncomment if you want to use the readEeprom and writeEeprom methods!
-#define BUTTON_SUPPORT     //uncomment if you want to use the readEeprom and writeEeprom methods!
+//#define BUTTON_SUPPORT     //uncomment if you want to use the readEeprom and writeEeprom methods!
 
 #include <Wire.h>
-#include <LCD.h>
+#include <LiquidCrystal.h>
 
 #ifdef BUTTON_SUPPORT 
   #include <buttons.h>
@@ -117,7 +117,7 @@ extern const char MW_ver[];
 // ---------------------------------------------------------------------------
 #define MW_EOL_CHAR    0x0A
 #define MW_TYPE        uint8_t
-#define MW_LCD         LCD   // this could help to change the library: your lcd data type
+#define MW_LCD         LiquidCrystal   // this could help to change the library: your lcd data type
 #define MW_LABEL       const __FlashStringHelper*  
 #define MW_FLAGS       uint8_t
 #define MW_4BTN        0

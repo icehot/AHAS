@@ -70,7 +70,11 @@ void Task_Init_Callback()
   #endif
 
   #ifdef USE_LCD
-    init_LCD();
+    #ifdef USE_MENWIZZ
+      init_MenWizz();
+    #else
+      init_LCD();
+    #endif
   #endif
 
   #ifdef USE_BACKLIGHT
@@ -168,7 +172,11 @@ void Task_Display_Callback()
     //printRuntTime(&RunTime.Task_Webduino);
     
     #ifdef USE_LCD
-    updateLCD();
+      #ifdef USE_MENWIZZ
+        tree.draw();
+      #else
+        updateLCD();
+      #endif
     #endif
 }
 
