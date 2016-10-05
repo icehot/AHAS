@@ -103,6 +103,36 @@
 
 #ifdef USE_ANALOG_BTN
   #define PIN_ANALOG_BUTTON A15
+
+  #define AN_BTN_TOLERANCE 30
+
+  #define BTNULL        993   //NOBUTTON  
+  #define UL_BTNULL     BTNULL + AN_BTN_TOLERANCE   //NOBUTTON  Upper Limit
+  #define LL_BTNULL     BTNULL - AN_BTN_TOLERANCE   //NOBUTTON  Lower Limit
+  
+  #define BTU           864   //UP 
+  #define UL_BTU        BTU + AN_BTN_TOLERANCE  //UP Upper Limit
+  #define LL_BTU        BTU - AN_BTN_TOLERANCE  //UP Lower Limit
+  
+  #define BTL           727   //RIGTH 
+  #define UL_BTL        BTL + AN_BTN_TOLERANCE   //RIGTH Upper Limit
+  #define LL_BTL        BTL - AN_BTN_TOLERANCE  //RIGTH Lower Limit
+  
+  #define BTC           588   //CONFIRM
+  #define UL_BTC        BTC + AN_BTN_TOLERANCE   //CONFIRM Upper Limit
+  #define LL_BTC        BTC - AN_BTN_TOLERANCE  //CONFIRM Lower Limit
+  
+  #define BTR           445   //LEFT 
+  #define UL_BTR        BTR + AN_BTN_TOLERANCE   //LEFT Upper Limit
+  #define LL_BTR        BTR - AN_BTN_TOLERANCE  //LEFT Lower Limit
+  
+  #define BTD           270   //DOWN 
+  #define UL_BTD        BTD + AN_BTN_TOLERANCE   //DOWN Upper Limit
+  #define LL_BTD        BTD - AN_BTN_TOLERANCE  //DOWN Lower Limit
+  
+  #define BTE           40   //ESCAPE 
+  #define UL_BTE        BTE + AN_BTN_TOLERANCE   //ESCAPE Upper Limit
+  #define LL_BTE        BTE - AN_BTN_TOLERANCE  //ESCAPE Lower Limit
 #endif
 
 #ifdef USE_ETH_SHIELD or USE_SD

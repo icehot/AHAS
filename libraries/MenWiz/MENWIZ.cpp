@@ -26,16 +26,7 @@
 
 #define SCREATE(p,s)     p=(char *)malloc(strlen((char *)s)+1); strcpy((char *)p,(char *)s)
 #define SFORM(b,s,l)     memset(b,32,l); memcpy(b,s,strlen(s)); b[l]=NULL; lcd->print(b)
-#define TSFORM(b,s,l)    memset(b,32,l);\
-					     strcpy_P(b,(const char*)s);\
-					     b[strlen(b)]=' ';\
-						 itoa(cur_menu->cur_item+1,tmp,10);\
-						 strcat(tmp,"/");\
-						 itoa(cur_menu->idx_o,tmp+strlen(tmp),10);\
-						 b[col-strlen(tmp)-1]=126;\
-						 memcpy(b+(col-strlen(tmp)),tmp,strlen(tmp));\
-						 b[l]=NULL;\
-						 lcd->print(b)
+#define TSFORM(b,s,l)    memset(b,32,l);strcpy_P(b,(const char*)s);b[strlen(b)]=' ';itoa(cur_menu->cur_item+1,tmp,10);strcat(tmp,"/");itoa(cur_menu->idx_o,tmp+strlen(tmp),10);b[col-strlen(tmp)-1]=126;memcpy(b+(col-strlen(tmp)),tmp,strlen(tmp));b[l]=NULL;lcd->print(b)
 #define FSFORM(b,s,l)    memset(b,32,l);strcpy_P(b,(const char*)s);b[strlen(b)]=' ';b[l]=NULL;lcd->print(b)
 #define ERROR(a)         MW_error=a
 #define BLANKLINE(b,r,c) memset(b,32,c);b[c]=NULL; lcd->setCursor(0,r);lcd->print(b)
@@ -321,6 +312,47 @@ void menwiz::drawUsrScreen(char *scr){
     }
   }
 
+  void menwiz::drawWoBtnCheck(){
+  int ret;
+  int long lap1,lap2; 
+  static int prev_mode;
+
+  ERROR(0);
+ 
+  lap1=(millis()-tm_start);
+  lap2=(millis()-tm_push); 
+
+  // if defined splashscreen & not yet drawn & time window is ok, draw it  
+  if((bitRead(flags,FL_SPLASH)==true) && (lap1<tm_splash)){
+    cur_mode=MW_MODE_SPLASH;
+    //draw only once
+    if(bitRead(flags,FL_SPLASH_DRAW)==false){
+      drawUsrScreen(sbuf);
+      bitWrite(flags,FL_SPLASH_DRAW,1);
+     }
+   }
+  // if defined usrscreen & time since last button push > user defined time, draw it  
+  else if((usrScreen.fl) && (lap2>tm_usrScreen)){
+    cur_mode=MW_MODE_USRSCREEN;
+    bitWrite(flags,FL_USRSCREEN_DRAW,0);
+	if (prev_mode == MW_MODE_MENU)
+	{
+		actScreen = 0; /* reset actual screen global variable */
+	}
+    usrScreen.fv();
+    }
+  else{
+  // if a button was pushed since last call, draw menu  
+    cur_mode=MW_MODE_MENU;
+    if((last_button!=MW_BTNULL) || (!bitRead(flags,bitRead(flags,FL_USRSCREEN_DRAW)))){
+      bitWrite(flags,FL_USRSCREEN_DRAW,1);
+      drawMenu(cur_menu);
+      }
+    }
+	
+	prev_mode = cur_mode;
+  }
+  
 void menwiz::draw(){
   int ret;
   int long lap1,lap2; 
@@ -337,6 +369,51 @@ void menwiz::draw(){
   if((cur_mode==MW_MODE_USRSCREEN)&&(ret!=MW_BTNULL)){
     cur_mode=MW_MODE_MENU;
     last_button=MW_BTNULL;
+    tm_push=millis();
+    } 
+  // else run the action associated to selected button
+  else
+    actNavButtons(ret);
+    
+  lap1=(millis()-tm_start);
+  lap2=(millis()-tm_push); 
+
+  // if defined splashscreen & not yet drawn & time window is ok, draw it  
+  if((bitRead(flags,FL_SPLASH)==true) && (lap1<tm_splash)){
+    cur_mode=MW_MODE_SPLASH;
+    //draw only once
+    if(bitRead(flags,FL_SPLASH_DRAW)==false){
+      drawUsrScreen(sbuf);
+      bitWrite(flags,FL_SPLASH_DRAW,1);
+     }
+   }
+  // if defined usrscreen & time since last button push > user defined time, draw it  
+  else if((usrScreen.fl) && (lap2>tm_usrScreen)){
+    cur_mode=MW_MODE_USRSCREEN;
+    bitWrite(flags,FL_USRSCREEN_DRAW,0);
+    usrScreen.fv();
+    }
+  else{
+  // if a button was pushed since last call, draw menu  
+    cur_mode=MW_MODE_MENU;
+    if((last_button!=MW_BTNULL) || (!bitRead(flags,bitRead(flags,FL_USRSCREEN_DRAW)))){
+      bitWrite(flags,FL_USRSCREEN_DRAW,1);
+      drawMenu(cur_menu);
+      }
+    }
+  }
+  
+  
+  /* Draw function for event driven operation */
+  void menwiz::draw(int ret){
+  int long lap1,lap2; 
+
+  ERROR(0);
+
+  // if usrscreen is active, skip last button and switch to MENU mode
+  if((cur_mode==MW_MODE_USRSCREEN)&&(ret!=MW_BTNULL)){
+    cur_mode=MW_MODE_MENU;
+    //last_button=MW_BTNULL;
     tm_push=millis();
     } 
   // else run the action associated to selected button
@@ -801,40 +878,40 @@ void menwiz::actBTC(){
   oc=(_option*)cur_menu->o[cur_menu->cur_item]; 
   if((cur_menu->type==MW_SUBMENU)||(cur_menu->type==MW_ROOT)){
 //    VINT(cur_menu->var->val)=cur_menu->cur_item;  //? commented senza sapere perchè ...
-    Serial.println("PASS1");
+    //Serial.println("PASS1");
     cur_menu=&m[oc->sbm];
     if(cur_menu->type==MW_VAR){
-    Serial.println("PASS2");
+    //Serial.println("PASS2");
       if(bitRead(m[cur_menu->parent].flags,MW_MENU_COLLAPSED)){
-    Serial.println("PASS3");
+    //Serial.println("PASS3");
 	if ((cur_menu->var->type!=MW_LIST)&&((cur_menu->var->type!=MW_ACTION))) {
-    Serial.println("PASS4");
+    //Serial.println("PASS4");
 	  cur_menu=&m[cur_menu->parent];
 	  MW_invar=false;
 	  }
 	else{
-    Serial.println("PASS5");
+    //Serial.println("PASS5");
 	  MW_invar=true;	  
 	  }
-    Serial.println("PASS6");
+    //Serial.println("PASS6");
 	return;
         }
       else if((cur_menu->var->type==MW_ACTION) && (!bitRead(cur_menu->flags,MW_ACTION_CONFIRM))){
-      Serial.println("NOT CONFIRMED");
+      //Serial.println("NOT CONFIRMED");
         cur_menu->var->action();
 	cur_menu=&m[cur_menu->parent];
 	MW_invar=false;  
 	return;
 	}
       else{
-    Serial.println("PASS7");
+    //Serial.println("PASS7");
 	MW_invar=true;
   	return;
         }
       }
     } 
   else if(cur_menu->type==MW_VAR){
-    Serial.println("PASS8");
+    //Serial.println("PASS8");
     if(cur_menu->var->type==MW_LIST){        
       VINT(cur_menu->var->val)=cur_menu->cur_item;}
     else if(cur_menu->var->type==MW_AUTO_INT){        
@@ -846,7 +923,7 @@ void menwiz::actBTC(){
     else if(cur_menu->var->type==MW_BOOLEAN){        
       VBOOL(cur_menu->var->old)=VBOOL(cur_menu->var->val);}
     else if((cur_menu->var->type==MW_ACTION)&&(bitRead(cur_menu->flags,MW_ACTION_CONFIRM))){
-      Serial.println("CONFIRMED");
+      //Serial.println("CONFIRMED");
       cur_menu->var->action();}
     cur_menu=&m[cur_menu->parent];
     MW_invar=false;

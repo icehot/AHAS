@@ -1,5 +1,9 @@
 /** OS **/
 
+#ifdef DEBUG
+  #undef DEBUG
+#endif
+
 //#define DEBUG
 
 void Task_Init_Callback() 
@@ -149,6 +153,13 @@ void Task_Acquisition_Callback()
       setContrast(DataPool.LCD_Contrast);
     #endif
 
+/* Used for Analog Button Calibration
+    Serial.println("");
+    Serial.print("BTN:");
+    Serial.println(analogRead(PIN_ANALOG_BUTTON));
+    Serial.println("");
+*/
+
    if (Task_Acquisition.isFirstIteration())
    {
       Task_Display.enable();
@@ -157,6 +168,25 @@ void Task_Acquisition_Callback()
    }
 
    endRuntimeMeasurement(&RunTime.Task_Acquisition);
+}
+
+void Task_Button_Callback()
+{
+    #ifdef DEBUG
+    #endif 
+
+    #ifdef USE_ANALOG_BTN
+
+    int analogButtonState = readAnalogButton();
+
+    /* If there is a button press */
+    if (analogButtonState != MW_BTNULL)
+    {
+      /* react on this new button press by drawing it */
+      tree.draw( analogButtonState);
+    }
+
+    #endif
 }
 
 void Task_Display_Callback()
@@ -173,7 +203,7 @@ void Task_Display_Callback()
     
     #ifdef USE_LCD
       #ifdef USE_MENWIZZ
-        tree.draw();
+        tree.drawWoBtnCheck();
       #else
         updateLCD();
       #endif
@@ -196,12 +226,14 @@ void Task_Webduino_Callback()
   #endif
 
   //endRuntimeMeasurement(&RunTime.Task_Webduino);
-    
+
+    #ifdef DEBUG
     Serial.print(millis());
     Serial.print(F(" #WEB "));
     Serial.print(F("Delay: "));
     Serial.println(Task_Display.getStartDelay());
     printRuntTime(&RunTime.Task_Webduino);
+    #endif
 }
 
 void Task_Log_Callback()

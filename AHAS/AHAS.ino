@@ -34,6 +34,7 @@ Supported SW components:
 /***********************************************************************************************************/
 #define _TASK_TIMECRITICAL
 #include <TaskScheduler.h>
+#include <MENWIZ.h>
 
 /***********************************************************************************************************/
 /*** Global Variable definition  ***/
@@ -44,6 +45,7 @@ Scheduler TaskScheduler;
 void Task_Init_Callback();
 void Task_Acquisition_Callback();
 void Task_Display_Callback();
+void Task_Button_Callback();
 void Task_Webduino_Callback();
 void Task_Log_Callback();
 void Task_RenewDHCP_Callback();
@@ -56,12 +58,12 @@ void Task_TimeSync_Callback();
 /** Task Definitions **/
 Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback);
 Task Task_Acquisition(1000, TASK_FOREVER, &Task_Acquisition_Callback);
-Task Task_Display(200, TASK_FOREVER, &Task_Display_Callback); //TBD
+Task Task_Display(1000, TASK_FOREVER, &Task_Display_Callback); //TBD
+Task Task_Button(200, TASK_FOREVER, &Task_Button_Callback); //TBD
 Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
 Task Task_Log(60000, TASK_FOREVER, &Task_Log_Callback);
 Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
 Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
-
 
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
@@ -72,6 +74,7 @@ void setup()
 
   TaskScheduler.addTask(Task_Init);
   TaskScheduler.addTask(Task_Acquisition);
+  TaskScheduler.addTask(Task_Button);
   TaskScheduler.addTask(Task_Display);
   TaskScheduler.addTask(Task_Webduino);
   TaskScheduler.addTask(Task_Log);
@@ -79,6 +82,7 @@ void setup()
   TaskScheduler.addTask(Task_TimeSync);
   
   Task_Init.enable();
+  Task_Button.enable();
   Task_Acquisition.enable();
   Task_RenewDHCP.enable();
   Task_TimeSync.enable();

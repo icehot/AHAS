@@ -1,65 +1,17 @@
 /** LCD - HD44780 Display **/
 
-#ifdef USE_LCD
 #include <LiquidCrystal.h>
 
-LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_EN, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
 
-#ifdef USE_MENWIZZ
+
 #include <MENWIZ.h>
 #include <EEPROM.h>
 
+LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_EN, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
+
 menwiz tree;
-int  list,sp=110;
 
-void DisplayValues()
-{
-  static  char buf[7];
-  
-  /* First line */
-  strcpy(tree.sbuf,"Date: "); 
-  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Year,buf,10)); 
-  strcat(tree.sbuf,"/");
-  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Month,buf,10)); 
-  strcat(tree.sbuf,"/");
-  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Day,buf,10)); 
-  strcat(tree.sbuf,"\n");
-
-  /* Second line */
-  strcat(tree.sbuf,"Time: "); 
-  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Hour,buf,10)); 
-  strcat(tree.sbuf,":");
-  strcat(tree.sbuf,itoa((int)DataPool.DS1302_Minute,buf,10)); 
-  strcat(tree.sbuf,"\n");
-  
-  tree.drawUsrScreen(tree.sbuf);
-}
-
-
-void init_MenWizz()
-{
-  _menu *r,*s1,*s2;
-    
-  tree.begin(&lcd,16,2); //declare lcd object and screen size to menwiz lib
-
-  r=tree.addMenu(MW_ROOT,NULL,F("Settings"));
-    s1=tree.addMenu(MW_VAR,r, F("Contrast"));
-      s1->addVar(MW_AUTO_BYTE,&DataPool.LCD_Contrast,0,255,10);  
-    s2=tree.addMenu(MW_VAR,r, F("Backlight"));
-      s2->addVar(MW_AUTO_BYTE,&DataPool.LCD_BackLight,0,255,10);    
-    
-    tree.addUsrNav(readAnalogButton, 6);
-    tree.addUsrScreen(DisplayValues,5000);
-
-    strcpy(tree.sbuf,"MENWIZ TEST \n V 3.13" );
-    tree.addSplash((char *) tree.sbuf, 5000);
-}
-
-
-
-#else
-
-#define NR_OF_SCREENS 2;
+#define NR_OF_SCREENS 8;
 
 byte degree[8] = {
   0b00100,
@@ -72,35 +24,40 @@ byte degree[8] = {
   0b00000
 };
 
-void printDigits(int digits);
+byte backslash[8] = {
+  0b00000,
+  0b10000,
+  0b01000,
+  0b00100,
+  0b00010,
+  0b00001,
+  0b00000,
+  0b00000
+};
 
-void init_LCD()
+void printDigits(int digits)
 {
-  lcd.begin(16, 2);
-  lcd.createChar(0, degree);
-  
-  #ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: LCD => DONE"));
-  #endif
-  #ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: LCD => DONE"));
-  #endif
+  // utility for digital clock display: prints leading 0
+  if(digits < 10)
+    lcd.print(F("0"));
+  lcd.print(digits);
 }
+
+byte actScreen = 0;
 
 void updateLCD() 
 {
-  static byte screen = 0;
-
-  lcd.clear();
-  lcd.setCursor(0, 0);//top left corner
-
-  switch(screen)
+  switch(actScreen)
   {
-    case 0:
+    case 0:/* Date and Time with colon*/
+
+      lcd.clear();
+      lcd.setCursor(0, 0);//top left corner
+      
       /* First Row */
       #ifdef USE_DS1302
       lcd.print(F("Date: "));
-      printDigits(DataPool.DS1302_Year);lcd.print(F("/"));
+      printDigits(DataPool.DS1302_Year+2000);lcd.print(F("/"));
       printDigits(DataPool.DS1302_Month);lcd.print(F("/"));
       printDigits(DataPool.DS1302_Day);
       
@@ -112,7 +69,32 @@ void updateLCD()
       #endif
     break;
 
-    case 1:
+    case 1: /* Clear colon*/
+      #ifdef USE_DS1302
+        lcd.setCursor(8,1);//colon 
+        lcd.print(F(" "));
+      #endif
+    break;
+
+    case 2: /* Set colon*/
+      #ifdef USE_DS1302
+        lcd.setCursor(8,1);//colon 
+        lcd.print(F(":"));
+      #endif
+    break;
+
+     case 3: /* Clear colon*/
+      #ifdef USE_DS1302
+        lcd.setCursor(8,1);//colon 
+        lcd.print(F(" "));
+      #endif
+    break;
+
+    case 4: /* Display Values*/
+
+      lcd.clear();
+      lcd.setCursor(0, 0);//top left corner
+      
       /* First Row */
       #ifdef USE_MS5611
       lcd.print(F("T: "));
@@ -132,29 +114,62 @@ void updateLCD()
       lcd.print(F("P: "));
       lcd.print(DataPool.MS5611_Pressure/(float)100);
       lcd.print(F(" mBar"));
+
+      lcd.setCursor(15, 1);//bottom right corner
+      lcd.print(F("|"));
       #endif
       
     break;
       
-    case 2:
-      /* First Row */
-      /* Second Row */
+    case 5: /* slash */
+      lcd.setCursor(15, 1);//bottom right corner
+      lcd.print(F("/"));
+    break;
+
+     case 6: /* minus */
+      lcd.setCursor(15, 1);//bottom right corner
+      lcd.print(F("-"));
+    break;
+
+    case 7:/* backslash */
+      lcd.setCursor(15, 1);//bottom right corner
+      lcd.write(byte(1));
     break;
 
     default:
     break;
   }
   
-  screen++;
-  screen %= NR_OF_SCREENS;
+  actScreen++;
+  actScreen %= NR_OF_SCREENS;
 }
 
-void printDigits(int digits)
+void init_MenWizz()
 {
-  // utility for digital clock display: prints leading 0
-  if(digits < 10)
-    lcd.print(F("0"));
-  lcd.print(digits);
+  _menu *r,*s1,*s2;
+    
+  tree.begin(&lcd,16,2); //declare lcd object and screen size to menwiz lib
+
+  r=tree.addMenu(MW_ROOT,NULL,F("Settings"));
+    s1=tree.addMenu(MW_VAR,r, F("Contrast"));
+      s1->addVar(MW_AUTO_BYTE,&DataPool.LCD_Contrast,0,255,10);  
+    s2=tree.addMenu(MW_VAR,r, F("Backlight"));
+      s2->addVar(MW_AUTO_BYTE,&DataPool.LCD_BackLight,0,255,10);    
+    
+    tree.addUsrNav(readAnalogButton, 6);/* Since the Memwizz draw was modified to event driven operation, probably it is not necessary */
+    tree.addUsrScreen(updateLCD,5000);
+
+    strcpy(tree.sbuf,"  ARDUINO HOME\n AUTOMATION SYS\n" );
+    tree.addSplash((char *) tree.sbuf, 5000);
+
+    lcd.createChar(0, degree);
+    lcd.createChar(1, backslash);
+
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println(F("#INIT: LCD => DONE"));
+    #endif
+    #ifdef USE_SYS_LOG
+      add2SysLog(F("#INIT: LCD => DONE"));
+    #endif
 }
-#endif
-#endif
+

@@ -123,6 +123,8 @@ extern const char MW_ver[];
 #define MW_4BTN        0
 #define MW_6BTN        1
 
+extern byte actScreen;
+
 typedef struct{
   boolean fl;
   void (*fv)();
@@ -194,6 +196,8 @@ public:
   void     setBehaviour(MW_FLAGS,boolean);
   _menu*   addMenu(int, _menu *, MW_LABEL);
   void     draw();
+  void 	   draw(int ret);
+  void 	   drawWoBtnCheck();
   void     drawUsrScreen(char *);       //draw user screen(s)
   int      getErrorMessage(boolean); 	//if arg=true, err message is printed to the default Serial terminal, otherwise the function returns error code only
   int      freeRam();

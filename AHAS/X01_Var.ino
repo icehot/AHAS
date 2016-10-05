@@ -67,6 +67,7 @@ struct{
   #ifdef USE_CONTRAST
   byte LCD_Contrast = 64;
   #endif
+
 }DataPool;
 
 
