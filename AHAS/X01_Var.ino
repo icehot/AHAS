@@ -65,11 +65,10 @@ struct{
   #endif
 
   #ifdef USE_CONTRAST
-  byte LCD_Contrast = 64;
+  byte LCD_Contrast = 40;
   #endif
 
 }DataPool;
-
 
 typedef struct
 {
@@ -92,11 +91,6 @@ struct{
   RunTime_Type Task_Log = {0,0,65535,0.0,0.0,0,0};
   RunTime_Type Task_RenewDHCP = {0,0,65535,0.0,0.0,0,0};
 }RunTime;
-
-void init_RuntimeMeasurement()
-{
-  //zero the variables, initialize min max values;
-}
 
 void inline startRuntimeMeasurement()
 {

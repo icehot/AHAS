@@ -9,6 +9,9 @@ void init_SD()
 {
   //Default CS port must be set to output
   pinMode(PIN_SPI_CS, OUTPUT);
+  digitalWrite(PIN_SPI_CS, HIGH);
+
+  //PIN_ETH_CS
   
   if (!SD.begin(PIN_SD_CS))
   { 

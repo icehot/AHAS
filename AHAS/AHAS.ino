@@ -14,8 +14,12 @@
    7.  SD card support
    8.  Relay module
    9.  RGB LED
-   10. Button for restoring factory default settings
-   11. Debug Led
+   10. Restoring factory default settings
+   11. LCD Backlight setting
+   12. LCD Contrast setting
+   13. Analog Button support
+   14. Sound detection
+   15. PIR sensor
 
 Supported SW components:
 
@@ -24,6 +28,7 @@ Supported SW components:
   3. Serial monitor
   4. SD card logging
   5. EEPROM storage for settings
+  6. MenWizz menu on LCD 
    
  Project started on 12 Jan 2015
  by Orbán Balázs
@@ -61,7 +66,7 @@ Task Task_Acquisition(1000, TASK_FOREVER, &Task_Acquisition_Callback);
 Task Task_Display(1000, TASK_FOREVER, &Task_Display_Callback); //TBD
 Task Task_Button(200, TASK_FOREVER, &Task_Button_Callback); //TBD
 Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
-Task Task_Log(60000, TASK_FOREVER, &Task_Log_Callback);
+Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback);
 Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
 Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
 
@@ -71,7 +76,7 @@ Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
 void setup() 
 {
   TaskScheduler.init();
-
+  
   TaskScheduler.addTask(Task_Init);
   TaskScheduler.addTask(Task_Acquisition);
   TaskScheduler.addTask(Task_Button);
@@ -80,11 +85,10 @@ void setup()
   TaskScheduler.addTask(Task_Log);
   TaskScheduler.addTask(Task_RenewDHCP);
   TaskScheduler.addTask(Task_TimeSync);
-  
+
   Task_Init.enable();
   Task_Button.enable();
   Task_Acquisition.enable();
-  Task_RenewDHCP.enable();
   Task_TimeSync.enable();
 }
 

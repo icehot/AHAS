@@ -1,4 +1,5 @@
 /** WebDuino - Webserver **/
+
 #ifdef USE_WEBDUINO
 
 #define PREFIX ""
@@ -361,7 +362,7 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
   JSON_ADD(F("a1"),analogRead(1));
   JSON_ADD(F("a2"),analogRead(2));
   JSON_ADD(F("a3"),analogRead(3));
-  JSON_ADD(F("a4"),analogRead(4));
+  JSON_ADD(F("a4"),analogRead(15));
 
   /* DataPool variables */
   #ifdef USE_DHT11
@@ -539,6 +540,21 @@ void errorHTML(WebServer &server, WebServer::ConnectionType type, char *url_tail
   server << F("</body></html>");
 }
 
+void noSDCardCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
+{
+  /* if we're handling a GET or POST, we can output our data here.
+     For a HEAD request, we just stop after outputting headers. */
+  if (type == WebServer::HEAD)
+    return;
+
+  server << F("<body><html>");
+  server << F("<h1> Arduino Home Automation System </h1>");
+    
+  server << F("<p>No SD card support is enabled</p>");
+  
+  server << F("</body></html>");
+}
+
 void init_Webduino()
 {
    webserver = new WebServer(PREFIX, eeprom_config.webserverPort);
@@ -552,7 +568,7 @@ void init_Webduino()
   webserver->addCommand("values.htm", &valuesCmd);
   webserver->addCommand("settings.htm", &settingsCmd);
   #else
-  webserver->setDefaultCommand(&errorHTML);
+  webserver->setDefaultCommand(&noSDCardCmd);
   #endif
   
   webserver->setFailureCommand(&errorHTML);

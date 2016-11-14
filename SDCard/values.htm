@@ -66,52 +66,6 @@ xmlhttp.onreadystatechange = function()
 function DisplayPortValues(portData ) 
 {
 	var d = new Date();
-    document.getElementById("a0").innerHTML = (portData.a0*5/1023).toFixed(2) + " V";
-    document.getElementById("a1").innerHTML = (portData.a1*5/1023).toFixed(2) + " V";
-    document.getElementById("a2").innerHTML = (portData.a2*5/1023).toFixed(2) + " V";
-    document.getElementById("a3").innerHTML = (portData.a3*5/1023).toFixed(2) + " V";
-    document.getElementById("a4").innerHTML = (portData.a4*5/1023).toFixed(2) + " V";
-
-    document.getElementById("relay1").innerHTML = relayStatus(portData.r1);
-    document.getElementById("relay2").innerHTML = relayStatus(portData.r2);
-    document.getElementById("relay3").innerHTML = relayStatus(portData.r3);
-    document.getElementById("relay4").innerHTML = relayStatus(portData.r4);
-	
-	document.getElementById("dht11_temp").innerHTML = portData.dht11_temp.toFixed(2) + " &#8451";
-	document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum.toFixed(2) + " %";
-	document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew.toFixed(2) + " &#8451";
-	
-	document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp/10.0).toFixed(2) + " &#8451";
-	document.getElementById("bmp085_pres").innerHTML = (portData.bmp085_pres/100).toFixed(2) + " hPa";
-	
-	document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp.toFixed(2) + " &#8451";
-	document.getElementById("ms5611_pres").innerHTML = (portData.ms5611_pres/100).toFixed(2) + " mB";
-	document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt.toFixed(2) + " m";
-	document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt.toFixed(2) + " m";
-	
-	document.getElementById("ds1302_year").innerHTML  = portData.ds1302_year;
-	document.getElementById("ds1302_month").innerHTML = portData.ds1302_month;
-	document.getElementById("ds1302_day").innerHTML   = portData.ds1302_day;
-	document.getElementById("ds1302_hour").innerHTML  = portData.ds1302_hour;
-	document.getElementById("ds1302_min").innerHTML   = portData.ds1302_min;
-	document.getElementById("ds1302_sec").innerHTML   = portData.ds1302_sec;
-	document.getElementById("ds1302_sync").innerHTML   = portData.ds1302_sync;
-    
-    document.getElementById("red_val").innerHTML   = portData.rgb_red;
-    document.getElementById("green_val").innerHTML   = portData.rgb_green;
-    document.getElementById("blue_val").innerHTML   = portData.rgb_blue;
-	
-	document.getElementById("rgb_r").value   = portData.rgb_red;
-    document.getElementById("rgb_g").value   = portData.rgb_green;
-    document.getElementById("rgb_b").value   = portData.rgb_blue;
-    
-    document.getElementById("ntp_year").innerHTML  = portData.ntp_year;
-	document.getElementById("ntp_month").innerHTML = portData.ntp_month;
-	document.getElementById("ntp_day").innerHTML   = portData.ntp_day;
-	document.getElementById("ntp_hour").innerHTML  = portData.ntp_hour;
-	document.getElementById("ntp_min").innerHTML   = portData.ntp_min;
-	document.getElementById("ntp_sec").innerHTML   = portData.ntp_sec;
-	document.getElementById("ntp_sync").innerHTML   = portData.ntp_sync;
 	
 	document.getElementById("year").innerHTML  = d.getFullYear();
 	document.getElementById("month").innerHTML = d.getMonth() + 1;
@@ -120,7 +74,48 @@ function DisplayPortValues(portData )
 	document.getElementById("min").innerHTML   = d.getMinutes();
 	document.getElementById("sec").innerHTML   = d.getSeconds();
 	
+    if(portData.a0 != undefined){document.getElementById("a0").innerHTML = (portData.a0*5/1023).toFixed(2) + " V";}
+    if(portData.a1 != undefined){document.getElementById("a1").innerHTML = (portData.a1*5/1023).toFixed(2) + " V";}
+    if(portData.a2 != undefined){document.getElementById("a2").innerHTML = (portData.a2*5/1023).toFixed(2) + " V";}
+    if(portData.a3 != undefined){document.getElementById("a3").innerHTML = (portData.a3*5/1023).toFixed(2) + " V";}
+    if(portData.a4 != undefined){document.getElementById("a4").innerHTML = (portData.a4*5/1023).toFixed(2) + " V";}
+
+    if(portData.r1 != undefined){document.getElementById("relay1").innerHTML = relayStatus(portData.r1);}
+    if(portData.r2 != undefined){document.getElementById("relay2").innerHTML = relayStatus(portData.r2);}
+    if(portData.r3 != undefined){document.getElementById("relay3").innerHTML = relayStatus(portData.r3);}
+    if(portData.r4 != undefined){document.getElementById("relay4").innerHTML = relayStatus(portData.r4);}
 	
+	if(portData.dht11_temp != undefined){document.getElementById("dht11_temp").innerHTML = portData.dht11_temp.toFixed(2) + " &#8451";}
+	if(portData.dht11_hum != undefined){document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum.toFixed(2) + " %";}
+	if(portData.dht11_dew != undefined){document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew.toFixed(2) + " &#8451";}
+	
+	if(portData.bmp085_temp != undefined){document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp/10.0).toFixed(2) + " &#8451";}
+	if(portData.bmp085_pres != undefined){document.getElementById("bmp085_pres").innerHTML = (portData.bmp085_pres/100).toFixed(2) + " hPa";}
+	
+	if(portData.ms5611_temp != undefined){document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp.toFixed(2) + " &#8451";}
+	if(portData.ms5611_pres != undefined){document.getElementById("ms5611_pres").innerHTML = (portData.ms5611_pres/100).toFixed(2) + " mB";}
+	if(portData.ms5611_aalt != undefined){document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt.toFixed(2) + " m";}
+	if(portData.ms5611_ralt != undefined){document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt.toFixed(2) + " m";}
+	
+	if(portData.ds1302_year != undefined){document.getElementById("ds1302_year").innerHTML  = portData.ds1302_year;}
+	if(portData.ds1302_month != undefined){document.getElementById("ds1302_month").innerHTML = portData.ds1302_month;}
+	if(portData.ds1302_day != undefined){document.getElementById("ds1302_day").innerHTML   = portData.ds1302_day;}
+	if(portData.ds1302_hour != undefined){document.getElementById("ds1302_hour").innerHTML  = portData.ds1302_hour;}
+	if(portData.ds1302_min != undefined){document.getElementById("ds1302_min").innerHTML   = portData.ds1302_min;}
+	if(portData.ds1302_sec != undefined){document.getElementById("ds1302_sec").innerHTML   = portData.ds1302_sec;}
+	if(portData.ds1302_sync != undefined){document.getElementById("ds1302_sync").innerHTML   = portData.ds1302_sync;}
+    
+    if(portData.rgb_red != undefined){document.getElementById("red_val").innerHTML   = portData.rgb_red;document.getElementById("rgb_r").value   = portData.rgb_red;}
+    if(portData.rgb_green != undefined){document.getElementById("green_val").innerHTML   = portData.rgb_green;document.getElementById("rgb_g").value   = portData.rgb_green;}
+    if(portData.rgb_blue != undefined){document.getElementById("blue_val").innerHTML   = portData.rgb_blue;document.getElementById("rgb_b").value   = portData.rgb_blue;}
+	
+    if(portData.ntp_year != undefined){document.getElementById("ntp_year").innerHTML  = portData.ntp_year;}
+	if(portData.ntp_month != undefined){document.getElementById("ntp_month").innerHTML = portData.ntp_month;}
+	if(portData.ntp_day != undefined){document.getElementById("ntp_day").innerHTML   = portData.ntp_day;}
+	if(portData.ntp_hour != undefined){document.getElementById("ntp_hour").innerHTML  = portData.ntp_hour;}
+	if(portData.ntp_min != undefined){document.getElementById("ntp_min").innerHTML   = portData.ntp_min;}
+	if(portData.ntp_sec != undefined){document.getElementById("ntp_sec").innerHTML   = portData.ntp_sec;}
+	if(portData.ntp_sync != undefined){document.getElementById("ntp_sync").innerHTML   = portData.ntp_sync;}
 }
 
 function relayStatus(relay)

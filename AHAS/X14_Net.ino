@@ -43,7 +43,6 @@ template <class T> int EEPROM_readAnything(int ee, T& value);
 void init_NetSetup()
 {
   bool dhcp_success = false;
-  
   read_EEPROM_Settings();
   
   #ifdef DEBUG
@@ -52,14 +51,16 @@ void init_NetSetup()
 
   if (eeprom_config.use_dhcp == 1)
   { 
-    
+    #ifdef USE_SERIAL_MONITOR
+        Serial.print(F("#INIT: Network via DHCP =>"));
+    #endif
     
     if (Ethernet.begin(eeprom_config.mac) == 1)
     {
       dhcp_success = true;
 
       #ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#INIT: Network via DHCP => DONE"));
+        Serial.println(F(" DONE"));
         Serial.print(F(" Obtained IP Address through DHCP: "));
         Serial.println(Ethernet.localIP());
       #endif
@@ -68,12 +69,15 @@ void init_NetSetup()
         add2SysLog(F(" Obtained IP Address through DHCP: "));
         //add2SysLog(Ethernet.localIP());
       #endif
+      
+       Task_RenewDHCP.setInterval(TASK_MINUTE*eeprom_config.dhcp_refresh_minutes);
+       Task_RenewDHCP.enableDelayed(TASK_HOUR);
     } 
     else
     {
       dhcp_success = false;
       #ifdef USE_SERIAL_MONITOR
-        Serial.print(F("#INIT: Network via DHCP => FAILED"));
+        Serial.println(F(" FAILED"));
       #endif
       #ifdef USE_SYS_LOG
         add2SysLog(F("#INIT: Network via DHCP => FAILED"));
@@ -100,12 +104,6 @@ void init_NetSetup()
       //add2SysLog(Ethernet.localIP());
     #endif
   } 
-
-  if (eeprom_config.use_dhcp==1) 
-  {
-    Task_RenewDHCP.setInterval(TASK_MINUTE*eeprom_config.dhcp_refresh_minutes);
-    Task_RenewDHCP.enable();
-  }
 }
 
 void set_Default_Values()
@@ -117,11 +115,7 @@ void set_Default_Values()
     
     // set default values
     set_EEPROM_Default();
-    
-    #ifdef USE_DEBUG_LED
-    digitalWrite(PIN_DEBUG_LED,HIGH);
-    #endif
-       
+           
     // write the config to eeprom
     EEPROM_writeAnything(0, eeprom_config);
 }
@@ -147,10 +141,9 @@ void read_EEPROM_Settings()
     set_Default_Values();
   } 
 
-  #ifdef USE_FACTDEF_BTN
+  #ifdef USE_ANALOG_BTN
   /* Check if reset button is pressed */
-  digitalWrite(PIN_RESET, HIGH);
-  if (digitalRead(PIN_RESET) == LOW)
+  if (analogRead(PIN_ANALOG_BUTTON) < UL_BTE)
   {
     set_Default_Values();
   } 
@@ -202,14 +195,14 @@ void set_EEPROM_Default()
     eeprom_config.dns_server[2]=0;
     eeprom_config.dns_server[3]=254;
 
-    // set the default Webserver Port. In this case its Port 89
-    eeprom_config.webserverPort=89;
+    // set the default Webserver Port. In this case its Port 80
+    eeprom_config.webserverPort=80;
     
-    #ifdef DEBUG
-      Serial.println("#NET: Config reset");
+    #ifdef USE_SERIAL_MONITOR
+      Serial.println("#NET: Default configuration restored");
     #endif 
     #ifdef USE_SYS_LOG
-      add2SysLog("#NET: Config reset");
+      add2SysLog("#NET: Default configuration restored");
     #endif
 }
 

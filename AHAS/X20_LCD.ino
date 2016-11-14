@@ -1,11 +1,12 @@
 /** LCD - HD44780 Display **/
-
+#ifdef USE_LCD
 #include <LiquidCrystal.h>
 
 
 
 #include <MENWIZ.h>
 #include <EEPROM.h>
+
 
 LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_EN, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
 
@@ -152,7 +153,7 @@ void init_MenWizz()
 
   r=tree.addMenu(MW_ROOT,NULL,F("Settings"));
     s1=tree.addMenu(MW_VAR,r, F("Contrast"));
-      s1->addVar(MW_AUTO_BYTE,&DataPool.LCD_Contrast,0,255,10);  
+      s1->addVar(MW_AUTO_BYTE,&DataPool.LCD_Contrast,0,255,5);  
     s2=tree.addMenu(MW_VAR,r, F("Backlight"));
       s2->addVar(MW_AUTO_BYTE,&DataPool.LCD_BackLight,0,255,10);    
     
@@ -172,4 +173,4 @@ void init_MenWizz()
       add2SysLog(F("#INIT: LCD => DONE"));
     #endif
 }
-
+#endif

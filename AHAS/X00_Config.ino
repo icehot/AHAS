@@ -16,8 +16,6 @@
 #define USE_SD
 #define USE_RELAY
 #define USE_RGB
-#define USE_FACTDEF_BTN
-#define USE_DEBUG_LED
 #define USE_PIR
 #define USE_SOUND_DETECT
 #define USE_ANALOG_BTN
@@ -42,43 +40,46 @@
   #endif
 #endif 
 
+#ifdef USE_SYS_LOG
+  #ifndef USE_SD
+    #error "Syslog enabled without SD card support"
+  #endif
+#endif
+
+#ifdef USE_MENWIZZ
+  #ifndef USE_LCD
+    #error "MenWizz enabled without LCD support"
+  #endif
+#endif
 /***********************************************************************************************************/
 /** PIN configuration **/
 /***********************************************************************************************************/
 #ifdef USE_LCD
-  #define PIN_LCD_RS 22
-  #define PIN_LCD_EN 23
-  #define PIN_LCD_D4 24
-  #define PIN_LCD_D5 25
-  #define PIN_LCD_D6 26
-  #define PIN_LCD_D7 27
+  #define PIN_LCD_RS 48
+  #define PIN_LCD_EN 49 
+  #define PIN_LCD_D4 43
+  #define PIN_LCD_D5 42 
+  #define PIN_LCD_D6 41 
+  #define PIN_LCD_D7 40 
 #endif
 
 #ifdef USE_BACKLIGHT
-  #define PIN_BACKLIGHT 3
+  #define PIN_BACKLIGHT 6
 #endif
 
 #ifdef USE_CONTRAST
-  #define PIN_CONTRAST 5
+  #define PIN_CONTRAST 7
 #endif
 
 #ifdef USE_RELAY
-  #define PIN_RELAY1 28
-  #define PIN_RELAY2 29
-  #define PIN_RELAY3 30
-  #define PIN_RELAY4 31
+  #define PIN_RELAY1 23
+  #define PIN_RELAY2 25
+  #define PIN_RELAY3 27
+  #define PIN_RELAY4 29
 #endif 
 
 #ifdef USE_DHT11
-  #define PIN_DHT11 32
-#endif
-
-#ifdef USE_FACTDEF_BTN
-  #define PIN_RESET 33
-#endif
-
-#ifdef USE_DEBUG_LED
-  #define PIN_DEBUG_LED   34 
+  #define PIN_DHT11 37
 #endif
 
 #ifdef USE_SOUND_DETECT
@@ -86,19 +87,19 @@
 #endif 
 
 #ifdef USE_PIR
-  #define PIN_PIR_SENSOR 43
+  #define PIN_PIR_SENSOR 47
 #endif
 
 #ifdef USE_RGB
-  #define PIN_RGBLED_R 45
-  #define PIN_RGBLED_G 44
-  #define PIN_RGBLED_B 46
+  #define PIN_RGBLED_R 46
+  #define PIN_RGBLED_G 45
+  #define PIN_RGBLED_B 44
 #endif
 
 #ifdef USE_DS1302
-  #define PIN_DS1302_SCLK   47    // Arduino pin for the Serial Clock
-  #define PIN_DS1302_IO     48    // Arduino pin for the Data I/O
-  #define PIN_DS1302_CE     49    // Arduino pin for the Chip Enablev
+  #define PIN_DS1302_SCLK   35    // Arduino pin for the Serial Clock
+  #define PIN_DS1302_IO     33    // Arduino pin for the Data I/O
+  #define PIN_DS1302_CE     31    // Arduino pin for the Chip Enablev
 #endif
 
 #ifdef USE_ANALOG_BTN
@@ -130,13 +131,15 @@
   #define UL_BTD        BTD + AN_BTN_TOLERANCE   //DOWN Upper Limit
   #define LL_BTD        BTD - AN_BTN_TOLERANCE  //DOWN Lower Limit
   
-  #define BTE           40   //ESCAPE 
+  #define BTE           30   //ESCAPE 
   #define UL_BTE        BTE + AN_BTN_TOLERANCE   //ESCAPE Upper Limit
   #define LL_BTE        BTE - AN_BTN_TOLERANCE  //ESCAPE Lower Limit
 #endif
 
 #ifdef USE_ETH_SHIELD or USE_SD
   #define PIN_SD_CS 4 //SD card chip select
+  #define PIN_ETH_CS 10 //ETH chip select
 #endif
 
 #define PIN_SPI_CS 53 //default chip select
+#define PIN_BUILTIN_LED 13 // Built-in Light Emitting Diode

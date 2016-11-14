@@ -7,6 +7,17 @@ void softReset()
     asm volatile ("jmp 0");
 }
 
+void init_LedBuiltIn()
+{
+  pinMode(LED_BUILTIN,OUTPUT);
+  digitalWrite(LED_BUILTIN,LOW);
+}
+
+void toggleLedBuiltIn()
+{
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+}
+
 void init_UART()
 {
   //Serial monitor initialization
@@ -17,36 +28,6 @@ void init_UART()
     Serial.println(F("#INIT: UART => DONE"));
   #endif
 }
-
-
-#ifdef USE_DEBUG_LED
-void init_DEBUG_LED()
-{
-  pinMode(PIN_DEBUG_LED, OUTPUT);
-  digitalWrite(PIN_DEBUG_LED,LOW);
-
-  #ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: DEBUG_LED => DONE"));
-  #endif
-  #ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: DEBUG_LED => DONE"));
-  #endif
-}
-#endif
-
-#ifdef USE_FACTDEF_BTN
-void init_FACT_DEF_BTN()
-{
-  pinMode(PIN_RESET, INPUT);
-
-  #ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: FACT_DEF_BTN => DONE"));
-  #endif
-  #ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: FACT_DEF_BTN => DONE"));
-  #endif
-}
-#endif
 
 #ifdef USE_BACKLIGHT
 void init_BackLight()
@@ -83,7 +64,7 @@ int readAnalogButton()
   {/* No button */
     retVal = MW_BTNULL;
   }
-  else if (val > LL_BTE && val < UL_BTE)
+  else if (val >= LL_BTE && val <= UL_BTE)
   {/* Escape button */
     retVal = MW_BTE;
   }
@@ -135,8 +116,8 @@ void init_RGB()
   pinMode(PIN_RGBLED_G, OUTPUT);
   pinMode(PIN_RGBLED_B, OUTPUT);
 
-  analogWrite(PIN_RGBLED_R, 128);
-  analogWrite(PIN_RGBLED_G, 128);
+  analogWrite(PIN_RGBLED_R, 128); //zold
+  analogWrite(PIN_RGBLED_G, 128); //piros
   analogWrite(PIN_RGBLED_B, 128);
 
   #ifdef USE_SERIAL_MONITOR

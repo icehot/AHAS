@@ -8,29 +8,23 @@
 
 void Task_Init_Callback() 
 {
+  init_LedBuiltIn();
+
+  init_UART();
+
   #ifdef DEBUG
     Serial.print(millis());
     Serial.println(F(" #OS: Init Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Init.getStartDelay());
   #endif 
-  
-  init_UART();
-
+              
   #ifdef USE_SD
     init_SD();
   #endif 
 
   #ifdef USE_DS1302
     init_DS1302();
-  #endif
-
-  #ifdef USE_DEBUG_LED
-    init_DEBUG_LED();
-  #endif 
-
-  #ifdef USE_FACTDEF_BTN
-    init_FACT_DEF_BTN();
   #endif
 
   #ifdef USE_SOUND_DETECT
@@ -88,10 +82,13 @@ void Task_Init_Callback()
   #ifdef USE_CONTRAST
     init_Contrast();
   #endif
+
 }
 
 void Task_Acquisition_Callback()
 {
+    toggleLedBuiltIn();
+  
     #ifdef DEBUG
       Serial.print(millis());
       Serial.println(F(" #OS: Acquisition Task"));
@@ -120,8 +117,7 @@ void Task_Acquisition_Callback()
     #ifdef USE_PIR
     get_PIR_State();
     #endif
-    #ifdef USE_SOUND_DETECT
-    
+    #ifdef USE_SOUND_DETECT   
     if (get_SoundDetect_State() == 1)
     {
       #ifdef USE_SERIAL_MONITOR
@@ -172,20 +168,17 @@ void Task_Acquisition_Callback()
 
 void Task_Button_Callback()
 {
-    #ifdef DEBUG
-    #endif 
-
     #ifdef USE_ANALOG_BTN
-
     int analogButtonState = readAnalogButton();
 
     /* If there is a button press */
     if (analogButtonState != MW_BTNULL)
     {
       /* react on this new button press by drawing it */
+      #ifdef USE_MENWIZZ
       tree.draw( analogButtonState);
+      #endif
     }
-
     #endif
 }
 
@@ -198,9 +191,6 @@ void Task_Display_Callback()
       Serial.println(Task_Display.getStartDelay());
     #endif 
 
-    //Serial.println("Runtime for Webserver:");
-    //printRuntTime(&RunTime.Task_Webduino);
-    
     #ifdef USE_LCD
       #ifdef USE_MENWIZZ
         tree.drawWoBtnCheck();
@@ -222,7 +212,7 @@ void Task_Webduino_Callback()
   //startRuntimeMeasurement();
   
   #ifdef USE_WEBDUINO
-  WebduinoServerLoop();
+    WebduinoServerLoop();
   #endif
 
   //endRuntimeMeasurement(&RunTime.Task_Webduino);
@@ -327,17 +317,21 @@ void Task_TimeSync_Callback()
       Serial.print(F("Delayed: "));
       Serial.println(Task_TimeSync.getStartDelay());
     #endif
-    
+
+    #ifdef USE_NTP 
     switch (timeStatus())
     {
       case timeSet:
+        #ifdef USE_DS1302
         autoTimeSync();
+        #endif
       break;
       
       default:
       /* NTP is not available */
       break;
     }
+    #endif
 }
 
 #ifdef DEBUG
