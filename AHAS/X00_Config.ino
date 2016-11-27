@@ -29,7 +29,7 @@
 #define USE_SERIAL_MONITOR
 #define USE_SYS_LOG
 #define USE_MENWIZZ
-
+#define USE_THINGSPEAK
 /* Cross dependency check*/
 #ifndef USE_ETH_SHIELD
   #ifdef USE_NTP
@@ -38,6 +38,11 @@
   #ifdef USE_WEBDUINO
     #error "WEBDUINO is enabled without ETH Shield"
   #endif
+
+  #ifdef USE_THINGSPEAK
+    #error "ThingSpeak is enabled without ETH Shield"
+  #endif
+  
 #endif 
 
 #ifdef USE_SYS_LOG

@@ -44,79 +44,6 @@ function w3_close() {
   document.getElementsByClassName("w3-opennav")[0].style.display = "inline-block";
 }
 
-var xmlhttp = new XMLHttpRequest();
-
-setInterval(updateValues, 2000);
-
-function updateValues()
-{
-    xmlhttp.open("GET", "json", true);
-    xmlhttp.send();
-}
-
-xmlhttp.onreadystatechange = function() 
-{
-    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) 
-    {
-        var portData = JSON.parse(xmlhttp.responseText);
-        DisplayPortValues(portData);
-    }
-}
-
-function DisplayPortValues(portData ) 
-{
-    document.getElementById("a0").innerHTML = portData.a0;
-    document.getElementById("a1").innerHTML = portData.a1;
-    document.getElementById("a2").innerHTML = portData.a2;
-    document.getElementById("a3").innerHTML = portData.a3;
-    document.getElementById("a4").innerHTML = portData.a4;
-
-    document.getElementById("relay1").innerHTML = portData.r1;
-    document.getElementById("relay2").innerHTML = portData.r2;
-    document.getElementById("relay3").innerHTML = portData.r3;
-    document.getElementById("relay4").innerHTML = portData.r4;
-	
-	document.getElementById("dht11_temp").innerHTML = portData.dht11_temp;
-	document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum;
-	document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew;
-	
-	document.getElementById("bmp085_temp").innerHTML = portData.bmp085_temp;
-	document.getElementById("bmp085_pres").innerHTML = portData.bmp085_pres;
-	
-	document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp;
-	document.getElementById("ms5611_pres").innerHTML = portData.ms5611_pres;
-	document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt;
-	document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt;
-	
-	document.getElementById("ds1302_year").innerHTML  = portData.ds1302_year;
-	document.getElementById("ds1302_month").innerHTML = portData.ds1302_month;
-	document.getElementById("ds1302_day").innerHTML   = portData.ds1302_day;
-	document.getElementById("ds1302_hour").innerHTML  = portData.ds1302_hour;
-	document.getElementById("ds1302_min").innerHTML   = portData.ds1302_min;
-	document.getElementById("ds1302_sec").innerHTML   = portData.ds1302_sec;
-}
-
-function rgbChange()
-{
-	var red_value = document.getElementById("rgb_r").value;
-	var green_value = document.getElementById("rgb_g").value;
-	var blue_value= document.getElementById("rgb_b").value;
-    document.getElementById("red_val").innerHTML =  red_value;
-	document.getElementById("green_val").innerHTML =  green_value;
-	document.getElementById("blue_val").innerHTML =  blue_value;
-	
-	$.post('/rgb', { red: red_value, green: green_value, blue: blue_value } );
-}
-
-function r1On() {$.post('/input', {r1: 0} );}
-function r2On() {$.post('/input', {r2: 0} );}
-function r3On() {$.post('/input', {r3: 0} );}
-function r4On() {$.post('/input', {r4: 0} );}
-function r1Off() {$.post('/input', {r1: 1} );}
-function r2Off() {$.post('/input', {r2: 1} );}
-function r3Off() {$.post('/input', {r3: 1} );}
-function r4Off() {$.post('/input', {r4: 1} );}
-
 </script>
 
 
@@ -136,7 +63,8 @@ function r4Off() {$.post('/input', {r4: 1} );}
   <p> </p>		
   <a href="/index.htm">Home</a>		
   <a href="/values.htm">Values</a>		
-  <a href="/settings.htm">Settings</a>		
+  <a href="/settings.htm">Settings</a>	
+  <a href="/graphs.htm">Graphs</a>	   
 </nav>
 
 <section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->

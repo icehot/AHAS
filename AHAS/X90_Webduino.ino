@@ -32,7 +32,7 @@ inline Print &operator <<(Print &obj, T arg)
 
 #ifdef USE_SD
 
-#define SIZE_OF_BUFFER 64
+#define SIZE_OF_BUFFER 1024
 
 void sendHtmlFromSD(WebServer &server,char * filename)
 { 
@@ -115,6 +115,21 @@ void valuesCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
   if (type != WebServer::HEAD)
   {
       sendHtmlFromSD(server,"values.htm");
+  }
+}
+
+void graphsCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
+{
+  
+  /* this line sends the standard "we're all OK" headers back to the
+     browser */
+  server.httpSuccess();
+
+  /* if we're handling a GET or POST, we can output our data here.
+     For a HEAD request, we just stop after outputting headers. */
+  if (type != WebServer::HEAD)
+  {
+      sendHtmlFromSD(server,"graphs.htm");
   }
 }
 
@@ -567,6 +582,7 @@ void init_Webduino()
   webserver->addCommand("index.htm", &indexCmd);
   webserver->addCommand("values.htm", &valuesCmd);
   webserver->addCommand("settings.htm", &settingsCmd);
+  webserver->addCommand("graphs.htm", &graphsCmd);
   #else
   webserver->setDefaultCommand(&noSDCardCmd);
   #endif
@@ -599,8 +615,8 @@ void init_Webduino()
 
 void WebduinoServerLoop()
 {
-  char buff[300];
-  int len = 300;
+  char buff[SIZE_OF_BUFFER];
+  int len = SIZE_OF_BUFFER;
 
   /* process incoming connections one at a time forever */
   webserver->processConnection(buff, &len);

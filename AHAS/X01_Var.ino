@@ -90,6 +90,7 @@ struct{
   RunTime_Type Task_Webduino = {0,0,65535,0.0,0.0,0,0};
   RunTime_Type Task_Log = {0,0,65535,0.0,0.0,0,0};
   RunTime_Type Task_RenewDHCP = {0,0,65535,0.0,0.0,0,0};
+  RunTime_Type Task_ThingSpeak = {0,0,65535,0.0,0.0,0,0};
 }RunTime;
 
 void inline startRuntimeMeasurement()

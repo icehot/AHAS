@@ -89,7 +89,7 @@ function DisplayPortValues(portData )
 	if(portData.dht11_hum != undefined){document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum.toFixed(2) + " %";}
 	if(portData.dht11_dew != undefined){document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew.toFixed(2) + " &#8451";}
 	
-	if(portData.bmp085_temp != undefined){document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp/10.0).toFixed(2) + " &#8451";}
+	if(portData.bmp085_temp != undefined){document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp).toFixed(2) + " &#8451";}
 	if(portData.bmp085_pres != undefined){document.getElementById("bmp085_pres").innerHTML = (portData.bmp085_pres/100).toFixed(2) + " hPa";}
 	
 	if(portData.ms5611_temp != undefined){document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp.toFixed(2) + " &#8451";}
@@ -166,7 +166,8 @@ function r4Off() {$.post('/input', {r4: 1} );}
   <p> </p>		
   <a href="/index.htm">Home</a>		
   <a href="/values.htm">Values</a>		
-  <a href="/settings.htm">Settings</a>			
+  <a href="/settings.htm">Settings</a>
+  <a href="/graphs.htm">Graphs</a>	   
 </nav>
 
 <section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
@@ -303,7 +304,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
 	  </p>
     </div>
   </div>
-
+  
 </div>
 
 

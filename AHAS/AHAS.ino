@@ -29,6 +29,7 @@ Supported SW components:
   4. SD card logging
   5. EEPROM storage for settings
   6. MenWizz menu on LCD 
+  7. ThingSpeak
    
  Project started on 12 Jan 2015
  by Orbán Balázs
@@ -55,7 +56,7 @@ void Task_Webduino_Callback();
 void Task_Log_Callback();
 void Task_RenewDHCP_Callback();
 void Task_TimeSync_Callback();
-
+void Task_ThingSpeak_Callback();
 /***********************************************************************************************************/
 /*** Global Variable definition  ***/
 /***********************************************************************************************************/
@@ -69,6 +70,7 @@ Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
 Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback);
 Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
 Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
+Task Task_ThingSpeak(TASK_MINUTE, TASK_FOREVER, &Task_ThingSpeak_Callback);
 
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
@@ -85,11 +87,13 @@ void setup()
   TaskScheduler.addTask(Task_Log);
   TaskScheduler.addTask(Task_RenewDHCP);
   TaskScheduler.addTask(Task_TimeSync);
+  TaskScheduler.addTask(Task_ThingSpeak);
 
   Task_Init.enable();
   Task_Button.enable();
   Task_Acquisition.enable();
   Task_TimeSync.enable();
+  Task_ThingSpeak.enable();
 }
 
 /***********************************************************************************************************/

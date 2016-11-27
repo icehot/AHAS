@@ -83,6 +83,10 @@ void Task_Init_Callback()
     init_Contrast();
   #endif
 
+  #ifdef USE_THINGSPEAK
+    init_ThingSpeak();
+  #endif
+
 }
 
 void Task_Acquisition_Callback()
@@ -331,6 +335,20 @@ void Task_TimeSync_Callback()
       /* NTP is not available */
       break;
     }
+    #endif
+}
+
+void Task_ThingSpeak_Callback()
+{
+    #ifdef DEBUG
+      Serial.print(millis());
+      Serial.println(F(" #OS: ThingSpeak Task"));
+      Serial.print(F("Delayed: "));
+      Serial.println(Task_ThingSpeak.getStartDelay());
+    #endif
+
+    #ifdef USE_THINGSPEAK
+      updateThingSpeak();
     #endif
 }
 
