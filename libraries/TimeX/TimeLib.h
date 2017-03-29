@@ -7,9 +7,9 @@
               - fixed  daysToTime_t macro (thanks maniacbug)
 */     
 
-#ifndef _Time_h
+#ifndef _TimeX_h
 #ifdef __cplusplus
-#define _Time_h
+#define _TimeX_h
 
 #include <inttypes.h>
 #ifndef __AVR__

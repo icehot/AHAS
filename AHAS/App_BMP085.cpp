@@ -1,3 +1,14 @@
+// 
+// 
+// 
+
+#include "AHAS_Config.h"
+#include "App_Var.h"
+#include "App_SD.h"
+#include "App_IO.h"
+
+#include "App_BMP085.h"
+
 /** BMP085 sensor **/
 #ifdef USE_BMP085
 
@@ -39,19 +50,20 @@ Adafruit_BMP085 bmp;
 
 void init_BMP085()
 {
-  bmp.begin();
+    bmp.begin();
 
-  #ifdef USE_SERIAL_MONITOR
+#ifdef USE_SERIAL_MONITOR
     Serial.println(F("#INIT: BMP085 => DONE"));
-  #endif
-  #ifdef USE_SYS_LOG
+#endif
+#ifdef USE_SYS_LOG
     add2SysLog(F("#INIT: BMP085 => DONE"));
-  #endif
+#endif
 }
 
 void read_BMP085()
 {
-  filterJacob(&DataPool.BMP085_Pressure,(float)bmp.readPressure(), 4);
-  filterJacob(&DataPool.BMP085_Temperature,(float)bmp.readTemperature(), 4);
+    filterJacob(&DataPool.BMP085_Pressure, (float)bmp.readPressure(), 4);
+    filterJacob(&DataPool.BMP085_Temperature, (float)bmp.readTemperature(), 4);
 }
 #endif
+

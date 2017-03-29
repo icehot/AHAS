@@ -1,13 +1,15 @@
-/** EEPROM Memory **/
+// EEPROMUtil.h
 
-#include <EEPROM.h>
+#ifndef _EEPROMUTIL_h
+#define _EEPROMUTIL_h
 
-/***********************************************************************************************************/
-/*** EEPROM Mapping ***/
-/***********************************************************************************************************/
-/* structure which is stored in the eeprom. 
-* Look at "EEPROMAnything.h" for the functions storing and reading the struct
-*/
+#if defined(ARDUINO) && ARDUINO >= 100
+	#include "arduino.h"
+#else
+	#include "WProgram.h"
+#endif
+
+#include "EEPROM.h"
 
 #define EEPROM_BASE 0x00
 #define EEPROM_CONFIG_ADDRESS EEPROM_BASE
@@ -16,7 +18,7 @@
 #define EEPROM_PSWD_ADDRESS EEPROM_CONFIG_ADDRESS + EEPROM_CONFIG_SIZE
 #define EEPROM_PSWD_SIZE 20
 
-struct config_t
+typedef struct config_t
 {
     byte config_set;
     byte use_dhcp;
@@ -27,14 +29,19 @@ struct config_t
     byte subnet[4];
     byte dns_server[4];
     unsigned int webserverPort;
-} eeprom_config;
+} EEPROM_ConfigType;
+
+extern EEPROM_ConfigType eeprom_config;
+
+//template <class T> int EEPROM_writeAnything(int ee, const T& value);
+//template <class T> int EEPROM_readAnything(int ee, T& value);
 
 template <class T> int EEPROM_writeAnything(int ee, const T& value)
 {
     const byte* p = (const byte*)(const void*)&value;
     unsigned int i;
     for (i = 0; i < sizeof(value); i++)
-          EEPROM.write(ee++, *p++);
+        EEPROM.write(ee++, *p++);
     return i;
 }
 
@@ -43,6 +50,8 @@ template <class T> int EEPROM_readAnything(int ee, T& value)
     byte* p = (byte*)(void*)&value;
     unsigned int i;
     for (i = 0; i < sizeof(value); i++)
-          *p++ = EEPROM.read(ee++);
+        *p++ = EEPROM.read(ee++);
     return i;
 }
+
+#endif
