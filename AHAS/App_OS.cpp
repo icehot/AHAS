@@ -45,6 +45,7 @@ Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
 Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
 Task Task_ThingSpeak(TASK_MINUTE, TASK_FOREVER, &Task_ThingSpeak_Callback);
 
+bool acqFirstRun = 1;
 
 void Task_Init_Callback()
 {
@@ -117,10 +118,12 @@ void Task_Init_Callback()
 
 #ifdef USE_BACKLIGHT
     init_BackLight();
+	DataPool.LCD_BackLight = 128;
 #endif
 
 #ifdef USE_CONTRAST
     init_Contrast();
+	DataPool.LCD_Contrast = 40;
 #endif
 
 #ifdef USE_THINGSPEAK
@@ -131,7 +134,7 @@ void Task_Init_Callback()
 
 void Task_Acquisition_Callback()
 {
-    toggleLedBuiltIn();
+	toggleLedBuiltIn();
 
 #ifdef DEBUG
     Serial.print(millis());
@@ -199,9 +202,10 @@ void Task_Acquisition_Callback()
     Serial.println(analogRead(PIN_ANALOG_BUTTON));
     Serial.println("");
     */
-
-    if (Task_Acquisition.isFirstIteration())
+    if (acqFirstRun)
     {
+		acqFirstRun = 0;
+		Serial.println("enable");
         Task_Display.enable();
         Task_Webduino.enable();
         Task_Log.enable();
@@ -212,6 +216,7 @@ void Task_Acquisition_Callback()
 
 void Task_Button_Callback()
 {
+
 #ifdef USE_ANALOG_BTN
     int analogButtonState = readAnalogButton();
 

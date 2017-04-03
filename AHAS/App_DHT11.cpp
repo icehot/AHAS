@@ -8,8 +8,6 @@
 #include "App_IO.h"
 #include "App_DHT11.h"
 
-#include "DHT11.h"
-
 /** DHT11 **/
 #ifdef USE_DHT11
 

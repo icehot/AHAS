@@ -18,7 +18,7 @@
 /** Data Pool **/
 /* Used for data exchange between webserver and sensors */
 
-struct{
+typedef struct{
 #ifdef USE_DHT11
     char* DHT11_Status;
     float DHT11_Temperature;
@@ -81,6 +81,8 @@ struct{
     byte LCD_Contrast;// = 40;
 #endif
 
-}DataPool;
+}DataPoolType;
+
+extern DataPoolType DataPool;
 
 #endif

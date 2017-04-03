@@ -1,7 +1,7 @@
 // 
 // 
 // 
-
+#include "AHAS_Config.h"
 #include "App_RunTime.h"
 
 void startRuntimeMeasurement()

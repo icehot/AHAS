@@ -13,8 +13,6 @@
 #include <TaskScheduler.h>
 #include "App_OS.h"
 
-
-
 extern Scheduler TaskScheduler;
 
 void Task_Init_Callback();
@@ -28,6 +26,7 @@ void Task_TimeSync_Callback();
 void Task_ThingSpeak_Callback();
 
 /** Task Definitions **/
+
 extern Task Task_Init;
 extern Task Task_Acquisition;
 extern Task Task_Display;
