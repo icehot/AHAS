@@ -45,7 +45,6 @@ Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
 Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
 Task Task_ThingSpeak(TASK_MINUTE, TASK_FOREVER, &Task_ThingSpeak_Callback);
 
-bool acqFirstRun = 1;
 
 void Task_Init_Callback()
 {
@@ -202,9 +201,9 @@ void Task_Acquisition_Callback()
     Serial.println(analogRead(PIN_ANALOG_BUTTON));
     Serial.println("");
     */
-    if (acqFirstRun)
+
+	if(Task_Acquisition.isFirstIteration())
     {
-		acqFirstRun = 0;
 		Serial.println("enable");
         Task_Display.enable();
         Task_Webduino.enable();
@@ -396,6 +395,7 @@ void Task_ThingSpeak_Callback()
     updateThingSpeak();
 #endif
 }
+
 
 #ifdef DEBUG
 #undef DEBUG

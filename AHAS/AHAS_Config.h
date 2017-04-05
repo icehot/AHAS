@@ -46,6 +46,7 @@
 #define USE_SYS_LOG
 #define USE_MENWIZZ
 #define USE_THINGSPEAK
+
 /* Cross dependency check*/
 #ifndef USE_ETH_SHIELD
 #ifdef USE_NTP

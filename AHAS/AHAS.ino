@@ -61,7 +61,7 @@ void setup()
     Task_Button.enable();
     Task_Acquisition.enable();
     Task_TimeSync.enable();
-    Task_ThingSpeak.enable();
+	Task_ThingSpeak.enableDelayed(TASK_MINUTE);
 }
 
 /***********************************************************************************************************/
