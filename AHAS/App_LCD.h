@@ -1,4 +1,4 @@
-// LCD.h
+/** LCD - HD44780 Display **/
 
 #ifndef _LCD_h
 #define _LCD_h

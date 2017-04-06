@@ -1,4 +1,4 @@
-// BMP085.h
+/** BMP085 sensor **/
 
 #ifndef _BMP085_h
 #define _BMP085_h
@@ -9,8 +9,10 @@
 	#include "WProgram.h"
 #endif
 
-void init_BMP085();
-void read_BMP085();
+#ifdef USE_BMP085
+	void init_BMP085();
+	void read_BMP085();
+#endif
 
 #endif
 

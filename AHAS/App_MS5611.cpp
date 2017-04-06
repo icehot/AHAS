@@ -1,21 +1,17 @@
-// 
-// 
-// 
+/** MS5611 sensor **/
+
 #include "AHAS_Config.h"
 #include "App_Var.h"
 #include "App_SD.h"
 #include "App_IO.h"
 #include "App_MS5611.h"
 
-/** MS5611 sensor **/
 #ifdef USE_MS5611
 
 #include <MS5611.h>
 
 MS5611 ms5611;
 double referencePressure;
-
-
 
 void read_MS5611()
 {
@@ -45,21 +41,11 @@ void init_MS5611()
     {
         //"Could not find a valid MS5611 sensor, check wiring!");
 
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#INIT: MS5611 => FAILED"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#INIT: MS5611 => FAILED"));
-#endif
+		MONITOR_LOG_LN("#INIT: MS5611 => FAILED");
     }
     else
     {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#INIT: MS5611 => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#INIT: MS5611 => DONE"));
-#endif
+		MONITOR_LOG_LN("#INIT: MS5611 => DONE");
     }
 
     // Get reference pressure for relative altitude

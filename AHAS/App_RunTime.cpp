@@ -1,8 +1,8 @@
-// 
-// 
-// 
+/** RunTime Measurement **/
 #include "AHAS_Config.h"
 #include "App_RunTime.h"
+
+#ifdef USE_RUNTIME
 
 void startRuntimeMeasurement()
 {
@@ -44,3 +44,4 @@ void printRuntTime(RunTime_Type* module)
     Serial.print(F("Count:")); Serial.println(module->count);
 }
 
+#endif

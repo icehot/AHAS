@@ -1,4 +1,4 @@
-// Config.h
+/** AHAS Configuration File **/
 
 #ifndef _CONFIG_h
 #define _CONFIG_h
@@ -8,13 +8,6 @@
 #else
 	#include "WProgram.h"
 #endif
-
-
-// 
-// 
-// 
-
-/** Configuration **/
 
 /***********************************************************************************************************/
 /** Project Configuration **/
@@ -46,6 +39,7 @@
 #define USE_SYS_LOG
 #define USE_MENWIZZ
 #define USE_THINGSPEAK
+#define USE_RUNTIME
 
 /* Cross dependency check*/
 #ifndef USE_ETH_SHIELD

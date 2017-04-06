@@ -1,13 +1,9 @@
-// 
-// 
-// 
+/** DataPool **/
+
 #include "AHAS_Config.h"
 #include "App_Var.h"
 
 DataPoolType DataPool;
-// 
-// 
-// 
 
 /**********************************************************************************************************/
 /*** Function Declarations ***/

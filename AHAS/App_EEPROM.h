@@ -1,4 +1,4 @@
-// EEPROMUtil.h
+/** EEPROM Utility **/
 
 #ifndef _EEPROMUTIL_h
 #define _EEPROMUTIL_h
@@ -11,6 +11,7 @@
 
 #include "EEPROM.h"
 
+/* Macro definitions */
 #define EEPROM_BASE 0x00
 #define EEPROM_CONFIG_ADDRESS EEPROM_BASE
 #define EEPROM_CONFIG_SIZE sizeof(eeprom_config)
@@ -18,6 +19,7 @@
 #define EEPROM_PSWD_ADDRESS EEPROM_CONFIG_ADDRESS + EEPROM_CONFIG_SIZE
 #define EEPROM_PSWD_SIZE 20
 
+/* Type definitions */
 typedef struct config_t
 {
     byte config_set;
@@ -31,11 +33,10 @@ typedef struct config_t
     unsigned int webserverPort;
 } EEPROM_ConfigType;
 
+/* Variable declarations */
 extern EEPROM_ConfigType eeprom_config;
 
-//template <class T> int EEPROM_writeAnything(int ee, const T& value);
-//template <class T> int EEPROM_readAnything(int ee, T& value);
-
+/* Function Declarations */
 template <class T> int EEPROM_writeAnything(int ee, const T& value)
 {
     const byte* p = (const byte*)(const void*)&value;

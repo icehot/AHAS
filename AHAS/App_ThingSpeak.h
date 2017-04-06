@@ -9,9 +9,10 @@
 	#include "WProgram.h"
 #endif
 
-void init_ThingSpeak();
-void init_ThingSpeak();
-void updateThingSpeak();
+#ifdef USE_THINGSPEAK
+	void init_ThingSpeak();
+	void updateThingSpeak();
+#endif
 
 #endif
 

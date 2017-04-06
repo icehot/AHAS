@@ -1,17 +1,11 @@
-// 
-// 
-// 
-
+/** SD Card**/
 #include "AHAS_Config.h"
 #include "App_SD.h"
 #include "App_Var.h"
 #include "App_IO.h"
 
-
-/** SD Card**/
 #ifdef USE_SD
 #include <SD.h>
-
 
 void init_SD()
 {

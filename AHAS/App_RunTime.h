@@ -1,4 +1,4 @@
-// RunTime.h
+/** RunTime Measurement **/
 
 #ifndef _RUNTIME_h
 #define _RUNTIME_h
@@ -9,6 +9,7 @@
 	#include "WProgram.h"
 #endif
 
+#ifdef USE_RUNTIME
 typedef struct
 {
     unsigned int act;
@@ -35,6 +36,8 @@ struct{
 void startRuntimeMeasurement();
 void endRuntimeMeasurement(RunTime_Type* module);
 void printRuntTime(RunTime_Type* module);
+
+#endif
 
 #endif
 

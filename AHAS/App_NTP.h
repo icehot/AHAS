@@ -1,4 +1,4 @@
-// NTP.h
+/** NTP - Network Time Protocol **/
 
 #ifndef _NTP_h
 #define _NTP_h
@@ -15,12 +15,14 @@
 /*
 * Function Declarations
 */
+#ifdef USE_NTP
 void init_NTP();
 void read_time();
 time_t getNtpTime();
 time_t getNtpTimeMultiServer();
 void sendNTPpacket(IPAddress &address);
 time_t getNtpResponse();
+#endif
 
 #endif
 

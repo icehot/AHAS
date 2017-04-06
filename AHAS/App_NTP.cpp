@@ -1,6 +1,4 @@
-// 
-// 
-// 
+/** NTP - Network Time Protocol **/
 
 #include "AHAS_Config.h"
 #include "App_Var.h"
@@ -8,7 +6,6 @@
 #include "App_IO.h"
 
 
-/** NTP - Network Time Protocol **/
 #ifdef USE_NTP
 #include <TimeX.h> 
 #include <EthernetUdp.h>
@@ -28,8 +25,8 @@ IPAddress * timeServer[NR_OF_TIMESERVERS];
 /* Local port to listen for UDP packets */
 unsigned int localPort = 8888;
 
-/* Eastern European Time */
-const byte timeZone = 2;
+/* Time Zone correction */
+const byte timeZone = 2; /* Eastern European Time */
 
 const byte dayLightSaving = 1;
 
@@ -38,7 +35,6 @@ bool isInit = true;
 
 /* Handle to UDP connection */
 EthernetUDP Udp;
-
 
 
 /*

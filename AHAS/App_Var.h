@@ -1,4 +1,4 @@
-// Var.h
+/** DataPool **/
 
 #ifndef _VAR_h
 #define _VAR_h

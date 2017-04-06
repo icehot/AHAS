@@ -1,6 +1,4 @@
-// 
-// 
-// 
+/** WebDuino - Webserver **/
 
 #include "AHAS_Config.h"
 #include "App_Var.h"
@@ -11,7 +9,6 @@
 #include "App_Net.h"
 #include "SD.h"
 
-/** WebDuino - Webserver **/
 
 #ifdef USE_WEBDUINO
 
@@ -19,7 +16,6 @@
 
 #define WEBDUINO_FAVICON_DATA ""
 
-/** Webduino **/
 #include <WebServer.h>
 
 /* This creates an instance of the webserver.  By specifying a prefix

@@ -6,8 +6,6 @@
 #include "App_Var.h"
 #include "MENWIZ.h"
 
-void add2SysLog(char * entry);
-void add2SysLog(const __FlashStringHelper * entry);
 
 void softReset()
 {
@@ -27,13 +25,11 @@ void toggleLedBuiltIn()
 
 void init_UART()
 {
-    //Serial monitor initialization
+    /* Serial monitor initialization */
     Serial.begin(115200);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("### AHAS - Arduino Home Automation System ###"));
-    Serial.println(F("#INIT: UART => DONE"));
-#endif
+	MONITOR("### AHAS - Arduino Home Automation System ###");
+	MONITOR("#INIT: UART => DONE");
 }
 
 #ifdef USE_BACKLIGHT
@@ -123,16 +119,11 @@ void init_RGB()
     pinMode(PIN_RGBLED_G, OUTPUT);
     pinMode(PIN_RGBLED_B, OUTPUT);
 
-    analogWrite(PIN_RGBLED_R, 128); //zold
-    analogWrite(PIN_RGBLED_G, 128); //piros
+    analogWrite(PIN_RGBLED_R, 128); 
+    analogWrite(PIN_RGBLED_G, 128);
     analogWrite(PIN_RGBLED_B, 128);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: RGB => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: RGB => DONE"));
-#endif
+	MONITOR_LOG_LN("#INIT: RGB => DONE");
 }
 #endif
 
@@ -150,12 +141,7 @@ void init_Relay()
     digitalWrite(PIN_RELAY3, HIGH);
     digitalWrite(PIN_RELAY4, HIGH);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: RElAY => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: RElAY => DONE"));
-#endif
+	MONITOR_LOG_LN("#INIT: RElAY => DONE")
 }
 #endif 
 
@@ -165,12 +151,7 @@ void init_PIR()
 {
     pinMode(PIN_PIR_SENSOR, INPUT);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: PIR => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: PIR => DONE"));
-#endif
+	MONITOR_LOG_LN("#INIT: PIR => DONE");
 }
 
 void get_PIR_State()
@@ -199,12 +180,7 @@ void init_SoundDetect()
     /* Enable the interrupt */
     attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT), ISR_SoundDetect, FALLING);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: SOUND DETECT => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: SOUND DETECT => DONE"));
-#endif
+	MONITOR_LOG_LN("#INIT: SOUND DETECT => DONE");
 }
 
 byte get_SoundDetect_State()

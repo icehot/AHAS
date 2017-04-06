@@ -9,9 +9,10 @@
 	#include "WProgram.h"
 #endif
 
-void init_DHT11();
-void read_DHT11();
-double dewPointFast(double celsius, double humidity);
-
+#ifdef USE_DHT11
+	void init_DHT11();
+	void read_DHT11();
+	double dewPointFast(double celsius, double humidity);
+#endif
 #endif
 

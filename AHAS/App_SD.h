@@ -11,12 +11,14 @@
 
 #include <Wstring.h>
 
-void init_SD();
-void saveDataToLog();
-void add2SysLogWOTimeStamp(const char * entry);
-void add2SysLogWOTimeStamp(const __FlashStringHelper * entry);
-void add2SysLog(const __FlashStringHelper * entry);
-void add2SysLog(const char * entry);
+#ifdef USE_SD
+	void init_SD();
+	void saveDataToLog();
+	void add2SysLogWOTimeStamp(const char * entry);
+	void add2SysLogWOTimeStamp(const __FlashStringHelper * entry);
+	void add2SysLog(const __FlashStringHelper * entry);
+	void add2SysLog(const char * entry);
+#endif
 
 #endif
 

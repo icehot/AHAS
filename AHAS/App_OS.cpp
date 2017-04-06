@@ -1,6 +1,4 @@
-// 
-// 
-// 
+/** OS **/
 
 #include "AHAS_Config.h"
 #include "App_Var.h"
@@ -23,8 +21,6 @@
 
 #include "App_OS.h"
 
-
-/** OS **/
 
 #ifdef DEBUG
 #undef DEBUG

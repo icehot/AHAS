@@ -1,12 +1,11 @@
-// 
-// 
-// 
+/** ThingSpeak **/
+
 #include "AHAS_Config.h"
 #include "App_Var.h"
 #include "App_SD.h"
 #include "App_IO.h"
 #include "ThingSpeak.h"
-/** ThingSpeak **/
+
 #ifdef USE_THINGSPEAK
 #include "App_ThingSpeak.h"
 #include "Ethernet.h"

@@ -37,11 +37,10 @@ Completed Features:
 36. Improving memory usage by using F() for string literals
 37. LCD backlight control, contrast control 
 38. MenWizz integration -> Finalize the menu configuration
-39. ThingSpeak integration -> Embeed graphs to arduino webpage
+39. ThingSpeak integration with embedded graphs into html
 
 Features to be done:
 
-- Online data acq service ex: Xively, Exosite
 - RFID integration
 - Piezo Buzzer - tone();
 - Alarm functionality

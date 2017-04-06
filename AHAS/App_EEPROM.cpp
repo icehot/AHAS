@@ -1,6 +1,4 @@
-// 
-// 
-// 
+/** EEPROM Utility **/
 
 #include "AHAS_Config.h"
 #include "App_EEPROM.h"
@@ -9,14 +7,12 @@
 
 #include <EEPROM.h>
 
-/***********************************************************************************************************/
-/*** EEPROM Mapping ***/
-/**********************.H f*************************************************************************************/
+
 /* structure which is stored in the eeprom.
 * Look at "EEPROMAnything.h" for the functions storing and reading the struct
 */
 
-
+/* Global variable definition */
 EEPROM_ConfigType eeprom_config;
 
 

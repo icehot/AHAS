@@ -1,6 +1,4 @@
-// 
-// 
-// 
+/** DS1302 Real-time Clock **/
 
 #include "AHAS_Config.h"
 #include "App_Var.h"
@@ -8,9 +6,6 @@
 #include "App_IO.h"
 #include "App_DS1302.h"
 
-#include "DS1302.h"
-
-/** DS1302 Real-time Clock **/
 #ifdef USE_DS1302
 
 #include <DS1302.h>
@@ -26,13 +21,7 @@ void init_DS1302()
     ds1302.init(PIN_DS1302_SCLK, PIN_DS1302_IO, PIN_DS1302_CE);
     /* Read the date and time */
     read_DS1302();
-
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: DS1302 => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: DS1302 => DONE"));
-#endif
+	MONITOR_LOG_LN("#INIT: DS1302 => DONE")
 }
 
 void read_DS1302()
@@ -64,14 +53,11 @@ void autoTimeSync()
     {
         /* The RTC and the NTP are not in synchron */
 
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#RTC The RTC need to be synchronised"));
-#endif
+		MONITOR_LOG_LN("#RTC The RTC need to be synchronised");
 
-
-#ifdef USE_NTP
-        sync_DS1302withNTP();
-#endif
+		#ifdef USE_NTP
+			sync_DS1302withNTP();
+		#endif
     }
     else
     {
@@ -91,18 +77,13 @@ void sync_DS1302withNTP()
         t = now();
         ds1302.setTimeAndDate(year(t) - 2000, month(t), day(t), 1, hour(t), minute(t), second(t));
 
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#DS1302: synchronized to NTP"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#DS1302: synchronized to NTP"));
-#endif
+		MONITOR_LOG_LN("#DS1302: synchronized to NTP");
         break;
 
     case timeNotSet:
         DataPool.DS1302_SyncStatus = "Time not set!";
         break;
-
+		  
     case timeNeedsSync:
         DataPool.DS1302_SyncStatus = "Time needs sync!";
         break;

@@ -9,9 +9,11 @@
 	#include "WProgram.h"
 #endif
 
-void init_MS5611();
-void read_MS5611();
-void checkSettings();
+#ifdef USE_MS5611
+	void init_MS5611();
+	void read_MS5611();
+	void checkSettings();
+#endif
 
 #endif
 

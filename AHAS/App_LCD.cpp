@@ -1,6 +1,4 @@
-// 
-// 
-// 
+/** LCD - HD44780 Display **/
 
 #include "AHAS_Config.h"
 #include "App_Var.h"
@@ -8,13 +6,14 @@
 #include "App_IO.h"
 #include "App_SD.h"
 
-/** LCD - HD44780 Display **/
+
 #ifdef USE_LCD
 #include <LiquidCrystal.h>
 
 #include <MENWIZ.h>
 #include <EEPROM.h>
 
+/* Global variable definitions*/
 
 LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_EN, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PIN_LCD_D7);
 
@@ -44,6 +43,8 @@ byte backslash[8] = {
     0b00000
 };
 
+byte actScreen = 0;
+
 void printDigits(int digits)
 {
     // utility for digital clock display: prints leading 0
@@ -51,8 +52,6 @@ void printDigits(int digits)
         lcd.print(F("0"));
     lcd.print(digits);
 }
-
-byte actScreen = 0;
 
 void updateLCD()
 {
@@ -174,12 +173,7 @@ void init_MenWizz()
     lcd.createChar(0, degree);
     lcd.createChar(1, backslash);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: LCD => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: LCD => DONE"));
-#endif
+	MONITOR_LOG_LN("#INIT: LCD => DONE");
 }
 #endif
 

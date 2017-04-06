@@ -1,4 +1,4 @@
-// OS.h
+/** OS **/
 
 #ifndef _OS_h
 #define _OS_h

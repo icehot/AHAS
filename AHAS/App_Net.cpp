@@ -1,6 +1,5 @@
-// 
-// 
-// 
+/** Net Setup **/
+/** Ethernet Shield **/
 
 #include "AHAS_Config.h"
 #include "App_Var.h"
@@ -10,8 +9,6 @@
 #include "App_EEPROM.h"
 #include "App_OS.h"
 
-/** Net Setup **/
-/** Ethernet Shield **/
 #ifdef USE_ETH_SHIELD
 //#define DEBUG
 
@@ -20,6 +17,7 @@
 
 unsigned long last_dhcp_renew;
 byte dhcp_state;
+
 
 /**********************************************************************************************************/
 /*** Function Declarations ***/
@@ -49,9 +47,7 @@ void init_NetSetup()
 
     if (eeprom_config.use_dhcp == 1)
     {
-#ifdef USE_SERIAL_MONITOR
-        Serial.print(F("#INIT: Network via DHCP =>"));
-#endif
+		MONITOR_LOG("#INIT: Network via DHCP => ");
 
         if (Ethernet.begin(eeprom_config.mac) == 1)
         {

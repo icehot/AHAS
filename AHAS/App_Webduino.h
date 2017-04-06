@@ -9,8 +9,10 @@
 	#include "WProgram.h"
 #endif
 
-void init_Webduino();
-void WebduinoServerLoop();
+#ifdef USE_WEBDUINO
+	void init_Webduino();
+	void WebduinoServerLoop();
+#endif
 
 #endif
 
