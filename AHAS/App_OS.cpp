@@ -33,14 +33,30 @@ Scheduler TaskScheduler;
 /** Task Definitions **/
 Task Task_Init(TASK_IMMEDIATE, TASK_ONCE, &Task_Init_Callback);
 Task Task_Acquisition(1000, TASK_FOREVER, &Task_Acquisition_Callback);
-Task Task_Display(1000, TASK_FOREVER, &Task_Display_Callback); //TBD
-Task Task_Button(200, TASK_FOREVER, &Task_Button_Callback); //TBD
-Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
-Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback);
-Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
-Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
-Task Task_ThingSpeak(TASK_MINUTE, TASK_FOREVER, &Task_ThingSpeak_Callback);
 
+#ifdef USE_LCD
+Task Task_Display(1000, TASK_FOREVER, &Task_Display_Callback); //TBD
+#endif
+
+#ifdef USE_ANALOG_BTN
+Task Task_Button(200, TASK_FOREVER, &Task_Button_Callback); //TBD
+#endif
+
+#ifdef USE_WEBDUINO
+Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
+#endif
+
+#ifdef USE_SYS_LOG
+Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback);
+#endif
+
+Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
+
+Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
+
+#ifdef USE_THINGSPEAK
+Task Task_ThingSpeak(TASK_MINUTE, TASK_FOREVER, &Task_ThingSpeak_Callback);
+#endif
 
 void Task_Init_Callback()
 {
@@ -95,21 +111,17 @@ void Task_Init_Callback()
     init_NetSetup();
 #endif
 
-#ifdef USE_WEBDUINO
+    #ifdef USE_WEBDUINO
     init_Webduino();
-#endif
+    #endif
 
 #ifdef USE_NTP
     init_NTP();
 #endif
 
-#ifdef USE_LCD
-#ifdef USE_MENWIZZ
-    init_MenWizz();
-#else
-    init_LCD();
-#endif
-#endif
+    #ifdef USE_LCD
+        init_MenWizz();
+    #endif
 
 #ifdef USE_BACKLIGHT
     init_BackLight();
@@ -121,9 +133,9 @@ void Task_Init_Callback()
 	DataPool.LCD_Contrast = 40;
 #endif
 
-#ifdef USE_THINGSPEAK
+    #ifdef USE_THINGSPEAK
     init_ThingSpeak();
-#endif
+    #endif
 
 }
 
@@ -162,12 +174,7 @@ void Task_Acquisition_Callback()
 #ifdef USE_SOUND_DETECT   
     if (get_SoundDetect_State() == 1)
     {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#SOUND: Activated!"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#SOUND: Activated!"));
-#endif
+        MONITOR_LOG_LN(F("#SOUND: Activated!"));
         clear_SoundDetect_State();
 
         /* Clear the pending interrupts */
@@ -200,89 +207,91 @@ void Task_Acquisition_Callback()
 
 	if(Task_Acquisition.isFirstIteration())
     {
-		Serial.println("enable");
+        #ifdef USE_LCD
         Task_Display.enable();
+        #endif
+        
+        #ifdef USE_WEBDUINO
         Task_Webduino.enable();
+        #endif
+        
+        #ifdef USE_SYS_LOG
         Task_Log.enable();
+        #endif
     }
 
     endRuntimeMeasurement(&RunTime.Task_Acquisition);
 }
 
+#ifdef USE_ANALOG_BTN
 void Task_Button_Callback()
 {
-
-#ifdef USE_ANALOG_BTN
     int analogButtonState = readAnalogButton();
 
     /* If there is a button press */
     if (analogButtonState != MW_BTNULL)
     {
         /* react on this new button press by drawing it */
-#ifdef USE_MENWIZZ
+        #ifdef USE_LCD
         tree.draw(analogButtonState);
-#endif
+        #endif
     }
-#endif
 }
+#endif
 
+#ifdef USE_LCD
 void Task_Display_Callback()
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     Serial.print(millis());
     Serial.println(F(" #OS: Display Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Display.getStartDelay());
-#endif 
+    #endif 
 
-#ifdef USE_LCD
-#ifdef USE_MENWIZZ
     tree.drawWoBtnCheck();
-#else
-    updateLCD();
-#endif
-#endif
 }
+#endif
 
+#ifdef USE_WEBDUINO
 void Task_Webduino_Callback()
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     Serial.print(millis());
     Serial.println(F(" #OS: Webduino Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Display.getStartDelay());
-#endif 
+    #endif 
 
     //startRuntimeMeasurement();
 
-#ifdef USE_WEBDUINO
     WebduinoServerLoop();
-#endif
 
     //endRuntimeMeasurement(&RunTime.Task_Webduino);
 
-#ifdef DEBUG
+    #ifdef DEBUG
     Serial.print(millis());
     Serial.print(F(" #WEB "));
     Serial.print(F("Delay: "));
     Serial.println(Task_Display.getStartDelay());
     printRuntTime(&RunTime.Task_Webduino);
-#endif
+    #endif
 }
+#endif
 
+#ifdef USE_SYS_LOG
 void Task_Log_Callback()
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     Serial.print(millis());
     Serial.println(F(" #OS: Log Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Log.getStartDelay());
-#endif
+    #endif
 
-#ifdef USE_SD
     saveDataToLog();
-#endif
 }
+#endif
 
 void Task_RenewDHCP_Callback()
 {
@@ -302,52 +311,27 @@ void Task_RenewDHCP_Callback()
     switch (dhcp_state)
     {
     case NothingHappened:
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#DHCP: Nothing Happened"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#DHCP: Nothing Happened"));
-#endif
+        MONITOR_LOG_LN(F("#DHCP: Nothing Happened"));
         break;
+
     case RenewFailed:
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#DHCP: Renew Failed"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#DHCP: Renew Failed"));
-#endif
+        MONITOR_LOG_LN(F("#DHCP: Renew Failed"));
         break;
+
     case RenewSuccess:
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#DHCP: Renew Success"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#DHCP: Renew Success"));
-#endif
+        MONITOR_LOG_LN(F("#DHCP: Renew Success"));
         break;
+
     case RebindFailed:
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#DHCP: Rebind Failed"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#DHCP: Rebind Failed"));
-#endif
+        MONITOR_LOG_LN(F("#DHCP: Rebind Failed"));
         break;
+
     case RebindSuccess:
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#DHCP: Rebind Success"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#DHCP: Rebind Success"));
-#endif
+        MONITOR_LOG_LN(F("#DHCP: Rebind Success"));
         break;
+
     default:
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#DHCP: Unknown Error"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#DHCP: Unknown Error"));
-#endif
+        MONITOR_LOG_LN(F("#DHCP: Unknown Error"));
         break;
     }
 #endif
@@ -378,6 +362,7 @@ void Task_TimeSync_Callback()
 #endif
 }
 
+#ifdef USE_THINGSPEAK
 void Task_ThingSpeak_Callback()
 {
 #ifdef DEBUG
@@ -391,6 +376,7 @@ void Task_ThingSpeak_Callback()
     updateThingSpeak();
 #endif
 }
+#endif
 
 
 #ifdef DEBUG

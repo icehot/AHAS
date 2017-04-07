@@ -17,21 +17,15 @@ void init_SD()
 
     if (!SD.begin(PIN_SD_CS))
     {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#INIT: SD Card => FAILED"));
-#endif
+        MONITOR_LN(F("#INIT: SD Card => FAILED"));
 
         delay(5000);
         softReset();
     }
     else
     {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#INIT: SD Card => DONE"));
-#endif
-#ifdef USE_SD
-        add2SysLogWOTimeStamp(F("### AHAS - Arduino Home Automation System ###"));
-#endif
+        MONITOR_LN(F("#INIT: SD Card => DONE"));
+        LOG(F("### AHAS - Arduino Home Automation System ###"));
     }
 }
 
@@ -41,7 +35,7 @@ void saveDataToLog()
     String dataString = "";
 
     /* TimeStamp */
-#ifdef USE_DS1302
+    #ifdef USE_DS1302
     dataString += String(DataPool.DS1302_Year);
     dataString += "/";
     dataString += String(DataPool.DS1302_Month);
@@ -52,47 +46,42 @@ void saveDataToLog()
     dataString += ":";
     dataString += String(DataPool.DS1302_Minute);
     dataString += ",";
-#endif
+    #endif
 
     /* Temperature */
-#ifdef USE_MS5611
+    #ifdef USE_MS5611
     dataString += String((float)((float)DataPool.MS5611_Temperature));
     dataString += ",";
-#endif
-#ifdef USE_DHT11
+    #endif
+    #ifdef USE_DHT11
     /* Humidity */
     dataString += String(DataPool.DHT11_Humidity);
     dataString += ",";
-#endif
+    #endif
     /* Pressure */
-#ifdef USE_MS5611
+    #ifdef USE_MS5611
     dataString += String(DataPool.MS5611_Pressure);
     dataString += ",";
-#endif
+    #endif
     /* Pressure */
-#ifdef USE_BMP085
+    #ifdef USE_BMP085
     dataString += String(DataPool.BMP085_Pressure);
-#endif
+    #endif
 
     // open the file. note that only one file can be open at a time,
     // so you have to close this one before opening another.
     File dataFile = SD.open("datalog.csv", FILE_WRITE);
 
-    // if the file is available, write to it:
     if (dataFile)
-    {
+    {// if the file is available, write to it:
         dataFile.println(dataString);
         dataFile.close();
         // print to the serial port too:
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#SD: Datalog saved"));
-#endif
+        MONITOR_LN(F("#SD: Datalog saved"));
     }
-    // if the file isn't open, pop up an error:
-    else {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#SD: Error opening datalog.txt"));
-#endif
+    else 
+    {// if the file isn't open, pop up an error:
+        MONITOR_LN(F("#SD: Error opening datalog.txt"));
     }
 }
 
@@ -102,7 +91,7 @@ void add2SysLog(const __FlashStringHelper * entry)
     String dataString = "";
 
     /* TimeStamp */
-#ifdef USE_DS1302
+    #ifdef USE_DS1302
     dataString += String(DataPool.DS1302_Year);
     dataString += "/";
     dataString += String(DataPool.DS1302_Month);
@@ -113,7 +102,7 @@ void add2SysLog(const __FlashStringHelper * entry)
     dataString += ":";
     dataString += String(DataPool.DS1302_Minute);
     dataString += ",";
-#endif
+    #endif
 
     dataString += String(entry);
 
@@ -126,16 +115,10 @@ void add2SysLog(const __FlashStringHelper * entry)
     {
         dataFile.println(dataString);
         dataFile.close();
-        // print to the serial port too:
-        //    #ifdef USE_SERIAL_MONITOR
-        //      Serial.println("#SD: System Log saved");
-        //    #endif
     }
     // if the file isn't open, pop up an error:
     else {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#SD: Error opening system.log"));
-#endif
+        MONITOR_LN(F("#SD: Error opening system.log"));
     }
 }
 
@@ -145,7 +128,7 @@ void add2SysLog( const char * entry)
     String dataString = "";
 
     /* TimeStamp */
-#ifdef USE_DS1302
+    #ifdef USE_DS1302
     dataString += String(DataPool.DS1302_Year);
     dataString += "/";
     dataString += String(DataPool.DS1302_Month);
@@ -156,7 +139,7 @@ void add2SysLog( const char * entry)
     dataString += ":";
     dataString += String(DataPool.DS1302_Minute);
     dataString += ",";
-#endif
+    #endif
 
     dataString += String(entry);
 
@@ -169,16 +152,10 @@ void add2SysLog( const char * entry)
     {
         dataFile.println(dataString);
         dataFile.close();
-        // print to the serial port too:
-        //    #ifdef USE_SERIAL_MONITOR
-        //      Serial.println("#SD: System Log saved");
-        //    #endif
     }
     // if the file isn't open, pop up an error:
     else {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#SD: Error opening system.log"));
-#endif
+        MONITOR_LN(F("#SD: Error opening system.log"));
     }
 }
 
@@ -198,16 +175,10 @@ void add2SysLogWOTimeStamp(const char * entry)
     {
         dataFile.println(dataString);
         dataFile.close();
-        // print to the serial port too:
-        //    #ifdef USE_SERIAL_MONITOR
-        //      Serial.println("#SD: System Log saved");
-        //    #endif
     }
     // if the file isn't open, pop up an error:
     else {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#SD: Error opening system.log"));
-#endif
+        MONITOR_LN(F("#SD: Error opening system.log"));
     }
 }
 
@@ -227,16 +198,10 @@ void add2SysLogWOTimeStamp(const __FlashStringHelper * entry)
     {
         dataFile.println(dataString);
         dataFile.close();
-        // print to the serial port too:
-        //    #ifdef USE_SERIAL_MONITOR
-        //      Serial.println("#SD: System Log saved");
-        //    #endif
     }
     // if the file isn't open, pop up an error:
     else {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#SD: Error opening system.log"));
-#endif
+        MONITOR_LN(F("#SD: Error opening system.log"));
     }
 }
 #endif

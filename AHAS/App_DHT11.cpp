@@ -17,25 +17,25 @@ void init_DHT11()
 
     chk = dht11.read(PIN_DHT11);
 
-    MONITOR_LOG("#INIT: DHT11 => ");
+    MONITOR_LOG(F("#INIT: DHT11 => "));
 
     switch (chk)
     {
     case DHTLIB_OK:
         DataPool.DHT11_Status = "OK";
-		MONITOR_LOG_LN("DONE");
+		MONITOR_LOG_LN(F("DONE"));
         break;
     case DHTLIB_ERROR_CHECKSUM:
         DataPool.DHT11_Status = "Checksum error";
-		MONITOR_LOG_LN("FAILED (Checksum error)");
+        MONITOR_LOG_LN(F("FAILED (Checksum error)"));
         break;
     case DHTLIB_ERROR_TIMEOUT:
         DataPool.DHT11_Status = "Time out error";
-		MONITOR_LOG_LN("FAILED (Time out error)");
+        MONITOR_LOG_LN(F("FAILED (Time out error)"));
         break;
     default:
         DataPool.DHT11_Status = "Unknown error";
-		MONITOR_LOG_LN("FAILED (Unknown error)");
+        MONITOR_LOG_LN(F("FAILED (Unknown error)"));
         break;
     }
 }

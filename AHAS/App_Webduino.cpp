@@ -90,13 +90,9 @@ void sendHtmlFromSD(WebServer &server, char * filename)
     }
     else
     {/* if the file isn't open, pop up an error */
-#ifdef USE_SERIAL_MONITOR
-        Serial.print(F("#WEB: Error opening: "));
-        Serial.println(filename);
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#WEB: Error opening file"));
-#endif
+        MONITOR(F("#WEB: Error opening: "));
+        MONITOR_LN(filename);
+        LOG(F("#WEB: Error opening file"));
     }
 }
 
@@ -265,16 +261,10 @@ void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_
                 if (strcmp(name, "pswd") == 0)
                 {
                     EEPROM_writeAnything(EEPROM_PSWD_ADDRESS, value);
-
-#ifdef USE_SERIAL_MONITOR
-                    Serial.print(F("WEB: New Password saved to EEPROM:"));
+                    MONITOR(F("WEB: New Password saved to EEPROM:"));
                     EEPROM_readAnything(EEPROM_PSWD_ADDRESS, temp);
-                    Serial.println(temp);
-#endif
-#ifdef USE_SYS_LOG
-                    add2SysLog(F("WEB: New Password saved to EEPROM:"));
-#endif
-
+                    MONITOR_LN(temp);
+                   LOG(F("WEB: New Password saved to EEPROM:"));
                 }
 
             } while (repeat);
@@ -616,12 +606,7 @@ void init_Webduino()
     /* start the webserver */
     webserver->begin();
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: WebDuino Server => DONE"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: WebDuino Server => DONE"));
-#endif
+    MONITOR_LOG_LN(F("#INIT: WebDuino Server => DONE"));
 }
 
 void WebduinoServerLoop()

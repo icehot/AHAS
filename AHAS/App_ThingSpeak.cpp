@@ -19,9 +19,7 @@ void init_ThingSpeak()
 {
     ThingSpeak.begin(EthThingSpeakClient);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#INIT: ThingSpeak => DONE"));
-#endif
+    MONITOR_LOG_LN(F("#INIT: ThingSpeak => DONE"));
 }
 
 void updateThingSpeak()
@@ -38,9 +36,7 @@ void updateThingSpeak()
     // Write the fields that you've set all at once.
     ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println(F("#ThingSpeak Updated"));
-#endif
+    MONITOR_LOG_LN(F("#ThingSpeak Updated"));
 }
 #endif
 

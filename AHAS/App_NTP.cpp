@@ -48,12 +48,7 @@ void init_NTP()
     timeServer[1] = &timeServerB;
     timeServer[2] = &timeServerC;
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.print(F("#INIT: Network Time Protocol =>"));
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog(F("#INIT: Network Time Protocol =>"));
-#endif
+    MONITOR_LOG(F("#INIT: Network Time Protocol => "));
 
     setSyncProvider(getNtpTimeMultiServer);
 }
@@ -98,20 +93,15 @@ time_t getNtpTime()
         int size = Udp.parsePacket();
         if (size >= NTP_PACKET_SIZE)
         {
-#ifdef USE_SERIAL_MONITOR
             if (isInit == true)
             {
-                Serial.println("#DONE");
+                MONITOR_LOG_LN(F("#DONE"));
                 isInit = false;
             }
             else
             {
-                Serial.println(F("#NTP: Response Received"));
+                MONITOR_LOG_LN(F("#NTP: Response Received"));
             }
-#endif
-#ifdef USE_SYS_LOG
-            add2SysLog(F("#NTP: Response Received"));
-#endif
 
             /* Read packet into the buffer */
             Udp.read(packetBuffer, NTP_PACKET_SIZE);
@@ -129,12 +119,7 @@ time_t getNtpTime()
         }
     }
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println("Failed");
-#endif
-#ifdef USE_SYS_LOG
-    add2SysLog("#NTP: Response Failed");
-#endif
+    MONITOR_LOG_LN(F("Failed"))
 
     return 0; // return 0 if unable to get the time
 }
@@ -159,35 +144,28 @@ time_t getNtpTimeMultiServer()
 
         if (secsSince1900 != 0)
         {
-#ifdef USE_SERIAL_MONITOR
             if (isInit == true)
             {
-                Serial.println(F("#DONE"));
-                Serial.print(F("#NTP: Response Received from server #"));
-                Serial.println(i + 1);
+                MONITOR_LN(F("#DONE"));
+                MONITOR(F("#NTP: Response Received from server #"));
+                MONITOR_LN(i + 1);
                 isInit = false;
             }
             else
             {
-                Serial.print(F("#NTP: Response Received from server #"));
-                Serial.println(i + 1);
+                MONITOR(F("#NTP: Response Received from server #"));
+                MONITOR_LN(i + 1);
             }
-#endif
-#ifdef USE_SYS_LOG
-            add2SysLog(F("#NTP: Response Received"));
-#endif
+
+            LOG(F("#NTP: Response Received"));
             break;
         }
     }
 
     if ((i == NR_OF_TIMESERVERS) && (secsSince1900 == 0))
     {
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("FAILED"));
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#NTP: Response Failed"));
-#endif
+        MONITOR_LN(F("FAILED"));
+        LOG(F("#NTP: Response Failed"));
         return 0; // return 0 if unable to get the time
     }
 

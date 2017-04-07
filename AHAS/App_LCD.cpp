@@ -164,7 +164,10 @@ void init_MenWizz()
     s2 = tree.addMenu(MW_VAR, r, F("Backlight"));
     s2->addVar(MW_AUTO_BYTE, &DataPool.LCD_BackLight, 0, 255, 10);
 
+    #ifdef USE_ANALOG_BTN
     tree.addUsrNav(readAnalogButton, 6);/* Since the Memwizz draw was modified to event driven operation, probably it is not necessary */
+    #endif
+
     tree.addUsrScreen(updateLCD, 5000);
 
     strcpy(tree.sbuf, "  ARDUINO HOME\n AUTOMATION SYS\n");
@@ -173,7 +176,7 @@ void init_MenWizz()
     lcd.createChar(0, degree);
     lcd.createChar(1, backslash);
 
-	MONITOR_LOG_LN("#INIT: LCD => DONE");
+    MONITOR_LOG_LN(F("#INIT: LCD => DONE"));
 }
 #endif
 

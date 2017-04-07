@@ -20,7 +20,7 @@ Adafruit_BMP085 bmp;
 void init_BMP085()
 {
     bmp.begin();
-	MONITOR_LOG("#INIT: BMP085 => DONE");
+    MONITOR_LOG_LN(F("#INIT: BMP085 => DONE"));
 }
 
 void read_BMP085()

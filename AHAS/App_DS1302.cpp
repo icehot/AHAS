@@ -21,7 +21,7 @@ void init_DS1302()
     ds1302.init(PIN_DS1302_SCLK, PIN_DS1302_IO, PIN_DS1302_CE);
     /* Read the date and time */
     read_DS1302();
-	MONITOR_LOG_LN("#INIT: DS1302 => DONE")
+    MONITOR_LOG_LN(F("#INIT: DS1302 => DONE"));
 }
 
 void read_DS1302()
@@ -53,11 +53,11 @@ void autoTimeSync()
     {
         /* The RTC and the NTP are not in synchron */
 
-		MONITOR_LOG_LN("#RTC The RTC need to be synchronised");
+        MONITOR_LOG_LN(F("#RTC The RTC need to be synchronised"));
 
-		#ifdef USE_NTP
-			sync_DS1302withNTP();
-		#endif
+        #ifdef USE_NTP
+        sync_DS1302withNTP();
+        #endif
     }
     else
     {
@@ -77,7 +77,7 @@ void sync_DS1302withNTP()
         t = now();
         ds1302.setTimeAndDate(year(t) - 2000, month(t), day(t), 1, hour(t), minute(t), second(t));
 
-		MONITOR_LOG_LN("#DS1302: synchronized to NTP");
+        MONITOR_LOG_LN(F("#DS1302: synchronized to NTP"));
         break;
 
     case timeNotSet:

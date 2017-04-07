@@ -38,6 +38,7 @@ Supported SW components:
 /***********************************************************************************************************/
 /*** Include ***/
 /***********************************************************************************************************/
+#include "AHAS_Config.h"
 #include "App_OS.h"
 
 /***********************************************************************************************************/
@@ -47,21 +48,49 @@ void setup()
 {
     TaskScheduler.init();
 
+    /** Task assignation to scheduler **/
+
     TaskScheduler.addTask(Task_Init);
+
     TaskScheduler.addTask(Task_Acquisition);
+
+    #ifdef USE_ANALOG_BTN
     TaskScheduler.addTask(Task_Button);
+    #endif
+    
+    #ifdef USE_LCD
     TaskScheduler.addTask(Task_Display);
+    #endif
+
+    #ifdef USE_WEBDUINO
     TaskScheduler.addTask(Task_Webduino);
+    #endif
+
+    #ifdef USE_SYS_LOG
     TaskScheduler.addTask(Task_Log);
+    #endif 
+
     TaskScheduler.addTask(Task_RenewDHCP);
     TaskScheduler.addTask(Task_TimeSync);
+
+    #ifdef USE_THINGSPEAK
     TaskScheduler.addTask(Task_ThingSpeak);
+    #endif
+
+    /** Task Enable **/
 
     Task_Init.enable();
+    
+    #ifdef USE_ANALOG_BTN
     Task_Button.enable();
+    #endif
+    
     Task_Acquisition.enable();
     Task_TimeSync.enable();
+
+    #ifdef USE_THINGSPEAK
 	Task_ThingSpeak.enableDelayed(TASK_MINUTE);
+    #endif
 }
 
 /***********************************************************************************************************/

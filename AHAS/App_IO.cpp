@@ -28,8 +28,8 @@ void init_UART()
     /* Serial monitor initialization */
     Serial.begin(115200);
 
-	MONITOR("### AHAS - Arduino Home Automation System ###");
-	MONITOR("#INIT: UART => DONE");
+    MONITOR_LN(F("### AHAS - Arduino Home Automation System ###"));
+    MONITOR_LN(F("#INIT: UART => DONE"));
 }
 
 #ifdef USE_BACKLIGHT
@@ -123,7 +123,7 @@ void init_RGB()
     analogWrite(PIN_RGBLED_G, 128);
     analogWrite(PIN_RGBLED_B, 128);
 
-	MONITOR_LOG_LN("#INIT: RGB => DONE");
+    MONITOR_LOG_LN(F("#INIT: RGB => DONE"));
 }
 #endif
 
@@ -141,7 +141,7 @@ void init_Relay()
     digitalWrite(PIN_RELAY3, HIGH);
     digitalWrite(PIN_RELAY4, HIGH);
 
-	MONITOR_LOG_LN("#INIT: RElAY => DONE")
+    MONITOR_LOG_LN(F("#INIT: RElAY => DONE"));
 }
 #endif 
 
@@ -151,7 +151,7 @@ void init_PIR()
 {
     pinMode(PIN_PIR_SENSOR, INPUT);
 
-	MONITOR_LOG_LN("#INIT: PIR => DONE");
+    MONITOR_LOG_LN(F("#INIT: PIR => DONE"));
 }
 
 void get_PIR_State()
@@ -180,7 +180,7 @@ void init_SoundDetect()
     /* Enable the interrupt */
     attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT), ISR_SoundDetect, FALLING);
 
-	MONITOR_LOG_LN("#INIT: SOUND DETECT => DONE");
+    MONITOR_LOG_LN(F("#INIT: SOUND DETECT => DONE"));
 }
 
 byte get_SoundDetect_State()

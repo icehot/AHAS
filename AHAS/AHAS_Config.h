@@ -37,7 +37,6 @@
 #define USE_WEBDUINO
 #define USE_SERIAL_MONITOR
 #define USE_SYS_LOG
-#define USE_MENWIZZ
 #define USE_THINGSPEAK
 #define USE_RUNTIME
 
@@ -62,11 +61,6 @@
 #endif
 #endif
 
-#ifdef USE_MENWIZZ
-#ifndef USE_LCD
-#error "MenWizz enabled without LCD support"
-#endif
-#endif
 /***********************************************************************************************************/
 /** PIN configuration **/
 /***********************************************************************************************************/

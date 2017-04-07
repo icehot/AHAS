@@ -4,50 +4,56 @@
 #define _IO_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
+    #include "arduino.h"
 #else
-	#include "WProgram.h"
+    #include "WProgram.h"
 #endif
 
 #ifdef USE_SERIAL_MONITOR
-	#define MONITOR(a) Serial.println(F(a));
+    #define MONITOR(a) Serial.print(a);
 #else
-	#define MONITOR(a)
-#endif 
+    #define MONITOR(a)
+#endif
+
+#ifdef USE_SERIAL_MONITOR
+#define MONITOR_LN(a) Serial.println(a);
+#else
+#define MONITOR(a)
+#endif
 
 #ifdef USE_SYS_LOG
-	#define LOG(a) add2SysLog(F(a));
+    #define LOG(a) add2SysLog(a);
 #else
-	#define LOG(a)
+    #define LOG(a)
 #endif
 
 #if (defined(USE_SERIAL_MONITOR) && defined(USE_SYS_LOG))
-	#define MONITOR_LOG_LN(a) Serial.println(F(a)); add2SysLog(F(a));
+    #define MONITOR_LOG_LN(a) Serial.println(a); add2SysLog(a);
 #else
-	#if defined(USE_SERIAL_MONITOR)
-		#define MONITOR_LOG_LN(a) Serial.println(F(a));
-	#else
-		#if defined(USE_SYS_LOG)
-			#define MONITOR_LOG_LN(a) add2SysLog(F(a));
-		#else
-			#define MONITOR_LOG_LN(a)
-		#endif
-	#endif
-#endif 
+    #if defined(USE_SERIAL_MONITOR)
+        #define MONITOR_LOG_LN(a) Serial.println(a);
+    #else
+        #if defined(USE_SYS_LOG)
+        #define MONITOR_LOG_LN(a) add2SysLog(a);
+        #else
+        #define MONITOR_LOG_LN(a)
+        #endif
+    #endif
+#endif
 
 #if (defined(USE_SERIAL_MONITOR) && defined(USE_SYS_LOG))
-#define MONITOR_LOG(a) Serial.print(F(a)); add2SysLog(F(a));
+    #define MONITOR_LOG(a) Serial.print(a); add2SysLog(a);
 #else
-#if defined(USE_SERIAL_MONITOR)
-#define MONITOR_LOG(a) Serial.print(F(a));
-#else
-#if defined(USE_SYS_LOG)
-#define MONITOR_LOG(a) add2SysLog(F(a));
-#else
-#define MONITOR_LOG(a)
+    #if defined(USE_SERIAL_MONITOR)
+        #define MONITOR_LOG(a) Serial.print(a);
+    #else
+        #if defined(USE_SYS_LOG)
+            #define MONITOR_LOG(a) add2SysLog(a);
+        #else
+            #define MONITOR_LOG(a)
+        #endif
+    #endif
 #endif
-#endif
-#endif 
 
 void softReset();
 void init_LedBuiltIn();

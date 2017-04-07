@@ -47,22 +47,16 @@ void init_NetSetup()
 
     if (eeprom_config.use_dhcp == 1)
     {
-		MONITOR_LOG("#INIT: Network via DHCP => ");
+        MONITOR_LOG(F("#INIT: Network via DHCP => "));
 
         if (Ethernet.begin(eeprom_config.mac) == 1)
         {
             dhcp_success = true;
 
-#ifdef USE_SERIAL_MONITOR
-            Serial.println(F(" DONE"));
-            Serial.print(F(" Obtained IP Address through DHCP: "));
-            Serial.println(Ethernet.localIP());
-#endif
-#ifdef USE_SYS_LOG
-            add2SysLog(F("#INIT: Network via DHCP => DONE"));
-            add2SysLog(F(" Obtained IP Address through DHCP: "));
-            //add2SysLog(Ethernet.localIP());
-#endif
+            MONITOR_LOG_LN(F(" DONE"));
+            MONITOR_LOG(F(" Obtained IP Address through DHCP: "));
+            MONITOR_LN(Ethernet.localIP()); 
+            //@Todo: IP address not saved to LOG 
 
             Task_RenewDHCP.setInterval(TASK_MINUTE*eeprom_config.dhcp_refresh_minutes);
             Task_RenewDHCP.enableDelayed(TASK_HOUR);
@@ -70,12 +64,7 @@ void init_NetSetup()
         else
         {
             dhcp_success = false;
-#ifdef USE_SERIAL_MONITOR
-            Serial.println(F(" FAILED"));
-#endif
-#ifdef USE_SYS_LOG
-            add2SysLog(F("#INIT: Network via DHCP => FAILED"));
-#endif
+            MONITOR_LOG_LN(F(" FAILED"));
         }
     }
 
@@ -87,16 +76,10 @@ void init_NetSetup()
         IPAddress dns_server(eeprom_config.dns_server[0], eeprom_config.dns_server[1], eeprom_config.dns_server[2], eeprom_config.dns_server[3]);
         Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
 
-#ifdef USE_SERIAL_MONITOR
-        Serial.println(F("#INIT: Network with default settings => DONE"));
-        Serial.print(F(" DefaultIP Address : "));
-        Serial.println(Ethernet.localIP());
-#endif
-#ifdef USE_SYS_LOG
-        add2SysLog(F("#INIT: Network with default settings => DONE"));
-        add2SysLog(F(" Obtained IP Address through DHCP: "));
-        //add2SysLog(Ethernet.localIP());
-#endif
+        MONITOR_LOG_LN(F("#INIT: Network with default settings => DONE"));
+        MONITOR_LOG(F(" DefaultIP Address : "));
+        MONITOR_LN(Ethernet.localIP());
+        //@Todo: IP address not saved to LOG 
     }
 }
 
@@ -135,13 +118,13 @@ void read_EEPROM_Settings()
         set_Default_Values();
     }
 
-#ifdef USE_ANALOG_BTN
+    #ifdef USE_ANALOG_BTN
     /* Check if reset button is pressed */
     if (analogRead(PIN_ANALOG_BUTTON) < UL_BTE)
     {
         set_Default_Values();
     }
-#endif
+    #endif
 }
 
 /**
@@ -192,12 +175,7 @@ void set_EEPROM_Default()
     // set the default Webserver Port. In this case its Port 80
     eeprom_config.webserverPort = 80;
 
-#ifdef USE_SERIAL_MONITOR
-    Serial.println("#NET: Default configuration restored");
-#endif 
-#ifdef USE_SYS_LOG
-    add2SysLog("#NET: Default configuration restored");
-#endif
+    MONITOR_LOG_LN(F("#NET: Default configuration restored"));
 }
 
 /**

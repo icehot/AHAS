@@ -41,11 +41,11 @@ void init_MS5611()
     {
         //"Could not find a valid MS5611 sensor, check wiring!");
 
-		MONITOR_LOG_LN("#INIT: MS5611 => FAILED");
+        MONITOR_LOG_LN(F("#INIT: MS5611 => FAILED"));
     }
     else
     {
-		MONITOR_LOG_LN("#INIT: MS5611 => DONE");
+        MONITOR_LOG_LN(F("#INIT: MS5611 => DONE"));
     }
 
     // Get reference pressure for relative altitude
@@ -57,10 +57,8 @@ void init_MS5611()
 
 void checkSettings()
 {
-#ifdef USE_SERIAL_MONITOR  
-    Serial.print(F("Oversampling: "));
-    Serial.println(ms5611.getOversampling());
-#endif
+    MONITOR_LN(F("Oversampling: "));
+    MONITOR_LN(ms5611.getOversampling());
 }
 #endif
 
