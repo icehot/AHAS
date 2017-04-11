@@ -11,11 +11,13 @@
 
 #include "MENWIZ.h"
 
+#ifdef USE_LCD
 extern menwiz tree;
 
 void printDigits(int digits);
 void updateLCD();
 void init_MenWizz();
 
+#endif
 #endif
 

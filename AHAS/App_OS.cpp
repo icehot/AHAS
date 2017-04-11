@@ -1,5 +1,6 @@
 /** OS **/
 
+/** System Header Files **/
 #include "AHAS_Config.h"
 #include "App_Var.h"
 #include "App_SD.h"
@@ -15,18 +16,13 @@
 #include "App_LCD.h"
 #include "App_RunTime.h"
 
-#include "MENWIZ.h"
-#include "TimeX.h"
+/** Foreign Header Files **/
+#include <MENWIZ.h>
+#include <TimeX.h>
 #include <Ethernet.h>
 
+/** Own Header Files **/
 #include "App_OS.h"
-
-
-#ifdef DEBUG
-#undef DEBUG
-#endif
-
-//#define DEBUG
 
 Scheduler TaskScheduler;
 
@@ -50,128 +46,153 @@ Task Task_Webduino(500, TASK_FOREVER, &Task_Webduino_Callback);
 Task Task_Log(TASK_MINUTE, TASK_FOREVER, &Task_Log_Callback);
 #endif
 
+#ifdef USE_ETH_SHIELD
 Task Task_RenewDHCP(TASK_HOUR, TASK_FOREVER, &Task_RenewDHCP_Callback);
+#endif
 
+#ifdef USE_NTP
 Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
+#endif
 
 #ifdef USE_THINGSPEAK
 Task Task_ThingSpeak(TASK_MINUTE, TASK_FOREVER, &Task_ThingSpeak_Callback);
 #endif
 
+/** Function Definition **/
+
 void Task_Init_Callback()
 {
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
+
     init_LedBuiltIn();
 
     init_UART();
 
-#ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: Init Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Init.getStartDelay());
-#endif 
+    #endif 
 
-#ifdef USE_SD
+    #ifdef USE_SD
     init_SD();
-#endif 
+    #endif 
 
-#ifdef USE_DS1302
+    #ifdef USE_DS1302
     init_DS1302();
-#endif
+    #endif
 
-#ifdef USE_SOUND_DETECT
+    #ifdef USE_SOUND_DETECT
     init_SoundDetect();
-#endif 
+    #endif 
 
-#ifdef USE_RELAY
+    #ifdef USE_RELAY
     init_Relay();
-#endif 
+    #endif 
 
-#ifdef USE_PIR
+    #ifdef USE_PIR
     init_PIR();
-#endif
+    #endif
 
-#ifdef USE_RGB
+    #ifdef USE_RGB
     init_RGB();
-#endif
+    #endif
 
-#ifdef USE_DHT11
+    #ifdef USE_DHT11
     init_DHT11();
-#endif
+    #endif
 
-#ifdef USE_BMP085
+    #ifdef USE_BMP085
     init_BMP085();
-#endif
+    #endif
 
-#ifdef USE_MS5611
+    #ifdef USE_MS5611
     init_MS5611();
-#endif
+    #endif
 
-#ifdef USE_ETH_SHIELD
+    #ifdef USE_ETH_SHIELD
     init_NetSetup();
-#endif
+    #endif
 
     #ifdef USE_WEBDUINO
     init_Webduino();
     #endif
 
-#ifdef USE_NTP
+    #ifdef USE_NTP
     init_NTP();
-#endif
-
-    #ifdef USE_LCD
-        init_MenWizz();
     #endif
 
-#ifdef USE_BACKLIGHT
-    init_BackLight();
-	DataPool.LCD_BackLight = 128;
-#endif
+    #ifdef USE_LCD
+    init_MenWizz();
+    #endif
 
-#ifdef USE_CONTRAST
+    #ifdef USE_BACKLIGHT
+    init_BackLight();
+    DataPool.LCD_BackLight = DEFAULT_BACKLIGHT;
+    #endif
+
+    #ifdef USE_CONTRAST
     init_Contrast();
-	DataPool.LCD_Contrast = 40;
-#endif
+    DataPool.LCD_Contrast = DEFAULT_CONTRAST;
+    #endif
 
     #ifdef USE_THINGSPEAK
     init_ThingSpeak();
     #endif
 
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_Init);
+    #endif
+
+    #ifdef DEBUG_OS
+    Serial.print(F("#INIT: "));
+    printRuntTime(&RunTime.Task_Init);
+    #endif
 }
 
 void Task_Acquisition_Callback()
 {
-	toggleLedBuiltIn();
-
-#ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: Acquisition Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Acquisition.getStartDelay());
-#endif 
+    #endif 
 
+    #ifdef USE_RUNTIME
     startRuntimeMeasurement();
+    #endif
 
-#ifdef USE_DHT11
+    toggleLedBuiltIn();
+
+    #ifdef USE_DHT11
     read_DHT11();
-#endif
-#ifdef USE_BMP085
+    #endif
+
+    #ifdef USE_BMP085
     read_BMP085();
-#endif
-#ifdef USE_MS5611
+    #endif
+
+    #ifdef USE_MS5611
     read_MS5611();
-#endif
-#ifdef USE_NTP
+    #endif
+
+    #ifdef USE_NTP
     read_time();
-#endif
-#ifdef USE_DS1302
+    #endif
+
+    #ifdef USE_DS1302
     read_DS1302();
-#endif
-    //sync_DS1302withNTP(); //Uncomment for DS1302 NTP sync
-#ifdef USE_PIR
+    #endif
+
+    #ifdef USE_PIR
     get_PIR_State();
-#endif
-#ifdef USE_SOUND_DETECT   
+    #endif
+
+    #ifdef USE_SOUND_DETECT   
     if (get_SoundDetect_State() == 1)
     {
         MONITOR_LOG_LN(F("#SOUND: Activated!"));
@@ -182,30 +203,23 @@ void Task_Acquisition_Callback()
         /* Reenable the interrupt */
         attachInterrupt(digitalPinToInterrupt(PIN_SOUND_DETECT), ISR_SoundDetect, FALLING);
     }
-#endif
+    #endif
 
-#ifdef USE_RGB
+    #ifdef USE_RGB
     analogWrite(PIN_RGBLED_R, DataPool.RGB_Red);
     analogWrite(PIN_RGBLED_G, DataPool.RGB_Green);
     analogWrite(PIN_RGBLED_B, DataPool.RGB_Blue);
-#endif
+    #endif
 
-#ifdef USE_BACKLIGHT
+    #ifdef USE_BACKLIGHT
     setBackLight(DataPool.LCD_BackLight);
-#endif
+    #endif
 
-#ifdef USE_CONTRAST
+    #ifdef USE_CONTRAST
     setContrast(DataPool.LCD_Contrast);
-#endif
+    #endif
 
-    /* Used for Analog Button Calibration
-    Serial.println("");
-    Serial.print("BTN:");
-    Serial.println(analogRead(PIN_ANALOG_BUTTON));
-    Serial.println("");
-    */
-
-	if(Task_Acquisition.isFirstIteration())
+    if(Task_Acquisition.isFirstIteration())
     {
         #ifdef USE_LCD
         Task_Display.enable();
@@ -220,12 +234,25 @@ void Task_Acquisition_Callback()
         #endif
     }
 
+    #ifdef USE_RUNTIME
     endRuntimeMeasurement(&RunTime.Task_Acquisition);
+    #endif
 }
 
 #ifdef USE_ANALOG_BTN
 void Task_Button_Callback()
 {
+    #ifdef DEBUG_OS
+    Serial.print(millis());
+    Serial.println(F(" #OS: Button Task"));
+    Serial.print(F("Delayed: "));
+    Serial.println(Task_Button.getStartDelay());
+    #endif
+
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
+
     int analogButtonState = readAnalogButton();
 
     /* If there is a button press */
@@ -236,44 +263,58 @@ void Task_Button_Callback()
         tree.draw(analogButtonState);
         #endif
     }
+
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_Button);
+    #endif
 }
 #endif
 
 #ifdef USE_LCD
 void Task_Display_Callback()
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: Display Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Display.getStartDelay());
     #endif 
 
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
+
     tree.drawWoBtnCheck();
+
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_Display);
+    #endif
 }
+
 #endif
 
 #ifdef USE_WEBDUINO
 void Task_Webduino_Callback()
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: Webduino Task"));
     Serial.print(F("Delayed: "));
-    Serial.println(Task_Display.getStartDelay());
+    Serial.println(Task_Webduino.getStartDelay());
     #endif 
 
-    //startRuntimeMeasurement();
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
 
     WebduinoServerLoop();
 
-    //endRuntimeMeasurement(&RunTime.Task_Webduino);
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_Webduino);
+    #endif
 
-    #ifdef DEBUG
-    Serial.print(millis());
-    Serial.print(F(" #WEB "));
-    Serial.print(F("Delay: "));
-    Serial.println(Task_Display.getStartDelay());
+    #ifdef DEBUG_OS
+    Serial.print(F("#WEB: "));
     printRuntTime(&RunTime.Task_Webduino);
     #endif
 }
@@ -282,29 +323,40 @@ void Task_Webduino_Callback()
 #ifdef USE_SYS_LOG
 void Task_Log_Callback()
 {
-    #ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: Log Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Log.getStartDelay());
     #endif
 
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
+
     saveDataToLog();
+
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_Log);
+    #endif
 }
 #endif
 
+#ifdef USE_ETH_SHIELD
 void Task_RenewDHCP_Callback()
 {
-#ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: Renew DHCP Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_Log.getStartDelay());
-#endif
+    #endif
 
-#ifdef USE_ETH_SHIELD
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
 
-    /* renew DHCP lease */
+    /* Renew DHCP lease */
 
     dhcp_state = Ethernet.maintain();
 
@@ -334,51 +386,64 @@ void Task_RenewDHCP_Callback()
         MONITOR_LOG_LN(F("#DHCP: Unknown Error"));
         break;
     }
-#endif
-}
 
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_RenewDHCP);
+    #endif
+}
+#endif
+
+#ifdef USE_NTP
 void Task_TimeSync_Callback()
 {
-#ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: Time Sync Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_TimeSync.getStartDelay());
-#endif
+    #endif
 
-#ifdef USE_NTP 
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
+
     switch (timeStatus())
     {
     case timeSet:
-#ifdef USE_DS1302
+        #ifdef USE_DS1302
         autoTimeSync();
-#endif
+        #endif
         break;
 
     default:
         /* NTP is not available */
         break;
     }
-#endif
+
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_TimeSync);
+    #endif
 }
+#endif
 
 #ifdef USE_THINGSPEAK
 void Task_ThingSpeak_Callback()
 {
-#ifdef DEBUG
+    #ifdef DEBUG_OS
     Serial.print(millis());
     Serial.println(F(" #OS: ThingSpeak Task"));
     Serial.print(F("Delayed: "));
     Serial.println(Task_ThingSpeak.getStartDelay());
-#endif
+    #endif
 
-#ifdef USE_THINGSPEAK
+    #ifdef USE_RUNTIME
+    startRuntimeMeasurement();
+    #endif
+
     updateThingSpeak();
-#endif
+
+    #ifdef USE_RUNTIME
+    endRuntimeMeasurement(&RunTime.Task_ThingSpeak);
+    #endif
 }
-#endif
-
-
-#ifdef DEBUG
-#undef DEBUG
 #endif

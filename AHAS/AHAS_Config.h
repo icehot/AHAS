@@ -55,8 +55,8 @@
 
 #endif 
 
-#ifdef USE_SYS_LOG
 #ifndef USE_SD
+#ifdef USE_SYS_LOG
 #error "Syslog enabled without SD card support"
 #endif
 #endif
@@ -75,10 +75,12 @@
 
 #ifdef USE_BACKLIGHT
 #define PIN_BACKLIGHT 6
+#define DEFAULT_BACKLIGHT 128
 #endif
 
 #ifdef USE_CONTRAST
 #define PIN_CONTRAST 7
+#define DEFAULT_CONTRAST 40
 #endif
 
 #ifdef USE_RELAY
@@ -109,7 +111,7 @@
 #ifdef USE_DS1302
 #define PIN_DS1302_SCLK   35    // Arduino pin for the Serial Clock
 #define PIN_DS1302_IO     33    // Arduino pin for the Data I/O
-#define PIN_DS1302_CE     31    // Arduino pin for the Chip Enablev
+#define PIN_DS1302_CE     31    // Arduino pin for the Chip Enable
 #endif
 
 #ifdef USE_ANALOG_BTN
@@ -146,9 +148,12 @@
 #define LL_BTE        BTE - AN_BTN_TOLERANCE  //ESCAPE Lower Limit
 #endif
 
-#ifdef USE_ETH_SHIELD or USE_SD
-#define PIN_SD_CS 4 //SD card chip select
+#ifdef USE_ETH_SHIELD
 #define PIN_ETH_CS 10 //ETH chip select
+#endif
+
+#ifdef USE_SD
+#define PIN_SD_CS 4 //SD card chip select
 #endif
 
 #define PIN_SPI_CS 53 //default chip select

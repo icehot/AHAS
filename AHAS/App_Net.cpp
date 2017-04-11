@@ -10,7 +10,6 @@
 #include "App_OS.h"
 
 #ifdef USE_ETH_SHIELD
-//#define DEBUG
 
 #include <SPI.h>
 #include <Ethernet.h>
@@ -41,7 +40,7 @@ void init_NetSetup()
     bool dhcp_success = false;
     read_EEPROM_Settings();
 
-#ifdef DEBUG
+#ifdef DEBUG_NET
     print_EEPROM_Settings();
 #endif
 
@@ -184,7 +183,7 @@ void set_EEPROM_Default()
 * This function is used for debugging the configuration.
 * It prints the actual configuration to the serial port.
 */
-#ifdef DEBUG
+#ifdef DEBUG_NET
 void print_EEPROM_Settings() {
     Serial.print(F("IP: "));
     for (int i = 0; i<4; i++) {
@@ -271,9 +270,6 @@ void renewDHCP(int interval) {
     }
 }
 
-#ifdef DEBUG
-#undef DEBUG
-#endif
 
 #endif
 

@@ -46,10 +46,10 @@ Supported SW components:
 /***********************************************************************************************************/
 void setup() 
 {
+    /** Scheduler initialization **/
     TaskScheduler.init();
 
     /** Task assignation to scheduler **/
-
     TaskScheduler.addTask(Task_Init);
 
     TaskScheduler.addTask(Task_Acquisition);
@@ -70,26 +70,33 @@ void setup()
     TaskScheduler.addTask(Task_Log);
     #endif 
 
+    #ifdef USE_ETH_SHIELD
     TaskScheduler.addTask(Task_RenewDHCP);
+    #endif
+
+    #ifdef USE_NTP
     TaskScheduler.addTask(Task_TimeSync);
+    #endif
 
     #ifdef USE_THINGSPEAK
     TaskScheduler.addTask(Task_ThingSpeak);
     #endif
 
     /** Task Enable **/
-
     Task_Init.enable();
-    
+
+    Task_Acquisition.enable();
+
     #ifdef USE_ANALOG_BTN
     Task_Button.enable();
     #endif
-    
-    Task_Acquisition.enable();
+
+    #ifdef USE_NTP
     Task_TimeSync.enable();
+    #endif
 
     #ifdef USE_THINGSPEAK
-	Task_ThingSpeak.enableDelayed(TASK_MINUTE);
+    Task_ThingSpeak.enableDelayed(TASK_MINUTE);
     #endif
 }
 

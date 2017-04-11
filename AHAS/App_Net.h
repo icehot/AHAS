@@ -10,6 +10,9 @@
 #endif
 
 #ifdef USE_ETH_SHIELD
+
+//#define DEBUG_NET
+
 extern unsigned long last_dhcp_renew;
 extern byte dhcp_state;
 
