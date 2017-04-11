@@ -63,6 +63,7 @@ struct{
 void startRuntimeMeasurement();
 void endRuntimeMeasurement(RunTime_Type* module);
 void printRuntTime(RunTime_Type* module);
+void printRuntTimeStatistics(RunTime_Type* module);
 
 #endif
 

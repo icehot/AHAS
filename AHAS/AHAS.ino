@@ -84,20 +84,6 @@ void setup()
 
     /** Task Enable **/
     Task_Init.enable();
-
-    Task_Acquisition.enable();
-
-    #ifdef USE_ANALOG_BTN
-    Task_Button.enable();
-    #endif
-
-    #ifdef USE_NTP
-    Task_TimeSync.enable();
-    #endif
-
-    #ifdef USE_THINGSPEAK
-    Task_ThingSpeak.enableDelayed(TASK_MINUTE);
-    #endif
 }
 
 /***********************************************************************************************************/
