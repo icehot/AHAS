@@ -15,7 +15,14 @@
 
 /** Macro definitions **/
 
-#define DEBUG_OS
+//#define DEBUG_OS
+
+#ifdef DEBUG_OS 
+#ifndef USE_RUNTIME
+#error Enable USE_RUNTIME in order to debug the OS
+#endif // !USE_RUNTIME
+
+#endif
 
 /** Object Declarations **/
 

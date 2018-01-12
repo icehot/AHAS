@@ -38,7 +38,7 @@
 #define USE_SERIAL_MONITOR
 #define USE_SYS_LOG
 #define USE_THINGSPEAK
-#define USE_RUNTIME
+//#define USE_RUNTIME
 
 /* Cross dependency check*/
 #ifndef USE_ETH_SHIELD
