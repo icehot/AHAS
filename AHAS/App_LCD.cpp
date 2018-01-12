@@ -5,6 +5,7 @@
 #include "App_LCD.h"
 #include "App_IO.h"
 #include "App_SD.h"
+#include "App_EEPROM.h"
 
 
 #ifdef USE_LCD
@@ -12,6 +13,7 @@
 
 #include <MENWIZ.h>
 #include <EEPROM.h>
+#include <Ethernet.h>
 
 /* Global variable definitions*/
 
@@ -19,7 +21,7 @@ LiquidCrystal lcd(PIN_LCD_RS, PIN_LCD_EN, PIN_LCD_D4, PIN_LCD_D5, PIN_LCD_D6, PI
 
 menwiz tree;
 
-#define NR_OF_SCREENS 8;
+#define NR_OF_SCREENS 10;
 
 byte degree[8] = {
     0b00100,
@@ -144,6 +146,25 @@ void updateLCD()
         lcd.write(byte(1));
         break;
 
+    case 8:/* Network*/
+        lcd.clear();
+        lcd.setCursor(0, 0);//top left corner
+
+        #ifdef USE_ETH_SHIELD 
+        /* First Row */
+        lcd.print(F("IP: "));
+        lcd.print(Ethernet.localIP());
+
+        /* Second Row */
+        lcd.setCursor(0, 1);//bottom left corner
+        lcd.print(F("Port: "));
+        lcd.print(eeprom_config.webserverPort); 
+        #endif
+        break;
+
+    case 9: /*Network*/
+        /* Delay for visibility */
+        break;
     default:
         break;
     }
@@ -154,7 +175,7 @@ void updateLCD()
 
 void init_MenWizz()
 {
-    _menu *r, *s1, *s2;
+    _menu *r, *s1, *s2, *s3;
 
     tree.begin(&lcd, 16, 2); //declare lcd object and screen size to menwiz lib
 
