@@ -46,7 +46,7 @@ void init_NetSetup()
 
     if (eeprom_config.use_dhcp == 1)
     {
-        MONITOR_LOG(F("#INIT: Network via DHCP => "));
+        MONITOR_LOG(F("#INIT: ETH (DHCP) => "));
 
         if (Ethernet.begin(eeprom_config.mac) == 1)
         {
@@ -75,7 +75,7 @@ void init_NetSetup()
         IPAddress dns_server(eeprom_config.dns_server[0], eeprom_config.dns_server[1], eeprom_config.dns_server[2], eeprom_config.dns_server[3]);
         Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
 
-        MONITOR_LOG_LN(F("#INIT: Network with default settings => DONE"));
+        MONITOR_LOG_LN(F("#INIT: ETH (Default) => DONE"));
         MONITOR_LOG(F(" DefaultIP Address : "));
         MONITOR_LN(Ethernet.localIP());
         //@Todo: IP address not saved to LOG 

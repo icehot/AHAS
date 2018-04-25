@@ -375,10 +375,10 @@ void jsonCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, 
 
     /* Analog inputs */
     JSON_ADD(F("a0"), analogRead(0));
-    JSON_ADD(F("a1"), analogRead(1));
-    JSON_ADD(F("a2"), analogRead(2));
-    JSON_ADD(F("a3"), analogRead(3));
-    JSON_ADD(F("a4"), analogRead(15));
+    JSON_ADD(F("a1"), analogRead(PIN_MQ2));
+    JSON_ADD(F("a2"), analogRead(PIN_WATERSENSOR));
+    JSON_ADD(F("a3"), analogRead(PIN_LIGHTSENSOR));
+    JSON_ADD(F("a4"), analogRead(PIN_ANALOG_BUTTON));
 
     /* DataPool variables */
 #ifdef USE_DHT11

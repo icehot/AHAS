@@ -20,6 +20,7 @@
    13. Analog Button support
    14. Sound detection
    15. PIR sensor
+   16. M590 GSM module
 
 Supported SW components:
 
@@ -38,9 +39,10 @@ Supported SW components:
 /***********************************************************************************************************/
 /*** Include ***/
 /***********************************************************************************************************/
+#include "App_MFRC522.h"
+#include "App_M590.h"
 #include "AHAS_Config.h"
 #include "App_OS.h"
-
 /***********************************************************************************************************/
 /*** Arduino initialization ***/
 /***********************************************************************************************************/
@@ -80,6 +82,14 @@ void setup()
 
     #ifdef USE_THINGSPEAK
     TaskScheduler.addTask(Task_ThingSpeak);
+    #endif
+
+    #ifdef USE_M590
+    TaskScheduler.addTask(Task_Gsm);
+    #endif
+
+    #ifdef USE_MFRC522
+    TaskScheduler.addTask(Task_RFID);
     #endif
 
     /** Task Enable **/

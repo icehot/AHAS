@@ -59,6 +59,13 @@ extern Task Task_TimeSync;
 extern Task Task_ThingSpeak;
 #endif
 
+#ifdef USE_M590
+extern Task Task_Gsm;
+#endif
+
+#ifdef USE_MFRC522
+extern Task Task_RFID;
+#endif
 
 /** Function Declarations **/
 
@@ -93,6 +100,12 @@ void Task_TimeSync_Callback();
 void Task_ThingSpeak_Callback();
 #endif
 
+#ifdef USE_M590
+void Task_Gsm_Callback();
+#endif
 
+#ifdef USE_MFRC522
+void Task_RFID_Callback();
+#endif
 #endif
 

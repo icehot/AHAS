@@ -1,5 +1,5 @@
 /** OS **/
-
+#include "pitches.h"
 /** System Header Files **/
 #include "AHAS_Config.h"
 #include "App_Var.h"
@@ -15,6 +15,10 @@
 #include "App_ThingSpeak.h"
 #include "App_LCD.h"
 #include "App_RunTime.h"
+#include "App_M590.h"
+#include "App_MFRC522.h"
+
+
 
 /** Foreign Header Files **/
 #include <MENWIZ.h>
@@ -56,6 +60,14 @@ Task Task_TimeSync(TASK_HOUR, TASK_FOREVER, &Task_TimeSync_Callback);
 
 #ifdef USE_THINGSPEAK
 Task Task_ThingSpeak(TASK_MINUTE, TASK_FOREVER, &Task_ThingSpeak_Callback);
+#endif
+
+#ifdef USE_M590
+Task Task_Gsm(1, TASK_FOREVER, &Task_Gsm_Callback);
+#endif
+
+#ifdef USE_MFRC522
+Task Task_RFID(200, TASK_FOREVER, &Task_RFID_Callback);
 #endif
 
 /** Function Definition **/
@@ -143,12 +155,25 @@ void Task_Init_Callback()
     init_ThingSpeak();
     #endif
 
+    #ifdef USE_M590
+    init_M590();
+    #endif
+
+    #ifdef USE_MFRC522
+    init_MFRC522();
+    #endif
+
+    tone(5, NOTE_C4, 16);
+
     /* Enable further tasks*/
     Task_Acquisition.enable();
+
+    
 
     #ifdef USE_NTP
     Task_TimeSync.enableDelayed(TASK_SECOND/2);
     #endif
+
 
     #ifdef USE_RUNTIME
     endRuntimeMeasurement(&RunTime.Task_Init);
@@ -247,6 +272,16 @@ void Task_Acquisition_Callback()
         #ifdef USE_THINGSPEAK
         Task_ThingSpeak.enableDelayed(TASK_MINUTE);
         #endif
+
+        #ifdef USE_M590
+        Task_Gsm.enable();
+        #endif
+
+        #ifdef USE_MFRC522
+        Task_RFID.enable();
+        #endif
+
+
     }
 
     #ifdef USE_RUNTIME
@@ -512,3 +547,17 @@ void Task_ThingSpeak_Callback()
     #endif
 }
 #endif
+
+#ifdef USE_M590
+void Task_Gsm_Callback()
+{
+    cyclicM590();
+}
+#endif
+
+#ifdef USE_MFRC522
+void Task_RFID_Callback()
+{
+    cyclicMFRC522();
+}
+#endif 

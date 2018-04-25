@@ -30,6 +30,12 @@
 #define USE_ANALOG_BTN
 #define USE_BACKLIGHT
 #define USE_CONTRAST
+#define USE_M590
+#define USE_MFRC522
+#define USE_MQ2
+#define USE_WATERSENSOR
+#define USE_SPEAKER
+#define USE_LIGHTSENSOR
 
 /* SW Components */
 
@@ -114,6 +120,16 @@
 #define PIN_DS1302_CE     31    // Arduino pin for the Chip Enable
 #endif
 
+#ifdef USE_M590
+#define PIN_M590_ONOFF 3
+#endif 
+
+#ifdef USE_MFRC522
+#define PIN_MFRC522_RST_PIN 36
+#define PIN_MFRC522_CS_PIN 39
+#define PIN_MFRC522_IRQ_PIN 3
+#endif 
+
 #ifdef USE_ANALOG_BTN
 #define PIN_ANALOG_BUTTON A15
 
@@ -156,6 +172,21 @@
 #define PIN_SD_CS 4 //SD card chip select
 #endif
 
+#ifdef USE_LIGHTSENSOR
+#define PIN_LIGHTSENSOR A14
+#endif
+
+#ifdef USE_MQ2
+#define PIN_MQ2 A6
+#endif
+
+#ifdef USE_WATERSENSOR
+#define PIN_WATERSENSOR A7 
+#endif
+
+#ifdef USE_SPEAKER
+#define PIN_SPEAKER 5 
+#endif
 #define PIN_SPI_CS 53 //default chip select
 #define PIN_BUILTIN_LED 13 // Built-in Light Emitting Diode
 

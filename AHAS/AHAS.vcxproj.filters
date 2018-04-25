@@ -69,6 +69,21 @@
     <ClInclude Include="App_SD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="App_M590.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fifo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="M590.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="App_MFRC522.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pitches.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App_Webduino.cpp">
@@ -114,6 +129,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="App_BMP085.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="App_M590.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="M590_Api.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="M590_Core.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="M590_Init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="M590_Util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="App_MFRC522.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

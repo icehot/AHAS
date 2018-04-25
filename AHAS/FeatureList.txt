@@ -38,15 +38,20 @@ Completed Features:
 37. LCD backlight control, contrast control 
 38. MenWizz integration -> Finalize the menu configuration
 39. ThingSpeak integration with embedded graphs into html
+40. GSM Module integration
+41. RFID integration
+42. Piezo Buzzer
+43. MQ2 sensor
+44. Water Sensor
+45. Light sensor
+
 
 Features to be done:
 
-- RFID integration
-- Piezo Buzzer - tone();
 - Alarm functionality
-- E-mail notification
-- GSM Shield
+- E-mail notification - External service needed
 - Finalize Application Webpage
+- MQTT
 
 Future possibilities:
 
@@ -63,14 +68,7 @@ Database access
 
 HW
 
-Backup Battery
+Backup Battery - Powerbank, monitoring
 Current Consumption
-ESP8829 Wifi for sensors
-Smoke sensor
-Gas Sensor
-Light sensor
-Radio receiver/transmitter
-
-
-
- 
+ESP8829 Wifi for sensor
+Radio receiver/transmitter 

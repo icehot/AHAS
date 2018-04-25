@@ -16,9 +16,9 @@
 
 /* NTP Servers: */
 #define NR_OF_TIMESERVERS 3
-IPAddress timeServerA(132, 163, 4, 101); /* time-a.timefreq.bldrdoc.gov */
-IPAddress timeServerB(132, 163, 4, 102); /* time-b.timefreq.bldrdoc.gov */
-IPAddress timeServerC(132, 163, 4, 103); /* time-c.timefreq.bldrdoc.gov */
+IPAddress timeServerA(132, 163, 96, 1); /* time-a.timefreq.bldrdoc.gov */
+IPAddress timeServerB(132, 163, 96, 2); /* time-b.timefreq.bldrdoc.gov */
+IPAddress timeServerC(132, 163, 96, 3); /* time-c.timefreq.bldrdoc.gov */
 
 IPAddress * timeServer[NR_OF_TIMESERVERS];
 
@@ -48,7 +48,7 @@ void init_NTP()
     timeServer[1] = &timeServerB;
     timeServer[2] = &timeServerC;
 
-    MONITOR_LOG(F("#INIT: Network Time Protocol => "));
+    MONITOR_LOG(F("#INIT: NTP => "));
 
     setSyncProvider(getNtpTimeMultiServer);
 }
@@ -95,7 +95,7 @@ time_t getNtpTime()
         {
             if (isInit == true)
             {
-                MONITOR_LOG_LN(F("#DONE"));
+                MONITOR_LOG_LN(F("DONE"));
                 isInit = false;
             }
             else
@@ -146,7 +146,7 @@ time_t getNtpTimeMultiServer()
         {
             if (isInit == true)
             {
-                MONITOR_LN(F("#DONE"));
+                MONITOR_LN(F("DONE"));
                 MONITOR(F("#NTP: Response Received from server #"));
                 MONITOR_LN(i + 1);
                 isInit = false;
@@ -164,7 +164,14 @@ time_t getNtpTimeMultiServer()
 
     if ((i == NR_OF_TIMESERVERS) && (secsSince1900 == 0))
     {
-        MONITOR_LN(F("FAILED"));
+        if (isInit == true)
+        {
+            MONITOR_LN(F("FAILED"));
+        }
+        else
+        {
+            MONITOR_LN(F("#NTP: Sync Failed"));
+        }
         LOG(F("#NTP: Response Failed"));
         return 0; // return 0 if unable to get the time
     }
