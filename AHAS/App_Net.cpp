@@ -44,6 +44,12 @@ void init_NetSetup()
     print_EEPROM_Settings();
 #endif
 
+
+	#ifndef USE_SD
+		pinMode(PIN_SD_CS, OUTPUT);
+		digitalWrite(PIN_SD_CS, HIGH);
+	#endif
+
     if (eeprom_config.use_dhcp == 1)
     {
         MONITOR_LOG(F("#INIT: ETH (DHCP) => "));
@@ -51,7 +57,7 @@ void init_NetSetup()
         if (Ethernet.begin(eeprom_config.mac) == 1)
         {
             dhcp_success = true;
-
+			
             MONITOR_LOG_LN(F(" DONE"));
             MONITOR_LOG(F(" Obtained IP Address through DHCP: "));
             MONITOR_LN(Ethernet.localIP()); 
@@ -73,7 +79,9 @@ void init_NetSetup()
         IPAddress gateway(eeprom_config.gateway[0], eeprom_config.gateway[1], eeprom_config.gateway[2], eeprom_config.gateway[3]);
         IPAddress subnet(eeprom_config.subnet[0], eeprom_config.subnet[1], eeprom_config.subnet[2], eeprom_config.subnet[3]);
         IPAddress dns_server(eeprom_config.dns_server[0], eeprom_config.dns_server[1], eeprom_config.dns_server[2], eeprom_config.dns_server[3]);
-        Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
+		Ethernet.begin(eeprom_config.mac, ip, dns_server, gateway, subnet);
+
+
 
         MONITOR_LOG_LN(F("#INIT: ETH (Default) => DONE"));
         MONITOR_LOG(F(" DefaultIP Address : "));

@@ -82,6 +82,22 @@ void Task_Init_Callback()
 
     init_UART();
 
+	#ifdef USE_BACKLIGHT
+	init_BackLight();
+	DataPool.LCD_BackLight = DEFAULT_BACKLIGHT;
+	setBackLight(DataPool.LCD_BackLight);
+	#endif
+
+	#ifdef USE_CONTRAST
+	init_Contrast();
+	DataPool.LCD_Contrast = DEFAULT_CONTRAST;
+	setContrast(DataPool.LCD_Contrast);
+	#endif
+
+	#ifdef USE_LCD
+	initLCD();
+	#endif
+
     #ifdef DEBUG_OS
     Serial.print(F("#OS INI @"));
 	Serial.print(millis());
@@ -90,76 +106,83 @@ void Task_Init_Callback()
     #endif 
 
     #ifdef USE_SD
+	showStatusOnLCD("SD CARD");
     init_SD();
     #endif 
 
     #ifdef USE_DS1302
+	showStatusOnLCD("DS1302");
     init_DS1302();
     #endif
 
     #ifdef USE_SOUND_DETECT
+	showStatusOnLCD("SOUND");
     init_SoundDetect();
     #endif 
 
     #ifdef USE_RELAY
+	showStatusOnLCD("RELAY");
     init_Relay();
     #endif 
 
     #ifdef USE_PIR
+	showStatusOnLCD("PIR");
     init_PIR();
     #endif
 
     #ifdef USE_RGB
+	showStatusOnLCD("RGB");
     init_RGB();
     #endif
 
     #ifdef USE_DHT11
+	showStatusOnLCD("DHT11");
     init_DHT11();
     #endif
 
     #ifdef USE_BMP085
+	showStatusOnLCD("BMP085");
     init_BMP085();
     #endif
 
     #ifdef USE_MS5611
+	showStatusOnLCD("MS5611");
     init_MS5611();
     #endif
 
     #ifdef USE_ETH_SHIELD
+	showStatusOnLCD("ETHERNET");
     init_NetSetup();
     #endif
 
     #ifdef USE_WEBDUINO
+	showStatusOnLCD("WEBDUINO");
     init_Webduino();
     #endif
 
     #ifdef USE_NTP
+	showStatusOnLCD("NTP");
     init_NTP();
     #endif
 
     #ifdef USE_LCD
+	showStatusOnLCD("MENWIZZ");
     init_MenWizz();
     #endif
 
-    #ifdef USE_BACKLIGHT
-    init_BackLight();
-    DataPool.LCD_BackLight = DEFAULT_BACKLIGHT;
-    #endif
-
-    #ifdef USE_CONTRAST
-    init_Contrast();
-    DataPool.LCD_Contrast = DEFAULT_CONTRAST;
-    #endif
 
     #ifdef USE_THINGSPEAK
+	showStatusOnLCD("THINGSPEAK");
     init_ThingSpeak();
     #endif
 
     #ifdef USE_M590
+	showStatusOnLCD("M590 GSM");
     init_M590();
     #endif
 
     #ifdef USE_MFRC522
+	showStatusOnLCD("MFRC522");
     init_MFRC522();
     #endif
 
@@ -168,12 +191,9 @@ void Task_Init_Callback()
     /* Enable further tasks*/
     Task_Acquisition.enable();
 
-    
-
     #ifdef USE_NTP
     Task_TimeSync.enableDelayed(TASK_SECOND/2);
     #endif
-
 
     #ifdef USE_RUNTIME
     endRuntimeMeasurement(&RunTime.Task_Init);

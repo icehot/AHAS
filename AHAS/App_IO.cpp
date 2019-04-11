@@ -28,7 +28,7 @@ void init_UART()
     /* Serial monitor initialization */
     Serial.begin(115200);
 
-    MONITOR_LN(F("### AHAS - Arduino Home Automation System ###"));
+    MONITOR_LN(F("\n### AHAS - Arduino Home Automation System ###\n"));
     MONITOR_LN(F("#INIT: UART => DONE"));
 }
 
@@ -141,7 +141,7 @@ void init_Relay()
     digitalWrite(PIN_RELAY3, HIGH);
     digitalWrite(PIN_RELAY4, HIGH);
 
-    MONITOR_LOG_LN(F("#INIT: RElAY => DONE"));
+    MONITOR_LOG_LN(F("#INIT: RELAY => DONE"));
 }
 #endif 
 

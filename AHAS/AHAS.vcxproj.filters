@@ -84,6 +84,9 @@
     <ClInclude Include="pitches.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="App_WebPages.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App_Webduino.cpp">

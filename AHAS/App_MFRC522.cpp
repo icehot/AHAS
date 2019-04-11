@@ -1,4 +1,5 @@
 #include "App_MFRC522.h"
+#include "App_IO.h"
 #include "AHAS_Config.h"
 #include <SPI.h>
 #include <MFRC522.h>
@@ -52,16 +53,19 @@ void clearInt(MFRC522 mfrc522) {
 * Initialize.
 */
 void init_MFRC522() {
-    Serial.begin(115200); // Initialize serial communications with the PC
-    while (!Serial);      // Do nothing if no serial port is opened (added for Arduinos based on ATMEGA32U4)
+    
+	Serial.print(F("#INIT: MFRC522 => "));
+ 
     SPI.begin();          // Init SPI bus
 
     mfrc522.PCD_Init(); // Init MFRC522 card
 
+	
+
                         /* read and printout the MFRC522 version (valid values 0x91 & 0x92)*/
-    Serial.print(F("Ver: 0x"));
+    // Serial.print(F("Ver: 0x"));
     byte readReg = mfrc522.PCD_ReadRegister(mfrc522.VersionReg);
-    Serial.println(readReg, HEX);
+    //Serial.println(readReg, HEX);
 
     /* setup the IRQ pin*/
     pinMode(PIN_MFRC522_IRQ_PIN, INPUT_PULLUP);
@@ -87,7 +91,9 @@ void init_MFRC522() {
     bNewInt = false;
     
 
-    Serial.println(F("End setup"));
+    //Serial.println(F("End setup"));
+
+	Serial.println(F("DONE"));
 }
 
 /**
@@ -95,7 +101,7 @@ void init_MFRC522() {
 */
 void cyclicMFRC522() {
     if (bNewInt) { //new read interrupt
-        Serial.print(F("Interrupt. "));
+        Serial.print(F("#MFRC522: Interrupt. "));
         mfrc522.PICC_ReadCardSerial(); //read the tag data
                                        // Show some details of the PICC (that is: the tag/card)
         Serial.print(F("Card UID:"));

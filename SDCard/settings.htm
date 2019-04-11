@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang='en-US'>
 <title>AHAS - Arduino Home Automation System</title>
-<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1'>
+<link rel='stylesheet' href='http://www.w3schools.com/lib/w3.css'>
 
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
 
@@ -33,22 +33,22 @@
 
 <script>
 function w3_open() {
-  document.getElementById("main").style.marginLeft = "17%"
-  document.getElementsByClassName("w3-sidenav")[0].style.width ="17%";
-  document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
-  //document.getElementsByClassName("w3-opennav")[0].style.display = 'none';
+  document.getElementById('main').style.marginLeft = '17%';
+  document.getElementsByClassName('w3-sidenav')[0].style.width ='17%';
+  document.getElementsByClassName('w3-sidenav')[0].style.display = 'block';
+  //document.getElementsByClassName('w3-opennav')[0].style.display = 'none';
 }
 function w3_close() {
-  document.getElementById("main").style.marginLeft = "0%";
-  document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
-  document.getElementsByClassName("w3-opennav")[0].style.display = "inline-block";
+  document.getElementById('main').style.marginLeft = '0%';
+  document.getElementsByClassName('w3-sidenav')[0].style.display = 'none';
+  document.getElementsByClassName('w3-opennav')[0].style.display = 'inline-block';
 }
 
 var xmlhttp = new XMLHttpRequest();
 
 function updateValues()
 {
-    xmlhttp.open("GET", "settingsJSON", true);
+    xmlhttp.open('GET', 'settingsJSON', true);
     xmlhttp.send();
 }
 
@@ -59,62 +59,62 @@ xmlhttp.onreadystatechange = function()
         var portData = JSON.parse(xmlhttp.responseText);
         DisplaySavedValues(portData);
     }
-}
+};
 
 function DisplaySavedValues(portData) 
 {
-    document.getElementById("mac0").value = (portData.mac0).toString(16);
-	document.getElementById("mac1").value = (portData.mac1).toString(16);
-	document.getElementById("mac2").value = (portData.mac2).toString(16);
-	document.getElementById("mac3").value = (portData.mac3).toString(16);
-	document.getElementById("mac4").value = (portData.mac4).toString(16);
-	document.getElementById("mac5").value = (portData.mac5).toString(16);
+    document.getElementById('mac0').value = (portData.mac0).toString(16);
+	document.getElementById('mac1').value = (portData.mac1).toString(16);
+	document.getElementById('mac2').value = (portData.mac2).toString(16);
+	document.getElementById('mac3').value = (portData.mac3).toString(16);
+	document.getElementById('mac4').value = (portData.mac4).toString(16);
+	document.getElementById('mac5').value = (portData.mac5).toString(16);
 	
-	document.getElementById("ip0").value = portData.ip0;
-	document.getElementById("ip1").value = portData.ip1;
-	document.getElementById("ip2").value = portData.ip2;
-	document.getElementById("ip3").value = portData.ip3;
+	document.getElementById('ip0').value = portData.ip0;
+	document.getElementById('ip1').value = portData.ip1;
+	document.getElementById('ip2').value = portData.ip2;
+	document.getElementById('ip3').value = portData.ip3;
 	
-	document.getElementById("sub0").value = portData.sub0;
-	document.getElementById("sub1").value = portData.sub1;
-	document.getElementById("sub2").value = portData.sub2;
-	document.getElementById("sub3").value = portData.sub3;
+	document.getElementById('sub0').value = portData.sub0;
+	document.getElementById('sub1').value = portData.sub1;
+	document.getElementById('sub2').value = portData.sub2;
+	document.getElementById('sub3').value = portData.sub3;
 	
-	document.getElementById("gw0").value = portData.gw0;
-	document.getElementById("gw1").value = portData.gw1;
-	document.getElementById("gw2").value = portData.gw2;
-	document.getElementById("gw3").value = portData.gw3;
+	document.getElementById('gw0').value = portData.gw0;
+	document.getElementById('gw1').value = portData.gw1;
+	document.getElementById('gw2').value = portData.gw2;
+	document.getElementById('gw3').value = portData.gw3;
 	
-	document.getElementById("dns0").value = portData.dns0;
-	document.getElementById("dns1").value = portData.dns1;
-	document.getElementById("dns2").value = portData.dns2;
-	document.getElementById("dns3").value = portData.dns3;
+	document.getElementById('dns0').value = portData.dns0;
+	document.getElementById('dns1').value = portData.dns1;
+	document.getElementById('dns2').value = portData.dns2;
+	document.getElementById('dns3').value = portData.dns3;
 	
-	document.getElementById("port").value = portData.port;
+	document.getElementById('port').value = portData.port;
 	
 	if (portData.dhcp == 0)
 	{
-		document.getElementById("dhcpOff").checked = true;
+		document.getElementById('dhcpOff').checked = true;
 	}
 	else
 	{
-		document.getElementById("dhcpOn").checked = true;
+		document.getElementById('dhcpOn').checked = true;
 	}
 	
-	document.getElementById("renew").value = portData.renew;
+	document.getElementById('renew').value = portData.renew;
 	
-	document.getElementById("dhcp_state").innerHTML = portData.dhcp_state;
-	document.getElementById("dhcp_renew").innerHTML = portData.dhcp_renew;
-	document.getElementById("uptime").innerHTML = portData.uptime;
-	document.getElementById("ramsize").innerHTML= portData.ramsize;
-	document.getElementById("ramfree").innerHTML = portData.ramfree;
+	document.getElementById('dhcp_state').innerHTML = portData.dhcp_state;
+	document.getElementById('dhcp_renew').innerHTML = portData.dhcp_renew;
+	document.getElementById('uptime').innerHTML = portData.uptime;
+	document.getElementById('ramsize').innerHTML= portData.ramsize;
+	document.getElementById('ramfree').innerHTML = portData.ramfree;
 }
 
 // Create Base64 Object
-	var Base64={ _keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+	var Base64={ _keyStr:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
 	            encode:function(e)
 				 {
-				  var t="";
+				  var t='';
 				  var n,r,i,s,o,u,a;
 				  var f=0;
 				  e=Base64._utf8_encode(e);
@@ -146,11 +146,11 @@ function DisplaySavedValues(portData)
 				 
 				decode:function(e)
 				 {
-				  var t="";
+				  var t='';
 				  var n,r,i;
 				  var s,o,u,a;
 				  var f=0;
-				  e=e.replace(/[^A-Za-z0-9+/=]/g,"");
+				  e=e.replace(/[^A-Za-z0-9+/=]/g,'');
 				  
 				  while(f<e.length)
 				  {
@@ -180,8 +180,8 @@ function DisplaySavedValues(portData)
 				 
 				_utf8_encode:function(e)
 				{
-				 e=e.replace(/rn/g,"n");
-				 var t="";
+				 e=e.replace(/rn/g,'n');
+				 var t='';
 				 for(var n=0;n<e.length;n++)
 				 {
 				  var r=e.charCodeAt(n);
@@ -207,7 +207,7 @@ function DisplaySavedValues(portData)
 				
 		   _utf8_decode:function(e)
 		   {
-		    var t="";
+		    var t='';
 		    var n=0;
 		    var r=c1=c2=0;
 		    
@@ -236,12 +236,12 @@ function DisplaySavedValues(portData)
 		   
 		    return t
 		   }
-		  }
+		  };
 		   
 function updateCredentials()
 {
 	// Define the string
-	var string = (document.getElementById("user").value).toString() + ":" + (document.getElementById("psw").value).toString();
+	var string = (document.getElementById('user').value).toString() + ':' + (document.getElementById('psw').value).toString();
 
 	// Encode the String
 	var encodedString = Base64.encode(string);
@@ -251,91 +251,91 @@ function updateCredentials()
 </script>
 
 
-<body class="w3-theme-light" onload="updateValues()">
+<body class='w3-theme-light' onload='updateValues()'>
 
-<header class="w3-container w3-theme-dark w3-padding">
-      <span class="w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1" onclick="w3_open()""><b>Menu</b></span>
-	  <div class="w3-center w3-xlarge w3-padding">
+<header class='w3-container w3-theme-dark w3-padding'>
+      <span class='w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1' onclick='w3_open()''><b>Menu</b></span>
+	  <div class='w3-center w3-xlarge w3-padding'>
       <span><b>AHAS - Arduino Home Automation System</b></span>
 	  </div>
 </header>
 
-<nav class="w3-sidenav w3-round-xlarge w3-theme-d1" style="width:17%; display:none; marginLeft:0%">
-  <a href="javascript:void(0)" 
-  onclick="w3_close()"
-  class="w3-closenav w3-right w3-padding-right"><b>X</b></a>
+<nav class='w3-sidenav w3-round-xlarge w3-theme-d1' style='width:17%; display:none; marginLeft:0%'>
+  <a href='javascript:void(0)' 
+  onclick='w3_close()'
+  class='w3-closenav w3-right w3-padding-right'><b>X</b></a>
   <p> </p>		
-  <a href="/index.htm">Home</a>		
-  <a href="/values.htm">Values</a>		
-  <a href="/settings.htm">Settings</a>	
-  <a href="/graphs.htm">Graphs</a>	    
+  <a href='/index.htm'>Home</a>		
+  <a href='/values.htm'>Values</a>		
+  <a href='/settings.htm'>Settings</a>	
+  <a href='/graphs.htm'>Graphs</a>	    
 </nav>
 
-<section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
+<section id='main' style='margin-left:0%; margin-bottom:50px'> <!-- Start main -->
 <div>
-<form class="w3-container" action="/settings.htm" method="post">
-	<label class="w3-label ">MAC address:</label><br />
-	<input type="text" id="mac0" name="m0" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
-	<input type="text" id="mac1" name="m1" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
-	<input type="text" id="mac2" name="m2" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
-	<input type="text" id="mac3" name="m3" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
-	<input type="text" id="mac4" name="m4" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2"	required>
-	<input type="text" id="mac5" name="m5" value="" pattern="[0-9A-Fa-f]{2}" maxlength="2" size="2" required>
+<form class='w3-container' action='/settings.htm' method='post'>
+	<label class='w3-label '>MAC address:</label><br />
+	<input type='text' id='mac0' name='m0' value='' pattern='[0-9A-Fa-f]{2}' maxlength='2' size='2' required>
+	<input type='text' id='mac1' name='m1' value='' pattern='[0-9A-Fa-f]{2}' maxlength='2' size='2' required>
+	<input type='text' id='mac2' name='m2' value='' pattern='[0-9A-Fa-f]{2}' maxlength='2' size='2' required>
+	<input type='text' id='mac3' name='m3' value='' pattern='[0-9A-Fa-f]{2}' maxlength='2' size='2' required>
+	<input type='text' id='mac4' name='m4' value='' pattern='[0-9A-Fa-f]{2}' maxlength='2' size='2'	required>
+	<input type='text' id='mac5' name='m5' value='' pattern='[0-9A-Fa-f]{2}' maxlength='2' size='2' required>
 	<br />
-	<label class="w3-label ">IP address:</label><br />
-	<input type="number" id="ip0" name="i0" value="" min="0" max="255" maxlength="3" size="3" required>
-	<input type="number" id="ip1" name="i1" value="" min="0" max="255" maxlength="3" size="3" required>
-	<input type="number" id="ip2" name="i2" value="" min="0" max="255" maxlength="3" size="3" required>
-	<input type="number" id="ip3" name="i3" value="" min="0" max="255" maxlength="3" size="3" required>
+	<label class='w3-label '>IP address:</label><br />
+	<input type='number' id='ip0' name='i0' value='' min='0' max='255' maxlength='3' size='3' required>
+	<input type='number' id='ip1' name='i1' value='' min='0' max='255' maxlength='3' size='3' required>
+	<input type='number' id='ip2' name='i2' value='' min='0' max='255' maxlength='3' size='3' required>
+	<input type='number' id='ip3' name='i3' value='' min='0' max='255' maxlength='3' size='3' required>
 	<br />
-	<label class="w3-label ">Subnet:</label><br />
-	<input type="number" id="sub0" name="s0" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="sub1" name="s1" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="sub2" name="s2" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="sub3" name="s3" value="" min="0" max="255" maxlength="3" size="3" >
+	<label class='w3-label '>Subnet:</label><br />
+	<input type='number' id='sub0' name='s0' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='sub1' name='s1' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='sub2' name='s2' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='sub3' name='s3' value='' min='0' max='255' maxlength='3' size='3' >
 	<br />
-	<label class="w3-label ">GW address:</label><br />
-	<input type="number" id="gw0" name="g0" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="gw1" name="g1" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="gw2" name="g2" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="gw3" name="g3" value="" min="0" max="255" maxlength="3" size="3" >
+	<label class='w3-label '>GW address:</label><br />
+	<input type='number' id='gw0' name='g0' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='gw1' name='g1' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='gw2' name='g2' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='gw3' name='g3' value='' min='0' max='255' maxlength='3' size='3' >
 	<br />
-	<label class="w3-label ">DNS server:</label><br />
-	<input type="number" id="dns0" name="d0" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="dns1" name="d1" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="dns2" name="d2" value="" min="0" max="255" maxlength="3" size="3" >
-	<input type="number" id="dns3" name="d3" value="" min="0" max="255" maxlength="3" size="3" >
+	<label class='w3-label '>DNS server:</label><br />
+	<input type='number' id='dns0' name='d0' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='dns1' name='d1' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='dns2' name='d2' value='' min='0' max='255' maxlength='3' size='3' >
+	<input type='number' id='dns3' name='d3' value='' min='0' max='255' maxlength='3' size='3' >
 	<br />
-	<label class="w3-label ">Webserver port (1-65535):</label><br />
-	<input type="number" id="port" name="p0" value="" min="1" max="65535" maxlength="5" size="5" required>
+	<label class='w3-label '>Webserver port (1-65535):</label><br />
+	<input type='number' id='port' name='p0' value='' min='1' max='65535' maxlength='5' size='5' required>
 	<br />
-	<label class="w3-label ">Use DHCP: </label><br />
-	<input type="radio" id="dhcpOff" name="h0" value="0">Off<input type="radio" id="dhcpOn" name="h0" value="1" checked="">On
+	<label class='w3-label '>Use DHCP: </label><br />
+	<input type='radio' id='dhcpOff' name='h0' value='0'>Off<input type='radio' id='dhcpOn' name='h0' value='1' checked=''>On
 	<br />
-	<label class="w3-label ">Renew interval for DHCP in minutes (1 - 255): </label><br />
-	<input type="number" id="renew"  name="r0" value="60" min="0" max="255" maxlength="3" size="3">
+	<label class='w3-label '>Renew interval for DHCP in minutes (1 - 255): </label><br />
+	<input type='number' id='renew'  name='r0' value='60' min='0' max='255' maxlength='3' size='3'>
 	<br />
-	<input type="submit" value="Submit">
+	<input type='submit' value='Submit'>
 </form>
 
 <form>
   User name:<br>
-  <input type="text" id="user" name="username"><br>
+  <input type='text' id='user' name='username'><br>
   User password:<br>
-  <input type="password" id="psw" name="psw">
+  <input type='password' id='psw' name='psw'>
 </form>
-<input type="button" value="updateCredentials" onclick="updateCredentials()">
+<input type='button' value='updateCredentials' onclick='updateCredentials()'>
 
 </div>	
 
-<div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+<div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
 		<h1>System status</h1>
 		<p>
-		DHCP renew return code (sec): <span id="dhcp_state">N/A</span> <br/>
-		DHCP last renew timestamp (sec): <span id="dhcp_renew">N/A</span> <br/>
-		Uptime: <span id="uptime">N/A</span> <br/>
-		RAM (byte): <span id="ramfree">N/A</span> free of <span id="ramsize">N/A</span> <br/>
+		DHCP renew return code (sec): <span id='dhcp_state'>N/A</span> <br/>
+		DHCP last renew timestamp (sec): <span id='dhcp_renew'>N/A</span> <br/>
+		Uptime: <span id='uptime'>N/A</span> <br/>
+		RAM (byte): <span id='ramfree'>N/A</span> free of <span id='ramsize'>N/A</span> <br/>
 		</p>
     </div>
   </div>
@@ -343,7 +343,7 @@ function updateCredentials()
 
 </section> <!-- End main -->
 
-<footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">
+<footer class='w3-container w3-center w3-bottom w3-small w3-theme-dark'>
   <p> Copyright &#169; icehot </p>
 </footer>
 

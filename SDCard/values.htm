@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang='en-US'>
 <title>AHAS - Arduino Home Automation System</title>
-<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1'>
+<link rel='stylesheet' href='http://www.w3schools.com/lib/w3.css'>
 
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
 
@@ -33,15 +33,15 @@
 
 <script>
 function w3_open() {
-  document.getElementById("main").style.marginLeft = "17%"
-  document.getElementsByClassName("w3-sidenav")[0].style.width ="17%";
-  document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
-  //document.getElementsByClassName("w3-opennav")[0].style.display = 'none';
+  document.getElementById('main').style.marginLeft = '17%';
+  document.getElementsByClassName('w3-sidenav')[0].style.width ='17%';
+  document.getElementsByClassName('w3-sidenav')[0].style.display = 'block';
+  /*document.getElementsByClassName('w3-opennav')[0].style.display = 'none';*/
 }
 function w3_close() {
-  document.getElementById("main").style.marginLeft = "0%";
-  document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
-  document.getElementsByClassName("w3-opennav")[0].style.display = "inline-block";
+  document.getElementById('main').style.marginLeft = '0%';
+  document.getElementsByClassName('w3-sidenav')[0].style.display = 'none';
+  document.getElementsByClassName('w3-opennav')[0].style.display = 'inline-block';
 }
 
 var xmlhttp = new XMLHttpRequest();
@@ -50,7 +50,7 @@ setInterval(updateValues, 2000);
 
 function updateValues()
 {
-    xmlhttp.open("GET", "json", true);
+    xmlhttp.open('GET', 'json', true);
     xmlhttp.send();
 }
 
@@ -61,79 +61,79 @@ xmlhttp.onreadystatechange = function()
         var portData = JSON.parse(xmlhttp.responseText);
         DisplayPortValues(portData);
     }
-}
+};
 
 function DisplayPortValues(portData ) 
 {
 	var d = new Date();
 	
-	document.getElementById("year").innerHTML  = d.getFullYear();
-	document.getElementById("month").innerHTML = d.getMonth() + 1;
-	document.getElementById("day").innerHTML   = d.getDate();
-	document.getElementById("hour").innerHTML  = d.getHours();
-	document.getElementById("min").innerHTML   = d.getMinutes();
-	document.getElementById("sec").innerHTML   = d.getSeconds();
+	document.getElementById('year').innerHTML  = d.getFullYear();
+	document.getElementById('month').innerHTML = d.getMonth() + 1;
+	document.getElementById('day').innerHTML   = d.getDate();
+	document.getElementById('hour').innerHTML  = d.getHours();
+	document.getElementById('min').innerHTML   = d.getMinutes();
+	document.getElementById('sec').innerHTML   = d.getSeconds();
 	
-    if(portData.a0 != undefined){document.getElementById("a0").innerHTML = (portData.a0*5/1023).toFixed(2) + " V";}
-    if(portData.a1 != undefined){document.getElementById("a1").innerHTML = (portData.a1*5/1023).toFixed(2) + " V";}
-    if(portData.a2 != undefined){document.getElementById("a2").innerHTML = (portData.a2*5/1023).toFixed(2) + " V";}
-    if(portData.a3 != undefined){document.getElementById("a3").innerHTML = (portData.a3*5/1023).toFixed(2) + " V";}
-    if(portData.a4 != undefined){document.getElementById("a4").innerHTML = (portData.a4*5/1023).toFixed(2) + " V";}
+    if(portData.a0 != undefined){document.getElementById('a0').innerHTML = (portData.a0*5/1023).toFixed(2) + ' V';}
+    if(portData.a1 != undefined){document.getElementById('a1').innerHTML = (portData.a1*5/1023).toFixed(2) + ' V';}
+    if(portData.a2 != undefined){document.getElementById('a2').innerHTML = (portData.a2*5/1023).toFixed(2) + ' V';}
+    if(portData.a3 != undefined){document.getElementById('a3').innerHTML = (portData.a3*5/1023).toFixed(2) + ' V';}
+    if(portData.a4 != undefined){document.getElementById('a4').innerHTML = (portData.a4*5/1023).toFixed(2) + ' V';}
 
-    if(portData.r1 != undefined){document.getElementById("relay1").innerHTML = relayStatus(portData.r1);}
-    if(portData.r2 != undefined){document.getElementById("relay2").innerHTML = relayStatus(portData.r2);}
-    if(portData.r3 != undefined){document.getElementById("relay3").innerHTML = relayStatus(portData.r3);}
-    if(portData.r4 != undefined){document.getElementById("relay4").innerHTML = relayStatus(portData.r4);}
+    if(portData.r1 != undefined){document.getElementById('relay1').innerHTML = relayStatus(portData.r1);}
+    if(portData.r2 != undefined){document.getElementById('relay2').innerHTML = relayStatus(portData.r2);}
+    if(portData.r3 != undefined){document.getElementById('relay3').innerHTML = relayStatus(portData.r3);}
+    if(portData.r4 != undefined){document.getElementById('relay4').innerHTML = relayStatus(portData.r4);}
 	
-	if(portData.dht11_temp != undefined){document.getElementById("dht11_temp").innerHTML = portData.dht11_temp.toFixed(2) + " &#8451";}
-	if(portData.dht11_hum != undefined){document.getElementById("dht11_hum").innerHTML 	= portData.dht11_hum.toFixed(2) + " %";}
-	if(portData.dht11_dew != undefined){document.getElementById("dht11_dew").innerHTML 	= portData.dht11_dew.toFixed(2) + " &#8451";}
+	if(portData.dht11_temp != undefined){document.getElementById('dht11_temp').innerHTML = portData.dht11_temp.toFixed(2) + ' &#8451';}
+	if(portData.dht11_hum != undefined){document.getElementById('dht11_hum').innerHTML 	= portData.dht11_hum.toFixed(2) + ' %';}
+	if(portData.dht11_dew != undefined){document.getElementById('dht11_dew').innerHTML 	= portData.dht11_dew.toFixed(2) + ' &#8451';}
 	
-	if(portData.bmp085_temp != undefined){document.getElementById("bmp085_temp").innerHTML = (portData.bmp085_temp).toFixed(2) + " &#8451";}
-	if(portData.bmp085_pres != undefined){document.getElementById("bmp085_pres").innerHTML = (portData.bmp085_pres/100).toFixed(2) + " hPa";}
+	if(portData.bmp085_temp != undefined){document.getElementById('bmp085_temp').innerHTML = (portData.bmp085_temp).toFixed(2) + ' &#8451';}
+	if(portData.bmp085_pres != undefined){document.getElementById('bmp085_pres').innerHTML = (portData.bmp085_pres/100).toFixed(2) + ' hPa';}
 	
-	if(portData.ms5611_temp != undefined){document.getElementById("ms5611_temp").innerHTML = portData.ms5611_temp.toFixed(2) + " &#8451";}
-	if(portData.ms5611_pres != undefined){document.getElementById("ms5611_pres").innerHTML = (portData.ms5611_pres/100).toFixed(2) + " mB";}
-	if(portData.ms5611_aalt != undefined){document.getElementById("ms5611_aalt").innerHTML = portData.ms5611_aalt.toFixed(2) + " m";}
-	if(portData.ms5611_ralt != undefined){document.getElementById("ms5611_ralt").innerHTML = portData.ms5611_ralt.toFixed(2) + " m";}
+	if(portData.ms5611_temp != undefined){document.getElementById('ms5611_temp').innerHTML = portData.ms5611_temp.toFixed(2) + ' &#8451';}
+	if(portData.ms5611_pres != undefined){document.getElementById('ms5611_pres').innerHTML = (portData.ms5611_pres/100).toFixed(2) + ' mB';}
+	if(portData.ms5611_aalt != undefined){document.getElementById('ms5611_aalt').innerHTML = portData.ms5611_aalt.toFixed(2) + ' m';}
+	if(portData.ms5611_ralt != undefined){document.getElementById('ms5611_ralt').innerHTML = portData.ms5611_ralt.toFixed(2) + ' m';}
 	
-	if(portData.ds1302_year != undefined){document.getElementById("ds1302_year").innerHTML  = portData.ds1302_year;}
-	if(portData.ds1302_month != undefined){document.getElementById("ds1302_month").innerHTML = portData.ds1302_month;}
-	if(portData.ds1302_day != undefined){document.getElementById("ds1302_day").innerHTML   = portData.ds1302_day;}
-	if(portData.ds1302_hour != undefined){document.getElementById("ds1302_hour").innerHTML  = portData.ds1302_hour;}
-	if(portData.ds1302_min != undefined){document.getElementById("ds1302_min").innerHTML   = portData.ds1302_min;}
-	if(portData.ds1302_sec != undefined){document.getElementById("ds1302_sec").innerHTML   = portData.ds1302_sec;}
-	if(portData.ds1302_sync != undefined){document.getElementById("ds1302_sync").innerHTML   = portData.ds1302_sync;}
+	if(portData.ds1302_year != undefined){document.getElementById('ds1302_year').innerHTML  = portData.ds1302_year;}
+	if(portData.ds1302_month != undefined){document.getElementById('ds1302_month').innerHTML = portData.ds1302_month;}
+	if(portData.ds1302_day != undefined){document.getElementById('ds1302_day').innerHTML   = portData.ds1302_day;}
+	if(portData.ds1302_hour != undefined){document.getElementById('ds1302_hour').innerHTML  = portData.ds1302_hour;}
+	if(portData.ds1302_min != undefined){document.getElementById('ds1302_min').innerHTML   = portData.ds1302_min;}
+	if(portData.ds1302_sec != undefined){document.getElementById('ds1302_sec').innerHTML   = portData.ds1302_sec;}
+	if(portData.ds1302_sync != undefined){document.getElementById('ds1302_sync').innerHTML   = portData.ds1302_sync;}
     
-    if(portData.rgb_red != undefined){document.getElementById("red_val").innerHTML   = portData.rgb_red;document.getElementById("rgb_r").value   = portData.rgb_red;}
-    if(portData.rgb_green != undefined){document.getElementById("green_val").innerHTML   = portData.rgb_green;document.getElementById("rgb_g").value   = portData.rgb_green;}
-    if(portData.rgb_blue != undefined){document.getElementById("blue_val").innerHTML   = portData.rgb_blue;document.getElementById("rgb_b").value   = portData.rgb_blue;}
+    if(portData.rgb_red != undefined){document.getElementById('red_val').innerHTML   = portData.rgb_red;document.getElementById('rgb_r').value   = portData.rgb_red;}
+    if(portData.rgb_green != undefined){document.getElementById('green_val').innerHTML   = portData.rgb_green;document.getElementById('rgb_g').value   = portData.rgb_green;}
+    if(portData.rgb_blue != undefined){document.getElementById('blue_val').innerHTML   = portData.rgb_blue;document.getElementById('rgb_b').value   = portData.rgb_blue;}
 	
-    if(portData.ntp_year != undefined){document.getElementById("ntp_year").innerHTML  = portData.ntp_year;}
-	if(portData.ntp_month != undefined){document.getElementById("ntp_month").innerHTML = portData.ntp_month;}
-	if(portData.ntp_day != undefined){document.getElementById("ntp_day").innerHTML   = portData.ntp_day;}
-	if(portData.ntp_hour != undefined){document.getElementById("ntp_hour").innerHTML  = portData.ntp_hour;}
-	if(portData.ntp_min != undefined){document.getElementById("ntp_min").innerHTML   = portData.ntp_min;}
-	if(portData.ntp_sec != undefined){document.getElementById("ntp_sec").innerHTML   = portData.ntp_sec;}
-	if(portData.ntp_sync != undefined){document.getElementById("ntp_sync").innerHTML   = portData.ntp_sync;}
+    if(portData.ntp_year != undefined){document.getElementById('ntp_year').innerHTML  = portData.ntp_year;}
+	if(portData.ntp_month != undefined){document.getElementById('ntp_month').innerHTML = portData.ntp_month;}
+	if(portData.ntp_day != undefined){document.getElementById('ntp_day').innerHTML   = portData.ntp_day;}
+	if(portData.ntp_hour != undefined){document.getElementById('ntp_hour').innerHTML  = portData.ntp_hour;}
+	if(portData.ntp_min != undefined){document.getElementById('ntp_min').innerHTML   = portData.ntp_min;}
+	if(portData.ntp_sec != undefined){document.getElementById('ntp_sec').innerHTML   = portData.ntp_sec;}
+	if(portData.ntp_sync != undefined){document.getElementById('ntp_sync').innerHTML   = portData.ntp_sync;}
 }
 
 function relayStatus(relay)
 {
 	if (relay == 0)
-     return "ON"
+     	 return 'ON';
 	else
-	 return "OFF";
+	 return 'OFF';
 }
 
 function rgbChange()
 {
-	var red_value = document.getElementById("rgb_r").value;
-	var green_value = document.getElementById("rgb_g").value;
-	var blue_value= document.getElementById("rgb_b").value;
-    document.getElementById("red_val").innerHTML =  red_value;
-	document.getElementById("green_val").innerHTML =  green_value;
-	document.getElementById("blue_val").innerHTML =  blue_value;
+	var red_value = document.getElementById('rgb_r').value;
+	var green_value = document.getElementById('rgb_g').value;
+	var blue_value= document.getElementById('rgb_b').value;
+    document.getElementById('red_val').innerHTML =  red_value;
+	document.getElementById('green_val').innerHTML =  green_value;
+	document.getElementById('blue_val').innerHTML =  blue_value;
 	
 	$.post('/rgb', { red: red_value, green: green_value, blue: blue_value } );
 }
@@ -150,132 +150,132 @@ function r4Off() {$.post('/input', {r4: 1} );}
 </script>
 
 
-<body class="w3-theme-light">
+<body class='w3-theme-light'>
 
-<header class="w3-container w3-theme-dark w3-padding">
-      <span class="w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1" onclick="w3_open()""><b>Menu</b></span>
-	  <div class="w3-center w3-xlarge w3-padding">
+<header class='w3-container w3-theme-dark w3-padding'>
+      <span class='w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1' onclick='w3_open()''><b>Menu</b></span>
+	  <div class='w3-center w3-xlarge w3-padding'>
       <span><b>AHAS - Arduino Home Automation System</b></span>
 	  </div>
 </header>
 
-<nav class="w3-sidenav w3-round-xlarge w3-theme-d1" style="width:17%; display:none; marginLeft:0%">
-  <a href="javascript:void(0)" 
-  onclick="w3_close()"
-  class="w3-closenav w3-right w3-padding-right"><b>X</b></a>
+<nav class='w3-sidenav w3-round-xlarge w3-theme-d1' style='width:17%; display:none; marginLeft:0%'>
+  <a href='javascript:void(0)' 
+  onclick='w3_close()'
+  class='w3-closenav w3-right w3-padding-right'><b>X</b></a>
   <p> </p>		
-  <a href="/index.htm">Home</a>		
-  <a href="/values.htm">Values</a>		
-  <a href="/settings.htm">Settings</a>
-  <a href="/graphs.htm">Graphs</a>	   
+  <a href='/index.htm'>Home</a>		
+  <a href='/values.htm'>Values</a>		
+  <a href='/settings.htm'>Settings</a>
+  <a href='/graphs.htm'>Graphs</a>	   
 </nav>
 
-<section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
+<section id='main' style='margin-left:0%; margin-bottom:50px'> <!-- Start main -->
 <br>
 
-<div class="w3-row-padding">
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+<div class='w3-row-padding'>
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
       <h1>DS1302 Time</h1>
 	  <p>
-	  Sync Status: <span id="ds1302_sync">N/A</span><br/>
-	  Time:        <span id="ds1302_hour">N/A</span>:<span id="ds1302_min">N/A</span>:<span id="ds1302_sec">N/A</span><br/>
-	  Date:        <span id="ds1302_year">N/A</span>\<span id="ds1302_month">N/A</span>\<span id="ds1302_day">N/A</span><br/>
+	  Sync Status: <span id='ds1302_sync'>N/A</span><br/>
+	  Time:        <span id='ds1302_hour'>N/A</span>:<span id='ds1302_min'>N/A</span>:<span id='ds1302_sec'>N/A</span><br/>
+	  Date:        <span id='ds1302_year'>N/A</span>\<span id='ds1302_month'>N/A</span>\<span id='ds1302_day'>N/A</span><br/>
 	  </p>
     </div>
   </div>
 
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
       <h1>DHT11</h1>
       <p>
-	  Temperature: <span id="dht11_temp">N/A</span><br/>
-	  Humidity:    <span id="dht11_hum">N/A</span><br/>
-	  Dew Point:   <span id="dht11_dew">N/A</span>
+	  Temperature: <span id='dht11_temp'>N/A</span><br/>
+	  Humidity:    <span id='dht11_hum'>N/A</span><br/>
+	  Dew Point:   <span id='dht11_dew'>N/A</span>
 	  </p>  
     </div>
   </div>
 
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
       <h1>BMP085</h1>
       <p>
-	  Temperature: <span id="bmp085_temp">N/A</span><br/>
-	  Pressure:    <span id="bmp085_pres">N/A</span>
+	  Temperature: <span id='bmp085_temp'>N/A</span><br/>
+	  Pressure:    <span id='bmp085_pres'>N/A</span>
 	  </p> 	
     </div>
   </div>
 
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
       <h1>MS5611</h1>
       <p>
-	  Temperature:       <span id="ms5611_temp">N/A</span><br/>
-	  Pressure:    		 <span id="ms5611_pres">N/A</span><br/>
-	  Absolute Altitude: <span id="ms5611_aalt">N/A</span><br/>
-	  Relative Altitude: <span id="ms5611_ralt">N/A</span>
+	  Temperature:       <span id='ms5611_temp'>N/A</span><br/>
+	  Pressure:    		 <span id='ms5611_pres'>N/A</span><br/>
+	  Absolute Altitude: <span id='ms5611_aalt'>N/A</span><br/>
+	  Relative Altitude: <span id='ms5611_ralt'>N/A</span>
 	  </p>
     </div>
   </div>
 </div>
 
-<div class="w3-row-padding">
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+<div class='w3-row-padding'>
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
 		<h1>Analog Pins</h1>
 		<p>
-		Analog 0: <span id="a0">N/A</span> <br/>
-		Analog 1: <span id="a1">N/A</span> <br/>
-		Analog 2: <span id="a2">N/A</span> <br/>
-		Analog 3: <span id="a3">N/A</span> <br/>
-		Analog 4: <span id="a4">N/A</span> <br/>
+		Analog 0: <span id='a0'>N/A</span> <br/>
+		Analog 1: <span id='a1'>N/A</span> <br/>
+		Analog 2: <span id='a2'>N/A</span> <br/>
+		Analog 3: <span id='a3'>N/A</span> <br/>
+		Analog 4: <span id='a4'>N/A</span> <br/>
 		</p>
     </div>
   </div>
 
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
 		<form action='input' method='post'>
 			<h1>Relays</h1>
 			<p>
-			Relay 1: <span id="relay1">N/A</span>
-			<input type="radio" name="r1" value="0" onchange="r1On()"> ON <input type="radio" name="r1" value="1" onchange="r1Off()" checked> OFF <br/>
-			Relay 2: <span id="relay2">N/A</span>
-			<input type="radio" name="r2" value="0" onchange="r2On()"> ON <input type="radio" name="r2" value="1" onchange="r2Off()" checked> OFF <br/>
-			Relay 3: <span id="relay3">N/A</span>
-			<input type="radio" name="r3" value="0" onchange="r3On()"> ON <input type="radio" name="r3" value="1" onchange="r3Off()" checked> OFF <br/>
-			Relay 4: <span id="relay4">N/A </span>
-			<input type="radio" name="r4" value="0" onchange="r4On()"> ON <input type="radio" name="r4" value="1" onchange="r4Off()" checked> OFF <br/>
+			Relay 1: <span id='relay1'>N/A</span>
+			<input type='radio' name='r1' value='0' onchange='r1On()'> ON <input type='radio' name='r1' value='1' onchange='r1Off()' checked> OFF <br/>
+			Relay 2: <span id='relay2'>N/A</span>
+			<input type='radio' name='r2' value='0' onchange='r2On()'> ON <input type='radio' name='r2' value='1' onchange='r2Off()' checked> OFF <br/>
+			Relay 3: <span id='relay3'>N/A</span>
+			<input type='radio' name='r3' value='0' onchange='r3On()'> ON <input type='radio' name='r3' value='1' onchange='r3Off()' checked> OFF <br/>
+			Relay 4: <span id='relay4'>N/A </span>
+			<input type='radio' name='r4' value='0' onchange='r4On()'> ON <input type='radio' name='r4' value='1' onchange='r4Off()' checked> OFF <br/>
 			</p>
 		</form>
     </div>
   </div>
 
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
       <h1>Load</h1>
 	  <p>
-	  Acquisition:       <span id="load_acq">N/A</span><br/>
-	  Total:    		 <span id="load_tot">N/A</span><br/>
-	  Web:               <span id="load_web">N/A</span>
+	  Acquisition:       <span id='load_acq'>N/A</span><br/>
+	  Total:    		 <span id='load_tot'>N/A</span><br/>
+	  Web:               <span id='load_web'>N/A</span>
 	  </p>
     </div>
   </div>
   
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
 	<form action='input' method='post'>
       <h1>RGB</h1>
 	  
 	  <p>
-		 <div class="w3-container w3-red w3-round-xlarge w3-tiny w3-margin-2">
-		 <span id="red_val">N/A</span><input class="w3-input" type="range" id="rgb_r" value="0" " min="0" max="255" onchange="rgbChange()"><br/>
+		 <div class='w3-container w3-red w3-round-xlarge w3-tiny w3-margin-2'>
+		 <span id='red_val'>N/A</span><input class='w3-input' type='range' id='rgb_r' value='0' ' min='0' max='255' onchange='rgbChange()'><br/>
 		 </div>
-		 <div class="w3-container w3-green w3-round-xlarge w3-tiny w3-margin-2">
-		 <span id="green_val">N/A</span><input class="w3-input" type="range" id="rgb_g" value="0" " min="0" max="255" onchange="rgbChange()"><br/>
+		 <div class='w3-container w3-green w3-round-xlarge w3-tiny w3-margin-2'>
+		 <span id='green_val'>N/A</span><input class='w3-input' type='range' id='rgb_g' value='0' ' min='0' max='255' onchange='rgbChange()'><br/>
 		 </div>
-		 <div class="w3-container w3-blue w3-round-xlarge w3-tiny w3-margin-2">
-		 <span id="blue_val">N/A</span><input class="w3-input" type="range" id="rgb_b" value="0" " min="0" max="255" onchange="rgbChange()"><br/>
+		 <div class='w3-container w3-blue w3-round-xlarge w3-tiny w3-margin-2'>
+		 <span id='blue_val'>N/A</span><input class='w3-input' type='range' id='rgb_b' value='0' ' min='0' max='255' onchange='rgbChange()'><br/>
 		 </div>
 	  </p>
 	  </form>
@@ -283,24 +283,24 @@ function r4Off() {$.post('/input', {r4: 1} );}
   </div>  
 </div>
 
-<div class="w3-row-padding">
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+<div class='w3-row-padding'>
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
 		<h1>NTP Time</h1>
         <p>
-        Sync Status: <span id="ntp_sync">N/A</span><br/>
-        Time:        <span id="ntp_hour">N/A</span>:<span id="ntp_min">N/A</span>:<span id="ntp_sec">N/A</span><br/>
-        Date:        <span id="ntp_year">N/A</span>\<span id="ntp_month">N/A</span>\<span id="ntp_day">N/A</span><br/>
+        Sync Status: <span id='ntp_sync'>N/A</span><br/>
+        Time:        <span id='ntp_hour'>N/A</span>:<span id='ntp_min'>N/A</span>:<span id='ntp_sec'>N/A</span><br/>
+        Date:        <span id='ntp_year'>N/A</span>\<span id='ntp_month'>N/A</span>\<span id='ntp_day'>N/A</span><br/>
 	  </p>
     </div>
   </div>
   
-  <div class="w3-quarter">
-    <div class="w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4">
+  <div class='w3-quarter'>
+    <div class='w3-card-2 w3-theme-l1 w3-padding w3-round-xlarge w3-margin-4'>
 		<h1>Browser Time</h1>
         <p>
-        Time:        <span id="hour">N/A</span>:<span id="min">N/A</span>:<span id="sec">N/A</span><br/>
-        Date:        <span id="year">N/A</span>\<span id="month">N/A</span>\<span id="day">N/A</span><br/>
+        Time:        <span id='hour'>N/A</span>:<span id='min'>N/A</span>:<span id='sec'>N/A</span><br/>
+        Date:        <span id='year'>N/A</span>\<span id='month'>N/A</span>\<span id='day'>N/A</span><br/>
 	  </p>
     </div>
   </div>
@@ -311,7 +311,7 @@ function r4Off() {$.post('/input', {r4: 1} );}
 
 </section> <!-- End main -->
 
-<footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">
+<footer class='w3-container w3-center w3-bottom w3-small w3-theme-dark'>
   <p> Copyright &#169; icehot </p>
 </footer>
 

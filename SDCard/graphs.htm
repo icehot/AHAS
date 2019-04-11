@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang='en-US'>
 <title>AHAS - Arduino Home Automation System</title>
-<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<meta charset='UTF-8' name='viewport' content='width=device-width, initial-scale=1'>
+<link rel='stylesheet' href='http://www.w3schools.com/lib/w3.css'>
 
 <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js'></script>
 
@@ -33,92 +33,92 @@
 
 <script>
 function w3_open() {
-  document.getElementById("main").style.marginLeft = "17%"
-  document.getElementsByClassName("w3-sidenav")[0].style.width ="17%";
-  document.getElementsByClassName("w3-sidenav")[0].style.display = "block";
-  //document.getElementsByClassName("w3-opennav")[0].style.display = 'none';
+  document.getElementById('main').style.marginLeft = '17%';
+  document.getElementsByClassName('w3-sidenav')[0].style.width ='17%';
+  document.getElementsByClassName('w3-sidenav')[0].style.display = 'block';
+  //document.getElementsByClassName('w3-opennav')[0].style.display = 'none';
 }
 function w3_close() {
-  document.getElementById("main").style.marginLeft = "0%";
-  document.getElementsByClassName("w3-sidenav")[0].style.display = "none";
-  document.getElementsByClassName("w3-opennav")[0].style.display = "inline-block";
+  document.getElementById('main').style.marginLeft = '0%';
+  document.getElementsByClassName('w3-sidenav')[0].style.display = 'none';
+  document.getElementsByClassName('w3-opennav')[0].style.display = 'inline-block';
 }
 
 </script>
 
 
-<body class="w3-theme-light">
+<body class='w3-theme-light'>
 
-<header class="w3-container w3-theme-dark w3-padding">
-      <span class="w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1" onclick="w3_open()""><b>Menu</b></span>
-	  <div class="w3-center w3-xlarge w3-padding">
+<header class='w3-container w3-theme-dark w3-padding'>
+      <span class='w3-opennav w3-left w3-xlarge w3-round-xlarge w3-padding w3-theme-d1' onclick='w3_open()''><b>Menu</b></span>
+	  <div class='w3-center w3-xlarge w3-padding'>
       <span><b>AHAS - Arduino Home Automation System</b></span>
 	  </div>
 </header>
 
-<nav class="w3-sidenav w3-round-xlarge w3-theme-d1" style="width:17%; display:none; marginLeft:0%">
-  <a href="javascript:void(0)" 
-  onclick="w3_close()"
-  class="w3-closenav w3-right w3-padding-right"><b>X</b></a>
+<nav class='w3-sidenav w3-round-xlarge w3-theme-d1' style='width:17%; display:none; marginLeft:0%'>
+  <a href='javascript:void(0)' 
+  onclick='w3_close()'
+  class='w3-closenav w3-right w3-padding-right'><b>X</b></a>
   <p> </p>		
-  <a href="/index.htm">Home</a>		
-  <a href="/values.htm">Values</a>		
-  <a href="/settings.htm">Settings</a>		
-  <a href="/graphs.htm">Graphs</a>	  
+  <a href='/index.htm'>Home</a>		
+  <a href='/values.htm'>Values</a>		
+  <a href='/settings.htm'>Settings</a>		
+  <a href='/graphs.htm'>Graphs</a>	  
 </nav>
 
-<section id="main" style="margin-left:0%; margin-bottom:50px"> <!-- Start main -->
+<section id='main' style='margin-left:0%; margin-bottom:50px'> <!-- Start main -->
 <br>
 
-<div class="w3-row-padding">
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 0px #cccccc;" src="https://thingspeak.com/apps/plugins/107878"></iframe>
+<div class='w3-row-padding'>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 0px #cccccc;' src='https://thingspeak.com/apps/plugins/107878'></iframe>
    </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/apps/plugins/107879"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/apps/plugins/107879'></iframe>
   </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/apps/matlab_visualizations/107881"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/apps/matlab_visualizations/107881'></iframe>
   </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/apps/matlab_visualizations/107882"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/apps/matlab_visualizations/107882'></iframe>
   </div>
 </div>
 
-<div class="w3-row-padding">
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=DHT11+Temperature&type=line&xaxis=Time&yaxis=Celsius"></iframe>
+<div class='w3-row-padding'>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=DHT11+Temperature&type=line&xaxis=Time&yaxis=Celsius'></iframe>
   </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=DHT11+Humidity&type=line&xaxis=Time&yaxis=%25"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=DHT11+Humidity&type=line&xaxis=Time&yaxis=%25'></iframe>
   </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=BMP180+Temperature&type=line&xaxis=TimeIdo&yaxis=Celsius"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/3?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=BMP180+Temperature&type=line&xaxis=TimeIdo&yaxis=Celsius'></iframe>
   </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=BMP180+Pressure&type=line&xaxis=Time&yaxis=mBar"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/4?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=BMP180+Pressure&type=line&xaxis=Time&yaxis=mBar'></iframe>
   </div>
 </div>
 
-<div class="w3-row-padding">
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=MS5611&type=line&xaxis=Time&yaxis=Celsius"></iframe>
+<div class='w3-row-padding'>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/5?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=MS5611&type=line&xaxis=Time&yaxis=Celsius'></iframe>
    </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/6?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=MS5611+Pressure&type=line&xaxis=Time&yaxis=mBar"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/6?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=MS5611+Pressure&type=line&xaxis=Time&yaxis=mBar'></iframe>
   </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/7?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/7?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line'></iframe>
   </div>
-  <div class="w3-quarter">
-	<iframe width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/184750/charts/8?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=PIR+Sensor&type=line&xaxis=Time&yaxis=nState"></iframe>
+  <div class='w3-quarter'>
+	<iframe width='450' height='260' style='border: 1px solid #cccccc;' src='https://thingspeak.com/channels/184750/charts/8?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&title=PIR+Sensor&type=line&xaxis=Time&yaxis=nState'></iframe>
   </div>
 </div>
 
 
 </section> <!-- End main -->
 
-<footer class="w3-container w3-center w3-bottom w3-small w3-theme-dark">
+<footer class='w3-container w3-center w3-bottom w3-small w3-theme-dark'>
   <p> Copyright &#169; icehot </p>
 </footer>
 

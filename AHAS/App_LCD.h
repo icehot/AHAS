@@ -17,6 +17,8 @@ extern menwiz tree;
 void printDigits(int digits);
 void updateLCD();
 void init_MenWizz();
+void initLCD();
+void showStatusOnLCD(char * status);
 
 #endif
 #endif

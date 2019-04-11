@@ -22,7 +22,7 @@
 #define USE_MS5611
 #define USE_DS1302
 #define USE_LCD
-#define USE_SD
+//#define USE_SD
 #define USE_RELAY
 #define USE_RGB
 #define USE_PIR
@@ -30,7 +30,7 @@
 #define USE_ANALOG_BTN
 #define USE_BACKLIGHT
 #define USE_CONTRAST
-#define USE_M590
+//#define USE_M590
 #define USE_MFRC522
 #define USE_MQ2
 #define USE_WATERSENSOR
@@ -39,10 +39,10 @@
 
 /* SW Components */
 
-#define USE_NTP
+//#define USE_NTP
 #define USE_WEBDUINO
 #define USE_SERIAL_MONITOR
-#define USE_SYS_LOG
+//#define USE_SYS_LOG
 #define USE_THINGSPEAK
 //#define USE_RUNTIME
 
@@ -168,9 +168,9 @@
 #define PIN_ETH_CS 10 //ETH chip select
 #endif
 
-#ifdef USE_SD
+//#ifdef USE_SD
 #define PIN_SD_CS 4 //SD card chip select
-#endif
+//#endif
 
 #ifdef USE_LIGHTSENSOR
 #define PIN_LIGHTSENSOR A14

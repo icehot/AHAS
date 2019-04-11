@@ -25,7 +25,7 @@ void init_SD()
     else
     {
         MONITOR_LN(F("#INIT: SD Card => DONE"));
-        LOG(F("### AHAS - Arduino Home Automation System ###"));
+        LOG(F("\n### AHAS - Arduino Home Automation System ###\n"));
     }
 }
 

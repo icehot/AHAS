@@ -47,6 +47,28 @@ byte backslash[8] = {
 
 byte actScreen = 0;
 
+
+void initLCD()
+{
+	// set up the LCD's number of columns and rows:
+	lcd.begin(16, 2);
+
+	lcd.clear();
+	lcd.setCursor(0, 0);//top left corner
+	// Print a message to the LCD.
+	lcd.print(F("AHAS - Starting"));
+}
+
+void showStatusOnLCD(char * status)
+{
+	/* Delete the second line */
+	lcd.setCursor(0, 1);//bottom left corner
+	lcd.print(F("                "));
+	/* Set back the cursor */
+	lcd.setCursor(0, 1);//bottom left corner
+	lcd.print(status);
+}
+
 void printDigits(int digits)
 {
     // utility for digital clock display: prints leading 0
@@ -152,7 +174,6 @@ void updateLCD()
 
         #ifdef USE_ETH_SHIELD 
         /* First Row */
-        lcd.print(F("IP: "));
         lcd.print(Ethernet.localIP());
 
         /* Second Row */

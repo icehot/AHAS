@@ -8,6 +8,7 @@
 #include "App_Webduino.h"
 #include "App_Net.h"
 #include "SD.h"
+#include "App_WebPages.h"
 
 
 #ifdef USE_WEBDUINO
@@ -15,6 +16,8 @@
 #define PREFIX ""
 
 #define WEBDUINO_FAVICON_DATA ""
+
+#define SIZE_OF_BUFFER 1024
 
 #include <WebServer.h>
 
@@ -42,8 +45,6 @@ inline Print &operator <<(Print &obj, T arg)
 * server to send data back to the web browser. */
 
 #ifdef USE_SD
-
-#define SIZE_OF_BUFFER 1024
 
 void sendHtmlFromSD(WebServer &server, char * filename)
 {
@@ -96,6 +97,8 @@ void sendHtmlFromSD(WebServer &server, char * filename)
     }
 }
 
+#endif /* USE_SD */
+
 void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
 {
     /* this line sends the standard "we're all OK" headers back to the
@@ -106,7 +109,11 @@ void indexCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     For a HEAD request, we just stop after outputting headers. */
     if (type != WebServer::HEAD)
     {
-        sendHtmlFromSD(server, "index.htm");
+		#ifdef USE_SD
+			sendHtmlFromSD(server, "index.htm");
+		#else
+			server << F(INDEX_HTM);
+		#endif	
     }
 }
 
@@ -121,7 +128,11 @@ void valuesCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     For a HEAD request, we just stop after outputting headers. */
     if (type != WebServer::HEAD)
     {
-        sendHtmlFromSD(server, "values.htm");
+		#ifdef USE_SD
+			sendHtmlFromSD(server, "values.htm");
+		#else
+			server << F(VALUES_HTM);
+		#endif	
     }
 }
 
@@ -136,7 +147,11 @@ void graphsCmd(WebServer &server, WebServer::ConnectionType type, char *, bool)
     For a HEAD request, we just stop after outputting headers. */
     if (type != WebServer::HEAD)
     {
-        sendHtmlFromSD(server, "graphs.htm");
+		#ifdef USE_SD
+			sendHtmlFromSD(server, "graphs.htm");
+		#else
+			server << F(GRAPHS_HTM);
+		#endif	
     }
 }
 
@@ -230,7 +245,11 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
 
         if (type == WebServer::GET)
         {
-            sendHtmlFromSD(server, "settings.htm");
+			#ifdef USE_SD
+				sendHtmlFromSD(server, "settings.htm");
+			#else
+				server << F(SETTINGS_HTM);
+			#endif
         }
     }
     else
@@ -240,7 +259,7 @@ void settingsCmd(WebServer &server, WebServer::ConnectionType type, char *url_ta
     }
 }
 
-#endif
+
 
 void pswdChangeCmd(WebServer &server, WebServer::ConnectionType type, char *url_tail, bool tail_complete)
 {
@@ -578,16 +597,11 @@ void init_Webduino()
     /* setup our default command that will be run when the user accesses
     * the root page on the server */
 
-#ifdef USE_SD
     webserver->setDefaultCommand(&indexCmd);
     webserver->addCommand("index.htm", &indexCmd);
     webserver->addCommand("values.htm", &valuesCmd);
     webserver->addCommand("settings.htm", &settingsCmd);
     webserver->addCommand("graphs.htm", &graphsCmd);
-#else
-    webserver->setDefaultCommand(&noSDCardCmd);
-#endif
-
     webserver->setFailureCommand(&errorHTML);
 
 #ifdef USE_RELAY
